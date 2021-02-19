@@ -1,6 +1,7 @@
 setlocal omnifunc=lsp#complete
 setlocal signcolumn=yes
 setlocal number relativenumber
+setlocal cursorlineopt+=number
 if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 nmap <buffer> gd <plug>(lsp-definition)
 nmap <buffer> gs <plug>(lsp-document-symbol-search)
