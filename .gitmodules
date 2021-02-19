@@ -10,6 +10,3 @@
 [submodule "submodules/asyncomplete-lsp.vim"]
 	path = submodules/asyncomplete-lsp.vim
 	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim.git
-[submodule "submodules/yats.vim"]
-	path = submodules/yats.vim
-	url = https://github.com/HerringtonDarkholme/yats.vim.git
