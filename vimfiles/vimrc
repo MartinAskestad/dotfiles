@@ -1,1 +1,18 @@
 colorscheme PaperColor
+set noswapfile
+
+" Set up LSP for typescript
+if executable('typescript-language-server')
+	au User lsp_setup call lsp#register_server({
+	\ 'name': 'typescript-language-server',
+	\ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+	\ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+	\ 'whitelist': ['typescript'],
+	\ })
+endif
+
+" Set up keybindings for asyncomplete
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>   pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
