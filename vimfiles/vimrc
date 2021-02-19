@@ -86,5 +86,5 @@ if executable('typescript-language-server')
   \ })
 endif
 
-
-
+" Configure lightline
+let g:lightline = { 'colorscheme': 'PaperColor', } 
