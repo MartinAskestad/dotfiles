@@ -1,5 +1,7 @@
 colorscheme PaperColor
 set noswapfile
+filetype plugin on
+let mapleader = " "
 
 " Set up LSP for typescript
 if executable('typescript-language-server')
@@ -12,7 +14,8 @@ if executable('typescript-language-server')
 endif
 
 " Set up keybindings for asyncomplete
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <cr>   pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
 
