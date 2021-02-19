@@ -1,12 +1,3 @@
 [submodule "submodules/papercolor-theme"]
 	path = submodules/papercolor-theme
 	url = https://github.com/NLKNguyen/papercolor-theme.git
-[submodule "submodules/vim-lsp"]
-	path = submodules/vim-lsp
-	url = https://github.com/prabirshrestha/vim-lsp.git
-[submodule "submodules/asyncomplete.vim"]
-	path = submodules/asyncomplete.vim
-	url = https://github.com/prabirshrestha/asyncomplete.vim.git
-[submodule "submodules/asyncomplete-lsp.vim"]
-	path = submodules/asyncomplete-lsp.vim
-	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim.git
