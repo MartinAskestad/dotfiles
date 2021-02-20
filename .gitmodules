@@ -16,3 +16,6 @@
 [submodule "vimfiles/pack/plugins/start/lightline.vim"]
 	path = vimfiles/pack/plugins/start/lightline.vim
 	url = https://github.com/itchyny/lightline.vim
+[submodule "vimfiles/pack/plugins/start/vim-lsp-settings"]
+	path = vimfiles/pack/plugins/start/vim-lsp-settings
+	url = https://github.com/mattn/vim-lsp-settings.git
