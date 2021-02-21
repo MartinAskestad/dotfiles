@@ -30,7 +30,7 @@ set t_Co=256
 set laststatus=2                        " Always show status line
 set showtabline=2                       " Always show tab line
 set updatetime=300
-set timeoutlen=500
+set timeoutlen=1000
 set clipboard=unnamed
 set colorcolumn=80
 set scrolloff=5
@@ -63,9 +63,10 @@ nnoremap <A-j> :resize -2<CR>
 nnoremap <A-k> :resize +2<CR>
 nnoremap <A-l> :vertical resize -2<CR>
 
-" Switch tabs with <leader>n and <leader>p
-nnoremap <Tab>   :tabn<CR>
-nnoremap <S-Tab>   :tabp<CR>
+" Switch tabs with <leader>tn and <leader>tp
+nnoremap <leader>tn   :tabn<CR>
+nnoremap <leader>tp   :tabp<CR>
+
 " Allow for alt-key in WSL/Windows terminal
 let c='a'
 while c <= 'z'
@@ -75,14 +76,25 @@ while c <= 'z'
 endw
 set ttimeout ttimeoutlen=50
 
+" ## Plugins
 colorscheme PaperColor
 
 " Configure lightline
-let g:lightline = { 'colorscheme': 'PaperColor', } 
+let g:lightline = {
+  \ 'colorscheme': 'PaperColor',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \   },
+  \ 'component_function': { 'gitbranch': 'FugitiveHead' }
+  \ } 
 
 " Configure asyncomplete
 let g:asyncomplete_auto_completeopt = 0
 set completeopt=menuone,noinsert
+
+" vim-signify
+let g:signify_sign_show_count = 0
 
 augroup numbertoggle
 	autocmd!
