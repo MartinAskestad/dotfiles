@@ -49,6 +49,7 @@ inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <CR>   pumvisible() ? asyncomplete#close_popup() : "\<CR>"
 inoremap <expr> <Tab>  pumvisible() ? asyncomplete#close_popup() : "\<Tab>"
+inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
 
 " Change window with <C-hjkl>
 nnoremap <C-h> <C-w>h
@@ -79,8 +80,12 @@ colorscheme PaperColor
 " Configure lightline
 let g:lightline = { 'colorscheme': 'PaperColor', } 
 
+" Configure asyncomplete
+let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert
+
 augroup numbertoggle
 	autocmd!
-	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html if &nu && mode() != "i" | set rnu    | endif
-	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html if &nu                  | set nornu  | endif
+	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html,*.css,*.scss if &nu && mode() != "i" | set rnu    | endif
+	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu                  | set nornu  | endif
 augroup END
