@@ -1,5 +1,5 @@
 [submodule "submodules/papercolor-theme"]
-	path = submodules/papercolor-theme
+	path = vimfiles/pack/colors/start/paper-color-theme
 	url = https://github.com/NLKNguyen/papercolor-theme.git
 [submodule "vimfiles/pack/plugins/start/yats.vim"]
 	path = vimfiles/pack/plugins/start/yats.vim
