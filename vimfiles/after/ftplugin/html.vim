@@ -3,26 +3,27 @@ setlocal number relativenumber
 setlocal omnifunc=lsp#complete
 
 if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-nnoremap <leader>gd :tab LspDefinition<CR>
-nnoremap <leader>k  :LspHover<CR>
+
+nnoremap <buffer> <leader>ld :tab LspDefinition<CR>
+nnoremap <buffer> <leader>lh  :LspHover<CR>
 
 " go to the next opening tag below current line
-nnoremap <leader>ot 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>
+nnoremap <buffer> <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>
 
 " go  to the next end of closing tag or empty elenent below current line
-nnoremap <leader>ct 0/$/;/\%([^>]*$\)\@=<CR>
+nnoremap <buffer> <leader>hjj 0/$/;/\%([^>]*$\)\@=<CR>
 
 " go to the previous closing tab above the current line
-nnoremap <leader>pct $?^?;?>\%([^>]*$\)\@=<CR>
+nnoremap <buffer> <leader>hk $?^?;?>\%([^>]*$\)\@=<CR>
 
 " go to the previous opening tab above the current line
-nnoremap <leader>pot $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>
+nnoremap <buffer> <leader>hkk $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>
 
 " go to the next tag element closing
-nnoremap <leader>cc /><CR>
+nnoremap <buffer> <leader>hl /><CR>
 
 " go to the previous tag element opening
-nnoremap <leader>oo ?<<CR>
+nnoremap <buffer> <leader>hh ?<<CR>
 
 " Semantics
 setlocal iskeyword=@,48-57,_,-,\"
