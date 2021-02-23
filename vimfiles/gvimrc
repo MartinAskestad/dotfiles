@@ -1,1 +1,4 @@
 set guifont=FiraCode_NF:h16
+set guioptions-=m
+set guioptions-=T
+set linespace=7
