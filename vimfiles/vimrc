@@ -95,6 +95,13 @@ set completeopt=menuone,noinsert
 
 " vim-signify
 let g:signify_sign_show_count = 0
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
+
+" vim-vsnip
+let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
+imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
 augroup numbertoggle
 	autocmd!
