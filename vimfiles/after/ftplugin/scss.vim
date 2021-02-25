@@ -6,3 +6,29 @@ nnoremap <buffer> <leader>lh  :LspHover<CR>
 nnoremap <buffer> <leader>l.  :LspCodeAction<CR>
 nnoremap <buffer> <leader>lrn :LspRename<CR>
 nnoremap <buffer> <F2>       :LspRename<CR>
+
+if !exists('g:autochdir_project')
+  let g:autochdir_project = 0
+endif
+
+function s:try_change_to_project_path(current_file_path)
+  if g:autochdir_project
+    let l:filenames = ['tsconfig.json', 'package.json']
+    for l:fn in l:filenames
+      let l:found_file = findfile(l:fn, a:current_file_path . ';')
+      if len(l:found_file)
+        exe 'cd' fnameescape(fnamemodify(l:found_file, ':p:h'))
+        return
+      endif
+    endfor
+    let node_modules_path = finddir('node_modules', a:current_file_path . ';')
+    if len(node_modules_path)
+      exe 'cd' fnameescape(fnamemodify(l:node_modules_path, ':p:h'))
+    endif
+  endif
+endfunction
+
+augroup format
+  autocmd!
+  autocmd! BufReadPost,BufEnter *.scss call s:try_change_to_project_path(expand('%:p:h'))
+augroup END

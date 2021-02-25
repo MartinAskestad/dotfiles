@@ -30,3 +30,29 @@ setlocal iskeyword=@,48-57,_,-,\"
 
 " Navigation
 setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
+
+if !exists('g:autochdir_project')
+  let g:autochdir_project = 0
+endif
+
+function s:try_change_to_project_path(current_file_path)
+  if g:autochdir_project
+    let l:filenames = ['tsconfig.json', 'package.json']
+    for l:fn in l:filenames
+      let l:found_file = findfile(l:fn, a:current_file_path . ';')
+      if len(l:found_file)
+        exe 'cd' fnameescape(fnamemodify(l:found_file, ':p:h'))
+        return
+      endif
+    endfor
+    let node_modules_path = finddir('node_modules', a:current_file_path . ';')
+    if len(node_modules_path)
+      exe 'cd' fnameescape(fnamemodify(l:node_modules_path, ':p:h'))
+    endif
+  endif
+endfunction
+
+augroup html_groups
+  autocmd!
+  autocmd! BufReadPost,BufEnter *.html,*.htm call s:try_change_to_project_path(expand('%:p:h'))
+augroup END
