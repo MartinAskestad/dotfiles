@@ -183,6 +183,17 @@ set ttimeout ttimeoutlen=50
 augroup numbertoggle
 	autocmd!
   " Set working directory to current files dir
-	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu                  | set nornu  | endif
+	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu | set nornu  | endif
 augroup END
 
+if has('unix')
+  autocmd TextYankPost * call system('win32yank.exe -i --crlf', @")
+
+  function! Paste(mode)
+    let @" = system('win32yank.exe -o --lf')
+    return a:mode
+  endfunction
+
+  map <expr> p Paste('p')
+  map <expr> P Paste('P')
+endif
