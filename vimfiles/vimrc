@@ -41,6 +41,50 @@ set switchbuf=usetab,newtab
 " Change to project dir when opening certain files
 let g:autochdir_project = 1
 
+" ## Plugins
+colorscheme PaperColor
+
+" vim-which-key
+packadd vim-which-key
+nnoremap <silent> <leader> :<C-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<C-u>WhichKeyVisual '<Space>'<CR>
+let g:which_key_map = {} 
+call which_key#register('<Space>', 'g:which_key_map')
+
+" Configure lightline
+let g:lightline = {
+  \ 'colorscheme': 'PaperColor',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \   },
+  \ 'component_function': { 'gitbranch': 'FugitiveHead' }
+  \ } 
+
+" Configure vim-lsp
+set foldmethod=manual
+set foldexpr=lsp#ui#vim#folding#foldexpr()
+set foldtext=lsp#ui#vim#folding#foldtext()
+
+" Configure asyncomplete
+let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert
+
+" vim-signify
+let g:signify_sign_show_count = 0
+let g:which_key_map['g'] = {
+  \ 'name': '+git',
+  \ 'j': 'Next hunk',
+  \ 'k': 'Previous hunk',
+  \ }
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
+
+" vim-vsnip
+let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
+imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
 
 " ## Keyboard mappings
 vnoremap . :        " Period is easier to reach on swedish keyboard
@@ -61,30 +105,70 @@ inoremap <expr> <CR>   pumvisible() ? asyncomplete#close_popup() : "\<CR>"
 inoremap <expr> <Tab>  pumvisible() ? asyncomplete#close_popup() : "\<Tab>"
 inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
 
-" Change window with <C-hjkl>
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
-" Resize windows with <A-HJKL>
-nnoremap <A-h> :vertical resize +2<CR>
-nnoremap <A-j> :resize -2<CR>
-nnoremap <A-k> :resize +2<CR>
-nnoremap <A-l> :vertical resize -2<CR>
+" Windows
+let g:which_key_map['w'] = {
+  \ 'name': '+windows',
+  \ 'w': ['<C-w>w', 'Other window'],
+  \ 'q': ['<C-w>c', 'Close window'],
+  \ 's': ['<C-w>s', 'Split window below'],
+  \ 'v': ['<C-w>v', 'Split  window right'],
+  \ 'h': ['<C-w>h', 'Window left'],
+  \ 'j': ['<C-w>j', 'Window below'],
+  \ 'k': ['<C-w>k', 'Window above'],
+  \ 'l': ['<C-w>l', 'Window right'],
+  \ 'H': ['<C-w>5<', 'Expand window left'],
+  \ 'J': [':resize +5', 'Expand window down'],
+  \ 'K': [':resize -5', 'Expand window up'],
+  \ 'L': ['<C-w>5>', 'Expand window right'],
+  \ 'b': ['<C-w>=', 'Balance window'],
+  \ }
 
 " Tabs
-noremap <leader>th :tabprevious<CR>
-noremap <leader>tj :tabmove -1<CR>
-noremap <leader>tk :tabmove +1<CR>
-noremap <leader>tl :tabnext<CR>
-noremap <leader>tH :tabfirst<CR>
-noremap <leader>tL :tablast<CR>
+let g:which_key_map['t'] = {
+  \ 'name': '+tabs',
+  \ 't': [':tab sball', 'Open all buffers in tabs'],
+  \ 'h': [':tabprevious', 'Previous tab'],
+  \ 'j': [':tabmove -1', 'Move tab left'],
+  \ 'k': [':tabmove +1', 'Move tab right'],
+  \ 'l': [':tabnext', 'Next tab'],
+  \ 'H': [':tabfirst', 'First tab'],
+  \ 'L': [':tablast', 'Last tab'],
+  \ 'q': [':bdelete', 'Close tab'],
+  \ 'Q': [':bdelete!', 'Close tab discard changes'],
+  \ 'o': 'Open new tab',
+  \ }
 noremap <leader>to :tabnew<SPACE>
 
+let g:which_key_map['l'] = {
+  \ 'name': '+Language server',
+  \ 'd': 'Definitions',
+  \ 's': 'Document symbol search',
+  \ 'S': 'Workspace symbol search',
+  \ 'r': 'References',
+  \ 'rn': 'Rename',
+  \ 'j': 'Next diagnostic',
+  \ 'k': 'Previous diagnostic',
+  \ ',': 'Hover',
+  \ '.': 'Code action',
+  \ 'o': 'Document symbols',
+  \ }
+nnoremap <buffer> <leader>ld :tab LspDefinition<CR>
+nnoremap <buffer> <leader>ls :LspDocumentSymbolSearch<CR>
+nnoremap <buffer> <leader>lS :LspWorkspaceSymbolSearch<CR>
+nnoremap <buffer> <leader>lr :LspReferences<CR>
+nnoremap <buffer> <leader>lrn :LspRename<CR>
+nnoremap <buffer> <F2>       :LspRename<CR>
+nnoremap <buffer> <leader>lj :LspNextDiagnostic<CR>
+nnoremap <buffer> <leader>lk :LspPreviousDiagnostic<CR>
+nnoremap <buffer> <leader>l,  :LspHover<CR>
+nnoremap <buffer> <leader>l.  :LspCodeAction<CR>
+nnoremap <buffer> <leader>o :LspDocumentSymbol
+
 " Misc keymappings
-nnoremap <leader>D :cd %:p:h<CR>                                                " Set working directory to current files dir
-nnoremap <leader>? :echo expand('%:p')<CR>                                      " Print current file path
+" let g:which_key_map['D'] = 'cd to current files dir'
+" let g:which_key_map['?'] = 'print current file path'
+" nnoremap <leader>D :cd %:p:h<CR>                                                " Set working directory to current files dir
+" nnoremap <leader>? :echo expand('%:p')<CR>                                      " Print current file path
 
 " Allow for alt-key in WSL/Windows terminal
 let c='a'
@@ -95,35 +179,10 @@ while c <= 'z'
 endw
 set ttimeout ttimeoutlen=50
 
-" ## Plugins
-colorscheme PaperColor
-
-" Configure lightline
-let g:lightline = {
-  \ 'colorscheme': 'PaperColor',
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-  \   },
-  \ 'component_function': { 'gitbranch': 'FugitiveHead' }
-  \ } 
-
-" Configure asyncomplete
-let g:asyncomplete_auto_completeopt = 0
-set completeopt=menuone,noinsert
-
-" vim-signify
-let g:signify_sign_show_count = 0
-nmap <leader>gj <plug>(signify-next-hunk)
-nmap <leader>gk <plug>(signify-prev-hunk)
-
-" vim-vsnip
-let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
-imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
 augroup numbertoggle
 	autocmd!
-	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html,*.css,*.scss if &nu && mode() != "i" | set rnu    | endif
+  " Set working directory to current files dir
 	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu                  | set nornu  | endif
 augroup END
+

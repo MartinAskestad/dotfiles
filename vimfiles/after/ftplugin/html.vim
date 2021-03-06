@@ -4,9 +4,6 @@ setlocal omnifunc=lsp#complete
 
 if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 
-nnoremap <buffer> <leader>ld :tab LspDefinition<CR>
-nnoremap <buffer> <leader>lh  :LspHover<CR>
-
 " go to the next opening tag below current line
 nnoremap <buffer> <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>
 
