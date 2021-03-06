@@ -18,5 +18,8 @@ HISTFILESIZE=200
 
 export PATH=./node_modules/.bin:$PATH
 
+# Set VI-mode
+set -o vi
+
 alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias ls='ls -lh --group-directories-first'

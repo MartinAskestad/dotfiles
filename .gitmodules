@@ -34,3 +34,6 @@
 [submodule "vimfiles/pack/plugins/start/vim-signify"]
 	path = vimfiles/pack/plugins/start/vim-signify
 	url = https://github.com/mhinz/vim-signify.git
+[submodule "vimfiles/pack/plugins/start/vim-which-key"]
+	path = vimfiles/pack/plugins/start/vim-which-key
+	url = https://github.com/liuchengxu/vim-which-key.git
