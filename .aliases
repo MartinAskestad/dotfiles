@@ -1,0 +1,5 @@
+# Set cfg as command to handle dotfiles bare git repo
+alias cfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias ls='ls -lh --group-directories-first'
+
