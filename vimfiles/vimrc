@@ -141,28 +141,17 @@ noremap <leader>to :tabnew<SPACE>
 
 let g:which_key_map['l'] = {
   \ 'name': '+Language server',
-  \ 'd': 'Definitions',
-  \ 's': 'Document symbol search',
-  \ 'S': 'Workspace symbol search',
-  \ 'r': 'References',
-  \ 'rn': 'Rename',
-  \ 'j': 'Next diagnostic',
-  \ 'k': 'Previous diagnostic',
-  \ ',': 'Hover',
-  \ '.': 'Code action',
-  \ 'o': 'Document symbols',
+  \ 'd': [':tab LspDefinition', 'Definitions'],
+  \ 's': [':LspDocumentSymbolSearch', 'Document symbol search'],
+  \ 'S': [':LspWorkspaceSymbolSearch', 'Workspace symbol search'],
+  \ 'r': [':LspReferences', 'References'],
+  \ 'rn': [':LspRename',  'Rename'],
+  \ 'j': [':LspNextDiagnostic', 'Next diagnostic'],
+  \ 'k': [':LspPreviousDiagnostic', 'Previous diagnostic'],
+  \ ',': [':LspHover', 'Hover'],
+  \ '.': [':LspCodeAction', 'Code action'],
+  \ 'o': [':LspDocumentSymbol', 'Document symbols'],
   \ }
-nnoremap <buffer> <leader>ld :tab LspDefinition<CR>
-nnoremap <buffer> <leader>ls :LspDocumentSymbolSearch<CR>
-nnoremap <buffer> <leader>lS :LspWorkspaceSymbolSearch<CR>
-nnoremap <buffer> <leader>lr :LspReferences<CR>
-nnoremap <buffer> <leader>lrn :LspRename<CR>
-nnoremap <buffer> <F2>       :LspRename<CR>
-nnoremap <buffer> <leader>lj :LspNextDiagnostic<CR>
-nnoremap <buffer> <leader>lk :LspPreviousDiagnostic<CR>
-nnoremap <buffer> <leader>l,  :LspHover<CR>
-nnoremap <buffer> <leader>l.  :LspCodeAction<CR>
-nnoremap <buffer> <leader>o :LspDocumentSymbol
 
 " Misc keymappings
 " let g:which_key_map['D'] = 'cd to current files dir'
