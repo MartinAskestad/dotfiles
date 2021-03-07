@@ -37,3 +37,9 @@
 [submodule "vimfiles/pack/plugins/start/vim-which-key"]
 	path = vimfiles/pack/plugins/start/vim-which-key
 	url = https://github.com/liuchengxu/vim-which-key.git
+[submodule "vimfiles/pack/plugins/start/ctrlp.vim"]
+	path = vimfiles/pack/plugins/start/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule "vimfiles/pack/plugins/start/ctrlp-lsp"]
+	path = vimfiles/pack/plugins/start/ctrlp-lsp
+	url = https://github.com/mattn/ctrlp-lsp.git
