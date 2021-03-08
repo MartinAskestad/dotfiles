@@ -77,6 +77,7 @@ set foldtext=lsp#ui#vim#folding#foldtext()
 
 " Configure asyncomplete
 let g:asyncomplete_auto_completeopt = 0
+
 " vim-signify
 let g:signify_sign_show_count = 0
 let g:which_key_map['g'] = {
@@ -94,8 +95,14 @@ imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
 " ctrlp
+packadd ctrlp.vim
+packadd ctrlp-lsp
+packadd ctrlp-matchfuzzy
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:which_key_map['p'] = [':CtrlPMixed', 'CtrlP']
+let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
+
+" ctrlp-matchfuzzy
+let g:ctrlp_match_func = { 'match': 'ctrlp_matchfuzzy#matcher' }
 
 " ## Keyboard mappings
 vnoremap . :        " Period is easier to reach on swedish keyboard
@@ -124,6 +131,7 @@ let g:which_key_map['b'] = {
   \ 'q': [':bdelete', 'Close buffer'],
   \ 'Q': [':bdelete!', 'Close buffer (discard changes)'],
   \ }
+
 " Windows
 let g:which_key_map['w'] = {
   \ 'name': '+windows',
@@ -185,8 +193,6 @@ while c <= 'z'
   exec "imap \e".c." <A-".c.">"
   let c = nr2char(1+char2nr(c))
 endw
-set ttimeout ttimeoutlen=50
-
 
 augroup numbertoggle
 	autocmd!

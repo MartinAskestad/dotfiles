@@ -28,6 +28,9 @@ setlocal iskeyword=@,48-57,_,-,\"
 " Navigation
 setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
 
+" Add emmet plugin
+packadd emmet-vim
+
 if !exists('g:autochdir_project')
   let g:autochdir_project = 0
 endif
