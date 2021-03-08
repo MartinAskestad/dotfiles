@@ -1,5 +1,5 @@
 [submodule "submodules/papercolor-theme"]
-	path = vimfiles/pack/colors/start/paper-color-theme
+	path = vimfiles/pack/colors/opt/paper-color-theme
 	url = https://github.com/NLKNguyen/papercolor-theme.git
 [submodule "vimfiles/pack/plugins/start/yats.vim"]
 	path = vimfiles/pack/plugins/start/yats.vim
@@ -14,7 +14,7 @@
 	path = vimfiles/pack/plugins/start/asyncomplete-lsp.vim
 	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim.git
 [submodule "vimfiles/pack/plugins/start/lightline.vim"]
-	path = vimfiles/pack/plugins/start/lightline.vim
+	path = vimfiles/pack/plugins/opt/lightline.vim
 	url = https://github.com/itchyny/lightline.vim
 [submodule "vimfiles/pack/plugins/start/vim-lsp-settings"]
 	path = vimfiles/pack/plugins/start/vim-lsp-settings
