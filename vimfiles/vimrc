@@ -8,11 +8,11 @@ set fileencodings=utf-8,iso-8859-1
 
 " ## Appearance
 set background=light display=lastline,uhex wrap wrapmargin=0 
-set showmatch matchtime=10 noshowmode shortmess+=I cmdheight=1 cmdwinheight=10
+set showmatch matchtime=3 noshowmode shortmess+=I cmdheight=1 cmdwinheight=10
 set noshowcmd noruler rulerformat= laststatus=2
 set title titlelen=100 titleold= titlestring=%f noicon showtabline=1
-set cursorline cursorcolumn cursorlineopt=line colorcolumn=80
-set list listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↪\
+set cursorline nocursorcolumn cursorlineopt=line colorcolumn=80
+set nolist listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↪\
 set splitbelow splitright scrolloff=5
 set equalalways nowinfixwidth nowinfixheight winminwidth=3 winheight=3 winminheight=3
 
@@ -65,10 +65,11 @@ let g:lightline = {
   \ 'colorscheme': 'PaperColor',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ], ]
   \   },
-  \ 'component_function': { 'gitbranch': 'FugitiveHead' }
+  \ 'component_function': { 'gitbranch': 'FugitiveHead', }
   \ } 
+
 
 " Configure vim-lsp
 set foldmethod=manual
@@ -85,6 +86,9 @@ let g:which_key_map['g'] = {
   \ 'j': 'Next hunk',
   \ 'k': 'Previous hunk',
   \ 'd': [':SignifyHunkDiff', 'Diff hunk'],
+  \ 'D': [':Gdiffsplit', 'Diff split'],
+  \ 'w': [':Gwrite', 'Add file'],
+  \ 'r': [':Gread', 'Restore file'],
   \ }
 nmap <leader>gj <plug>(signify-next-hunk)
 nmap <leader>gk <plug>(signify-prev-hunk)
@@ -186,18 +190,11 @@ let g:which_key_map['l'] = {
 " nnoremap <leader>D :cd %:p:h<CR>                                                " Set working directory to current files dir
 " nnoremap <leader>? :echo expand('%:p')<CR>                                      " Print current file path
 
-" Allow for alt-key in WSL/Windows terminal
-let c='a'
-while c <= 'z'
-  exec "set <A-".c.">=\e".c
-  exec "imap \e".c." <A-".c.">"
-  let c = nr2char(1+char2nr(c))
-endw
-
 augroup numbertoggle
 	autocmd!
   " Set working directory to current files dir
-	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu | set nornu  | endif
+	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   *.ts,*.html,*.css,*.scss if &nu | setlocal nornu  | endif
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html,*.css,*.scss if &nu | setlocal rnu    | endif
 augroup END
 
 au WinLeave * set nocursorline nocursorcolumn
