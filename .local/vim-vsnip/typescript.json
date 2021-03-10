@@ -1,0 +1,23 @@
+{
+  "console.log": {
+    "prefix": ["log", "cl"],
+    "body": ["console.log($1);"],
+    "description": "console.log"
+  },
+  "Class method": {
+    "prefix": ["met"],
+    "body": ["${1:methodName}(${2:arg}) {", "\t$0", "}"],
+    "description": "A method for a class"
+  },
+  "Arrow function (lambda)": {
+    "prefix": ["lambda", "af"],
+    "body": ["(${1:args}) => $0;"],
+    "description": "An arrow function"
+  },
+  "Arrow function in braces": {
+    "prefix": ["Lambda", "Af"],
+    "body": ["(${1:args}) => {", "\t$0", "}"],
+    "description": "An arrow function"
+  }
+}
+
