@@ -110,6 +110,8 @@ smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 packadd ctrlp.vim
 packadd ctrlp-lsp
 packadd ctrlp-matchfuzzy
+packadd ctrlp-npm-script
+packadd ctrlp-git-branches
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
 
