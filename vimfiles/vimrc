@@ -43,7 +43,7 @@ syntax on                                                                       
 
 " ## Terminal
 if executable('pwsh')
-  set shell=pwsh
+  " set shell=pwsh
   set termwinsize=14x0
 endif
 
@@ -73,7 +73,7 @@ let g:lightline = {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ], ]
   \   },
-  \ 'component_function': { 'gitbranch': 'FugitiveHead', }
+  \ 'component_function': { 'gitbranch': 'FugitiveStatusline', }
   \ } 
 
 
@@ -121,6 +121,8 @@ vnoremap . :        " Period is easier to reach on swedish keyboard
 vnoremap : .
 nnoremap . :
 nnoremap : .
+
+tnoremap <esc> <C-w>N
 
 " Natural line jumping over wrapped lines
 nnoremap j gj
