@@ -106,14 +106,22 @@ let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
 imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
+" prettier
+nmap <Leader>= <Plug>(Prettier)
+
 " ctrlp
 packadd ctrlp.vim
 packadd ctrlp-lsp
 packadd ctrlp-matchfuzzy
 packadd ctrlp-npm-script
 packadd ctrlp-git-branches
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files']
 let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
+let g:which_key_map['o'] = ['CtrlPBuffer', 'CtrlP Buffer']
+let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
+let g:ctrlp_switch_buffer = 'ETVH'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 " ctrlp-matchfuzzy
 let g:ctrlp_match_func = { 'match': 'ctrlp_matchfuzzy#matcher' }
@@ -214,8 +222,8 @@ augroup numbertoggle
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html,*.css,*.scss if &nu | setlocal rnu    | endif
 augroup END
 
-au WinLeave * set nocursorline nocursorcolumn
-au WinEnter * set cursorline cursorcolumn
+" au WinLeave * set nocursorline nocursorcolumn
+" au WinEnter * set cursorline cursorcolumn
 
 if has('unix')
   autocmd TextYankPost * call system('win32yank.exe -i --crlf', @")

@@ -1,5 +1,5 @@
 set guifont=FiraCode_NF:h12:W500:cANSI:qDRAFT,Fira_Code_Medium:h12:W500:cANSI:qDRAFT
-set linespace=3
+set linespace=5
 set guioptions-=m
 set guioptions-=T
 set guioptions-=r

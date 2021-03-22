@@ -6,7 +6,6 @@ if !exists('g:autochdir_project')
   let g:autochdir_project = 0
 endif
 
-
 function s:try_change_to_project_path()
   let l:current_file_path = expand('%:p:h')
   if l:current_file_path[0:2] ==# 'fug'
@@ -29,4 +28,5 @@ endfunction
 augroup format
   autocmd!
   autocmd! BufReadPost,BufEnter *.scss call s:try_change_to_project_path()
+	autocmd! BufWritePre *.scss Prettier
 augroup END

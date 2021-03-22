@@ -46,3 +46,6 @@
 [submodule "vimfiles/pack/plugins/start/ctrlp-matchfuzzy"]
 	path = vimfiles/pack/plugins/opt/ctrlp-matchfuzzy
 	url = https://github.com/mattn/ctrlp-matchfuzzy.git
+[submodule "vimfiles/pack/plugins/start/vim-prettier"]
+	path = vimfiles/pack/plugins/start/vim-prettier
+	url = https://github.com/prettier/vim-prettier.git

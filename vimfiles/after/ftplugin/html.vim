@@ -82,4 +82,5 @@ endfunction
 augroup html_groups
   autocmd!
   autocmd! BufReadPost,BufEnter *.html,*.htm call s:try_change_to_project_path()
+	autocmd! BufWritePre *.html,*.htm Prettier
 augroup END
