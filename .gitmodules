@@ -49,3 +49,9 @@
 [submodule "vimfiles/pack/plugins/start/vim-prettier"]
 	path = vimfiles/pack/plugins/start/vim-prettier
 	url = https://github.com/prettier/vim-prettier.git
+[submodule "vimfiles/pack/plugins/start/vim-startify"]
+	path = vimfiles/pack/plugins/start/vim-startify
+	url = https://github.com/mhinz/vim-startify.git
+[submodule "vimfiles/pack/plugins/start/CamelCaseMotion"]
+	path = vimfiles/pack/plugins/start/CamelCaseMotion
+	url = https://github.com/bkad/CamelCaseMotion.git
