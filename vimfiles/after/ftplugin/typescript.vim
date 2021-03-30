@@ -29,7 +29,6 @@ endfunction
 
 augroup format
   autocmd!
-"  autocmd! BufReadPost,BufEnter *.ts call s:try_change_to_project_path(expand('%:p:h'))
   autocmd! BufReadPost,BufEnter *.ts call s:try_change_to_project_path()
-	autocmd! BufWritePre *.ts call execute('LspDocumentFormatSync')
+	autocmd! BufWritePre *.ts Prettier
 augroup END

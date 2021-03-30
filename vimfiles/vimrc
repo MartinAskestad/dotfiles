@@ -1,4 +1,4 @@
-" ## Compatible
+"## Compatible
 if &compatible | set nocompatible | endif                                       " set no vi compatible in case of being sources with -u
 
 " ## Encoding
@@ -13,7 +13,7 @@ set noshowcmd noruler rulerformat= laststatus=2
 set title titlelen=100 titleold= titlestring=%f noicon showtabline=1
 set cursorline nocursorcolumn cursorlineopt=line colorcolumn=80
 set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
-set splitbelow splitright scrolloff=5
+set splitbelow splitright scrolloff=15
 set noequalalways nowinfixwidth nowinfixheight winminwidth=3 winheight=3 winminheight=3
 
 " ## Editing
@@ -73,7 +73,7 @@ let g:lightline = {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ], ]
   \   },
-  \ 'component_function': { 'gitbranch': 'FugitiveHead', }
+  \ 'component_function': { 'gitbranch': 'FugitiveStatusline', }
   \ } 
 
 
@@ -120,15 +120,32 @@ if has('win32')
 endif
 let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
 let g:ctrlp_by_filename = 1
+set wildignore+=*\\.git\\*,*\\node_modules\\*  " Windows ('noshellslash')
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
+let g:which_key_map['o'] = ['CtrlPBuffer', 'CtrlP Buffer']
+let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
+let g:ctrlp_switch_buffer = 'ETVH'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 " ctrlp-matchfuzzy
 let g:ctrlp_match_func = { 'match': 'ctrlp_matchfuzzy#matcher' }
+
+" startify
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ ]
 
 " ## Keyboard mappings
 vnoremap . :        " Period is easier to reach on swedish keyboard
 vnoremap : .
 nnoremap . :
 nnoremap : .
+
+tnoremap <esc> <C-w>N
 
 " Natural line jumping over wrapped lines
 nnoremap j gj
@@ -208,10 +225,28 @@ let g:which_key_map['l'] = {
   \ }
 
 " Misc keymappings
+let g:which_key_map['N'] = 'Turn off search highlight'
+nnoremap <leader>N :nohlsearch<CR>
 " let g:which_key_map['D'] = 'cd to current files dir'
 " let g:which_key_map['?'] = 'print current file path'
 " nnoremap <leader>D :cd %:p:h<CR>                                                " Set working directory to current files dir
 " nnoremap <leader>? :echo expand('%:p')<CR>                                      " Print current file path
+
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
+
+omap <silent> iw <Plug>CamelCaseMotion_iw
+xmap <silent> iw <Plug>CamelCaseMotion_iw
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
 
 augroup numbertoggle
 	autocmd!
@@ -220,8 +255,8 @@ augroup numbertoggle
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.ts,*.html,*.css,*.scss if &nu | setlocal rnu    | endif
 augroup END
 
-au WinLeave * set nocursorline nocursorcolumn
-au WinEnter * set cursorline cursorcolumn
+" au WinLeave * set nocursorline nocursorcolumn
+" au WinEnter * set cursorline cursorcolumn
 
 if has('unix')
   autocmd TextYankPost * call system('win32yank.exe -i --crlf', @")

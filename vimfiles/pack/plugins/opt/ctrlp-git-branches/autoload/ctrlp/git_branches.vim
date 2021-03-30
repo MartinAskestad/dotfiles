@@ -22,7 +22,7 @@ function! ctrlp#git_branches#init() abort
     echoerr "not a git repo"
     return []
   endif
-  let l:git_branches = system("git for-each-ref --format='%(refname:short)' refs/heads/")
+  let l:git_branches = system('git for-each-ref --format="%(refname:short)" refs/heads/')
   let l:branches = split(l:git_branches, "\n")
   let l:branches = l:branches + ['[Create new branch]']
   return l:branches
