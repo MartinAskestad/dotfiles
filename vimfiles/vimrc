@@ -12,7 +12,7 @@ set showmatch matchtime=3 noshowmode shortmess+=I cmdheight=1 cmdwinheight=10
 set noshowcmd noruler rulerformat= laststatus=2
 set title titlelen=100 titleold= titlestring=%f noicon showtabline=1
 set cursorline nocursorcolumn cursorlineopt=line colorcolumn=80
-set nolist listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↪\
+set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
 set splitbelow splitright scrolloff=5
 set noequalalways nowinfixwidth nowinfixheight winminwidth=3 winheight=3 winminheight=3
 
@@ -28,11 +28,11 @@ set clipboard=unnamed
 set wrapscan ignorecase smartcase incsearch hlsearch magic
 
 " ## Completion
-set complete& completeopt=menuone,noinsert infercase pumheight=10 noshowfulltag shortmess+=c
+set complete& completeopt=menuone,noinsert,noselect,preview infercase pumheight=10 noshowfulltag shortmess+=c
 
 " ## Command line
 set wildchar=9 wildmenu wildmode=list:full wildoptions= wildignorecase
-set wildignore=**/node_modules/**,**/dist/**
+set wildignore=**/node_modules/**,**/dist/**,**/.git/**
 
 " ## Performance
 set updatetime=300 timeout timeoutlen=500 ttimeout ttimeoutlen=50 ttyfast lazyredraw
@@ -43,7 +43,7 @@ syntax on                                                                       
 
 " ## Terminal
 if executable('pwsh')
-  set shell=pwsh
+  " set shell=pwsh
   set termwinsize=14x0
 endif
 
@@ -56,7 +56,7 @@ set switchbuf=usetab,newtab
 let g:autochdir_project = 1
 
 " ## Plugins
-colorscheme PaperColor
+colorscheme one
 
 " vim-which-key
 packadd vim-which-key
@@ -68,7 +68,7 @@ call which_key#register('<Space>', 'g:which_key_map')
 " Configure lightline
 packadd lightline.vim
 let g:lightline = {
-  \ 'colorscheme': 'PaperColor',
+  \ 'colorscheme': 'one',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ], ]
@@ -106,14 +106,20 @@ let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
 imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 
+" prettier
+nmap <Leader>py <Plug>(Prettier)
+
 " ctrlp
 packadd ctrlp.vim
 packadd ctrlp-lsp
 packadd ctrlp-matchfuzzy
 packadd ctrlp-npm-script
 packadd ctrlp-git-branches
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+if has('win32')
+  let g:ctrlp_user_command = 'dir %s /-n /s /b /a-d | findstr /r /v "node_modules \.git \.gz$"'
+endif
 let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
+let g:ctrlp_by_filename = 1
 
 " ctrlp-matchfuzzy
 let g:ctrlp_match_func = { 'match': 'ctrlp_matchfuzzy#matcher' }
@@ -164,7 +170,9 @@ let g:which_key_map['w'] = {
   \ 'b': ['<C-w>=', 'Balance window'],
   \ 'V': ['<C-w>|', 'Max window width'],
   \ 'B': ['<C-w>_', 'Max window height'],
+  \ 'm': 'Maximize window',
   \ }
+nnoremap <Leader>wm <C-w>\|<C-w>_
 
 " Tabs
 let g:which_key_map['t'] = {

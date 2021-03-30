@@ -46,6 +46,7 @@ vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
 nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
 nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
 nnoremap <leader>hr :call emmet#removeTag()<CR>
+nnoremap <leader>hu :call emmet#updateTag()<CR>
 
 " Semantics
 setlocal iskeyword=@,48-57,_,-,\"

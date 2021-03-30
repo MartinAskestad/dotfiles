@@ -12,6 +12,8 @@ if [ -d "$HOME/.local/bin" ]; then
   PATH="$HOME/.local/bin:$PATH"
 fi
 
+PATH="./node_modules/.bin:$PATH"
+
 # Default programs to run
 export EDITORT"vim"
 
