@@ -57,6 +57,9 @@ setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
 " Add emmet plugin
 packadd emmet-vim
 
+" Add matchit
+packadd matchit
+
 if !exists('g:autochdir_project')
   let g:autochdir_project = 0
 endif

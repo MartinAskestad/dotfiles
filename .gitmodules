@@ -61,3 +61,9 @@
 [submodule "vimfiles/pack/plugins/start/CamelCaseMotion"]
 	path = vimfiles/pack/plugins/start/CamelCaseMotion
 	url = https://github.com/bkad/CamelCaseMotion.git
+[submodule "vimfiles/pack/plugins/opt/quick-scope"]
+	path = vimfiles/pack/plugins/opt/quick-scope
+	url = https://github.com/unblevable/quick-scope.git
+[submodule "vimfiles/pack/plugins/opt/matchit"]
+	path = vimfiles/pack/plugins/opt/matchit
+	url = https://github.com/chrisbra/matchit.git
