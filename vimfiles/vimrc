@@ -41,12 +41,6 @@ set updatetime=300 timeout timeoutlen=500 ttimeout ttimeoutlen=50 ttyfast lazyre
 filetype plugin indent on                                                       " Add filetype, plugin, indent support
 syntax on                                                                       " Turn on syntax highlighting
 
-" ## Terminal
-if executable('pwsh')
-  " set shell=pwsh
-  set termwinsize=14x0
-endif
-
 set undofile undolevels=1000 undodir=$HOME/vimfiles/undodir noswapfile
 set path=.,**                                                                   " Relative to current file and everything under :pwd
 let mapleader = " "                                                             " Space as <leader>
@@ -76,13 +70,13 @@ let g:lightline = {
   \ 'component_function': { 'gitbranch': 'FugitiveStatusline', }
   \ } 
 
-
 " Configure vim-lsp
 set foldmethod=manual
 set foldexpr=lsp#ui#vim#folding#foldexpr()
 set foldtext=lsp#ui#vim#folding#foldtext()
 let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_float_cursor = 1
+" let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_highlights_enabled = 1
 
 " Configure asyncomplete
 let g:asyncomplete_auto_completeopt = 0
@@ -90,13 +84,16 @@ let g:asyncomplete_auto_completeopt = 0
 " vim-signify
 let g:signify_sign_show_count = 0
 let g:which_key_map['g'] = {
-  \ 'name': '+git',
+  \ 'name': 'Git',
   \ 'j': 'Next hunk',
   \ 'k': 'Previous hunk',
   \ 'd': [':SignifyHunkDiff', 'Diff hunk'],
   \ 'D': [':Gdiffsplit', 'Diff split'],
   \ 'w': [':Gwrite', 'Add file'],
   \ 'r': [':Gread', 'Restore file'],
+  \ 's': [':G', 'Git fugitive'],
+  \ 'h': [':diffget //3<CR>', 'Diff get 3'],
+  \ 'u': [':diffget //2<CR>', 'Diff get 2'],
   \ }
 nmap <leader>gj <plug>(signify-next-hunk)
 nmap <leader>gk <plug>(signify-prev-hunk)
@@ -124,6 +121,7 @@ set wildignore+=*\\.git\\*,*\\node_modules\\*  " Windows ('noshellslash')
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 let g:which_key_map['p'] = [':CtrlP', 'CtrlP']
 let g:which_key_map['o'] = ['CtrlPBuffer', 'CtrlP Buffer']
+let g:which_key_map['n'] = ['CtrlPNpmScripts', 'CtrlP NPM']
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:10,results:10'
 let g:ctrlp_switch_buffer = 'ETVH'
 let g:ctrlp_clear_cache_on_exit = 0
@@ -138,12 +136,19 @@ let g:startify_lists = [
       \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
       \ { 'type': 'commands',  'header': ['   Commands']       },
       \ ]
+let g:startify_custom_header = [
+      \ "    ___ ___  _______  _______ ",
+      \ "   |   |   ||_     _||   |   |",
+      \ "   |   |   | _|   |_ |       |",
+      \ "    \\_____/ |_______||__|_|__|",]
 
 " ## Keyboard mappings
 vnoremap . :        " Period is easier to reach on swedish keyboard
 vnoremap : .
 nnoremap . :
 nnoremap : .
+nnoremap , ;
+nnoremap ; ,
 
 tnoremap <esc> <C-w>N
 
@@ -162,7 +167,7 @@ inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
 
 " Buffers
 let g:which_key_map['b'] = {
-  \ 'name': '+buffers',
+  \ 'name': 'Buffers',
   \ 'h': [':bprev', 'Previous buffer'],
   \ 'l': [':bnext', 'Next buffer'],
   \ 'q': [':bdelete', 'Close buffer'],
@@ -171,7 +176,7 @@ let g:which_key_map['b'] = {
 
 " Windows
 let g:which_key_map['w'] = {
-  \ 'name': '+windows',
+  \ 'name': 'Windows',
   \ 'w': ['<C-w>w', 'Other window'],
   \ 'q': ['<C-w>c', 'Close window'],
   \ 's': ['<C-w>s', 'Split window below'],
@@ -193,7 +198,7 @@ nnoremap <Leader>wm <C-w>\|<C-w>_
 
 " Tabs
 let g:which_key_map['t'] = {
-  \ 'name': '+tabs',
+  \ 'name': 'Tabs',
   \ 't': [':tab sball', 'Open all buffers in tabs'],
   \ 'h': [':tabprevious', 'Previous tab'],
   \ 'j': [':tabmove -1', 'Move tab left'],
@@ -211,12 +216,13 @@ noremap <leader>to :tabnew<SPACE>
 let g:which_key_map['T'] = [ ':terminal', 'Terminal' ]
 
 let g:which_key_map['l'] = {
-  \ 'name': '+Language server',
-  \ 'd': [':tab LspDefinition', 'Definitions'],
+  \ 'name': 'Language server',
+  \ 'D': [':tab LspDefinition', 'Definitions'],
+  \ 'd': [':LspDefinition', 'Definitions'],
   \ 's': [':LspDocumentSymbolSearch', 'Document symbol search'],
   \ 'S': [':LspWorkspaceSymbolSearch', 'Workspace symbol search'],
   \ 'r': [':LspReferences', 'References'],
-  \ 'rn': [':LspRename',  'Rename'],
+  \ 'R': [':LspRename',  'Rename'],
   \ 'j': [':LspNextDiagnostic', 'Next diagnostic'],
   \ 'k': [':LspPreviousDiagnostic', 'Previous diagnostic'],
   \ ',': [':LspHover', 'Hover'],
@@ -227,6 +233,13 @@ let g:which_key_map['l'] = {
 " Misc keymappings
 let g:which_key_map['N'] = 'Turn off search highlight'
 nnoremap <leader>N :nohlsearch<CR>
+let g:which_key_map['m'] = {
+      \ 'name': 'Move lines',
+      \ 'k': [':m -2<CR>==', 'Move line up'],
+      \ 'j': [':m +1<CR>==', 'Move line down'],
+      \ }
+vnoremap <Leader>mj :m '>+1<CR>gv=gv
+vnoremap <Leader>mk :m '<-2<CR>gv=gv
 " let g:which_key_map['D'] = 'cd to current files dir'
 " let g:which_key_map['?'] = 'print current file path'
 " nnoremap <leader>D :cd %:p:h<CR>                                                " Set working directory to current files dir
@@ -269,3 +282,5 @@ if has('unix')
   map <expr> p Paste('p')
   map <expr> P Paste('P')
 endif
+
+runtime! macros/matchit
