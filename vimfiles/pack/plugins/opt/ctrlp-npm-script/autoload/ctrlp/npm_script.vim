@@ -40,6 +40,8 @@ function! ctrlp#npm_script#accept(mode, script) abort
   let l:json = join(readfile(l:package_json), "")
   let l:parsed_json = json_decode(l:json)
   let l:script = get(l:parsed_json['scripts'], a:script)
-  execute "terminal npm run " . l:script
+  if has('win32')
+    call term_start('cmd /C npm run ' . l:script)
+  endif
 endfunction
 
