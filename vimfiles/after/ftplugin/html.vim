@@ -2,8 +2,6 @@ setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab autoindent smartindent
 setlocal number relativenumber
 setlocal omnifunc=lsp#complete
 
-runtime macros/matchit
-
 if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 
 if !exists("g:which_key_map['h']")
