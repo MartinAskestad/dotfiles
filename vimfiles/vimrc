@@ -119,6 +119,23 @@ packadd emmet-vim
 " VIM-SURROUND {{{
 packadd vim-surround
 " }}}
+" ## CAMELCASEMOTION ## {{{
+packadd CamelCaseMotion
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap e
+sunmap b
+sunmap ge
+omap <silent> iw <Plug>CamelCaseMotion_iw
+xmap <silent> iw <Plug>CamelCaseMotion_iw
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+" }}}
 
 augroup config_settings
 	au!
