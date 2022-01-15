@@ -13,3 +13,6 @@
 [submodule "vimfiles/pack/colors/opt/4colors"]
 	path = vimfiles/pack/colors/opt/4colors
 	url = https://github.com/mihaifm/4colors.git
+[submodule "vimfiles/pack/plugins/opt/context.vim"]
+	path = vimfiles/pack/plugins/opt/context.vim
+	url = https://github.com/wellle/context.vim.git

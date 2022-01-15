@@ -154,6 +154,9 @@ xmap <silent> ie <Plug>CamelCaseMotion_ie
 omap <silent> ib <Plug>CamelCaseMotion_ib
 xmap <silent> ib <Plug>CamelCaseMotion_ib
 " }}}
+" ## CONTEXT.VIM {{{
+packadd context.vim
+" }}}
 
 set background=dark
 colorscheme 4colors
