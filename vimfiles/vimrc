@@ -116,6 +116,9 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,scss EmmetInstall
 packadd emmet-vim
 " }}}
+" VIM-SURROUND {{{
+packadd vim-surround
+" }}}
 
 augroup config_settings
 	au!
