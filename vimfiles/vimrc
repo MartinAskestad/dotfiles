@@ -86,6 +86,7 @@ set ruler
 set wildmenu
 set display+=lastline
 set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
+set t_Co=256
 augroup toggle_line_numbers
 	au!
 	autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
@@ -100,7 +101,7 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 	runtime! macros/matchit.vim
 endif
 " ## VIM-POLYGLOT ## {{{
-packadd vim-polyglot
+"packadd vim-polyglot
 " }}}
 " ## EMMET ## {{{
 augroup emmet_keyboard_bindings
