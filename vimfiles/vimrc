@@ -75,6 +75,12 @@ set switchbuf=useopen,usetab,newtab
 set winminwidth=6	" Set minimum window sizes
 set winheight=6
 set winminheight=6
+set nu rnu
+augroup toggle_line_numbers
+	au!
+	autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
+	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.* if &nu | setlocal rnu | endif
+augroup END
 " }}}
 
 " ## Plugins ##
