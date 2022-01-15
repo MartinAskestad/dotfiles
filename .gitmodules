@@ -7,3 +7,6 @@
 [submodule "vimfiles/pack/plugins/opt/CamelCaseMotion"]
 	path = vimfiles/pack/plugins/opt/CamelCaseMotion
 	url = https://github.com/bkad/CamelCaseMotion.git
+[submodule "vimfiles/pack/plugins/opt/vim-polyglot"]
+	path = vimfiles/pack/plugins/opt/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot.git

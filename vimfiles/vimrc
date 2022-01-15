@@ -99,6 +99,9 @@ augroup END
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
 	runtime! macros/matchit.vim
 endif
+" ## VIM-POLYGLOT ## {{{
+packadd vim-polyglot
+" }}}
 " ## EMMET ## {{{
 augroup emmet_keyboard_bindings
 	au!
