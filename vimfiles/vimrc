@@ -67,7 +67,10 @@ set shellquote=\"
 set shellxquote=
 " }}}
 
-" ## Behaviour ## {{{
+" ## Behavior ## {{{
+if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
+set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
+set fileencodings=utf-8,iso-8859-1
 set splitbelow	" New windows appear below
 set splitright	" New windows appear to the right
 set hidden	" Allow to switch buffers when not saved
@@ -76,14 +79,26 @@ set winminwidth=6	" Set minimum window sizes
 set winheight=6
 set winminheight=6
 set nu rnu
+set nrformats-=octal
+set incsearch
+set laststatus=2
+set ruler
+set wildmenu
+set display+=lastline
+set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
 augroup toggle_line_numbers
 	au!
 	autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
 	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.* if &nu | setlocal rnu | endif
 augroup END
+
 " }}}
 
 " ## Plugins ##
+" Load matchit.vim but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+	runtime! macros/matchit.vim
+endif
 " ## EMMET ## {{{
 augroup emmet_keyboard_bindings
 	au!
