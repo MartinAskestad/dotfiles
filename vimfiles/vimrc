@@ -43,7 +43,7 @@ nnoremap <Leader>vJ <C-w>:resize +5<CR>
 nnoremap <Leader>vK <C-w>:resize -5<CR>
 nnoremap <Leader>vL <C-w>5>
 nnoremap <Leader>vb <C-w>=
-nnoremap <Leader>vV <C-w>|
+nnoremap <Leader>vV <C-w>\|
 nnoremap <Leader>vB <C-w>_
 nnoremap <Leader>vm <C-w>\|<C-w>_
 
@@ -72,6 +72,43 @@ set splitbelow	" New windows appear below
 set splitright	" New windows appear to the right
 set hidden	" Allow to switch buffers when not saved
 set switchbuf=useopen,usetab,newtab
+set winminwidth=6	" Set minimum window sizes
+set winheight=6
+set winminheight=6
+" }}}
+
+" ## Plugins ##
+" ## EMMET ## {{{
+augroup emmet_keyboard_bindings
+	au!
+	" go to the next opening tag below current line
+	nnoremap  <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>:nohlsearch<CR>
+	" go  to the next end of closing tag or empty elenent below current line
+	nnoremap  <leader>hJ 0/$/;/\%([^>]*$\)\@=<CR>:nohlsearch<CR>
+	" go to the previous closing tag above the current line
+	nnoremap  <leader>hk $?^?;?>\%([^>]*$\)\@=<CR>:nohlsearch<CR>
+	" go to the previous opening tag above the current line
+	nnoremap  <leader>hK $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>:nohlsearch<CR>
+	" go to the next tag element closing
+	nnoremap  <leader>hl /><CR>:nohlsearch<CR>
+	" go to the previous tag element opening
+	nnoremap  <leader>hh ?<<CR>:nohlsearch<CR>
+	" Map emmet to leader keys
+	nnoremap <leader>he :call emmet#expandAbbr(3, "")<CR>
+	nnoremap <leader>hE :call emmet#expandAbbr(1, "")<CR>
+	vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
+	nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
+	nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
+	nnoremap <leader>hr :call emmet#removeTag()<CR>
+	nnoremap <leader>hu :call emmet#updateTag()<CR>
+	" Semantics
+	setlocal iskeyword=@,48-57,_,-,\"
+	" Navigation
+	setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
+augroup END
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,scss EmmetInstall
+packadd emmet-vim
 " }}}
 
 augroup config_settings
