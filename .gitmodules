@@ -10,3 +10,6 @@
 [submodule "vimfiles/pack/plugins/opt/vim-polyglot"]
 	path = vimfiles/pack/plugins/opt/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
+[submodule "vimfiles/pack/colors/opt/4colors"]
+	path = vimfiles/pack/colors/opt/4colors
+	url = https://github.com/mihaifm/4colors.git

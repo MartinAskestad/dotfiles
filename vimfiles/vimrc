@@ -155,6 +155,9 @@ omap <silent> ib <Plug>CamelCaseMotion_ib
 xmap <silent> ib <Plug>CamelCaseMotion_ib
 " }}}
 
+set background=dark
+colorscheme 4colors
+
 augroup config_settings
 	au!
 	autocmd FileType vim setlocal foldlevel=0 foldmethod=marker
