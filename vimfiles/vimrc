@@ -1,0 +1,63 @@
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
+" Keyboard bindings ## {{{
+" Switch : and . as well as , and ; for easier use on swedish keyboard
+let mapleader = " "
+nnoremap . :
+nnoremap : .
+nnoremap , ;
+nnoremap ; ,
+vnoremap . :
+vnoremap : .
+
+nnoremap <Leader>N :nohlsearch<CR>
+
+nnoremap <Leader>T :term<CR>
+
+" TABS
+nnoremap <Leader>th :tabprevious<CR>
+nnoremap <Leader>tj :tabmove -1<CR>
+nnoremap <Leader>tk :tabmove +1<CR>
+nnoremap <Leader>tl :tabnext<CR>
+nnoremap <Leader>tH :tabfirst<CR>
+nnoremap <Leader>tL :tablast<CR>
+nnoremap <Leader>tq :bdelete<CR>
+nnoremap <Leader>tQ :bdelete!<CR>
+nnoremap <Leader>to :tabnew<SPACE>
+nnoremap <Leader>tx :tabonly<CR>
+
+" Views/Windows
+nnoremap <Leader>vw <C-w>w
+nnoremap <Leader>vq <C-w>c
+nnoremap <Leader>vs <C-w>s
+nnoremap <Leader>vv <C-w>v
+nnoremap <Leader>vh <C-w>h
+nnoremap <Leader>vj <C-w>j
+nnoremap <Leader>vk <C-w>k
+nnoremap <Leader>vl <C-w>l
+nnoremap <Leader>vH <C-w>5<
+nnoremap <Leader>vJ <C-w>:resize +5<CR>
+nnoremap <Leader>vK <C-w>:resize -5<CR>
+nnoremap <Leader>vL <C-w>5>
+nnoremap <Leader>vb <C-w>=
+nnoremap <Leader>vV <C-w>|
+nnoremap <Leader>vB <C-w>_
+nnoremap <Leader>vm <C-w>\|<C-w>_
+
+" Move lines
+vnoremap <Leader>mj :m '>+1<CR>gv=gv
+vnoremap <Leader>mk :m '<-2<CR>gv=gv
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Useful insert mode bindings
+imap jj <ESC>
+inoremap <C-BS> <C-w>
+" }}}
+	
+
+augroup config_settings
+	au!
+	autocmd FileType vim setlocal foldlevel=0 foldmethod=marker
+augroup END
