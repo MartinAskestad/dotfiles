@@ -161,9 +161,18 @@ packadd context.vim
 packadd vim-css3-syntax
 packadd vim-coloresque
 " }}}
+" ## PRETTIER ## {{{
+packadd vim-prettier
+nmap <Leader>py <Plug>(Prettier)
+vmap <Leader>py <Plug>(PrettierPartial)
+augroup prettier_auto_save
+	au!
+	autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
+augroup END
+" }}}
 
 set background=dark
-"colorscheme 4colors
+colorscheme 4colors
 
 augroup config_settings
 	au!

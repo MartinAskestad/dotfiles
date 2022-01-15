@@ -22,3 +22,6 @@
 [submodule "vimfiles/pack/plugins/opt/vim-coloresque"]
 	path = vimfiles/pack/plugins/opt/vim-coloresque
 	url = https://github.com/gko/vim-coloresque.git
+[submodule "vimfiles/pack/plugins/opt/vim-prettier"]
+	path = vimfiles/pack/plugins/opt/vim-prettier
+	url = https://github.com/prettier/vim-prettier.git
