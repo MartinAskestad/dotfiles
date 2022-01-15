@@ -16,3 +16,9 @@
 [submodule "vimfiles/pack/plugins/opt/context.vim"]
 	path = vimfiles/pack/plugins/opt/context.vim
 	url = https://github.com/wellle/context.vim.git
+[submodule "vimfiles/pack/plugins/opt/vim-css3-syntax"]
+	path = vimfiles/pack/plugins/opt/vim-css3-syntax
+	url = https://github.com/hail2u/vim-css3-syntax.git
+[submodule "vimfiles/pack/plugins/opt/vim-coloresque"]
+	path = vimfiles/pack/plugins/opt/vim-coloresque
+	url = https://github.com/gko/vim-coloresque.git

@@ -157,9 +157,13 @@ xmap <silent> ib <Plug>CamelCaseMotion_ib
 " ## CONTEXT.VIM {{{
 packadd context.vim
 " }}}
+" ## CSS3 COLORESQUE ## {{{
+packadd vim-css3-syntax
+packadd vim-coloresque
+" }}}
 
 set background=dark
-colorscheme 4colors
+"colorscheme 4colors
 
 augroup config_settings
 	au!
