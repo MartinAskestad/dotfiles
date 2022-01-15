@@ -1,7 +1,7 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
-" Keyboard bindings ## {{{
+" ## Keyboard bindings ## {{{
 " Switch : and . as well as , and ; for easier use on swedish keyboard
 let mapleader = " "
 nnoremap . :
@@ -14,6 +14,8 @@ vnoremap : .
 nnoremap <Leader>N :nohlsearch<CR>
 
 nnoremap <Leader>T :term<CR>
+
+tnoremap <ESC> <C-w>N
 
 " TABS
 nnoremap <Leader>th :tabprevious<CR>
@@ -55,7 +57,22 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 imap jj <ESC>
 inoremap <C-BS> <C-w>
 " }}}
-	
+
+" ## Shell ## {{{
+set shell=pwsh.exe
+set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
+set shellpipe=|
+set shellredir=>
+set shellquote=\"
+set shellxquote=
+" }}}
+
+" ## Behaviour ## {{{
+set splitbelow	" New windows appear below
+set splitright	" New windows appear to the right
+set hidden	" Allow to switch buffers when not saved
+set switchbuf=useopen,usetab,newtab
+" }}}
 
 augroup config_settings
 	au!
