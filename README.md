@@ -21,6 +21,9 @@
 
 ```powershell
 dot config --local status.showUntrackedFiles no
+dot checkout
+dot submodule init
+dot submodule update
 ```
 
 To use the new repo,
