@@ -61,12 +61,12 @@ inoremap <C-BS> <C-w>
 " }}}
 
 " ## Shell ## {{{
-set shell=pwsh.exe
-set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
-set shellpipe=|
-set shellredir=>
-set shellquote=\"
-set shellxquote=
+" set shell=pwsh.exe
+" set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
+" set shellpipe=|
+" set shellredir=>
+" set shellquote=\"
+" set shellxquote=
 " }}}
 
 " ## Behavior ## {{{
@@ -287,7 +287,14 @@ inoremap <expr> <TAB> pumvisible() ? asyncomplete#close_popup() : "\<TAB>"
 inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
 autocmd! CompleteDone ff if pumvisible() == 0 | pclose | endif
 " }}}
-
+" ## QUICKPICK ## {{{
+packadd quickpick.vim
+packadd quickpick-lsp.vim
+packadd quickpick-buffers.vim
+nnoremap <Leader>lo :PLspDocumentSymbol<CR>
+nnoremap <Leader>lO :PLspWorkspaceSymbol<CR>
+nnoremap <Leader>o :PBuffers<CR>
+" }}}
 set background=dark
 colorscheme 4colors
 
