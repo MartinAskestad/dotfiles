@@ -112,7 +112,7 @@ set wildignore=**/node_modules/**,**/dist/**,**/.git/**
 " Appearance
 set nu
 set rnu
-set t_Co=256
+set termguicolors
 set background=dark
 set display=lastline,uhex
 set wrap
@@ -257,6 +257,35 @@ nnoremap <Leader>gb :<C-u>execute 'Gina blame :' . <SID>get_current_relpath()<CR
 nnoremap <Leader>gl :<C-u>execute 'Gina log :' . <SID>get_current_relpath()<CR>
 nnoremap <Leader>gd :<C-u>execute 'Gina diff : ' . <SID>get_current_relpath()<CR>
 nnoremap <Leader>gc :<C-u>execute 'Gina compare : ' . <SID>get_current_relpath()<CR>
+" }}}
+" ## VIM-LSP/ASYNCOMPLETE ## {{{
+packadd asyncomplete.vim
+packadd vim-lsp
+packadd asyncomplete-lsp.vim
+packadd asyncomplete-emmet.vim
+packadd vim-lsp-settings
+set foldmethod=expr
+              \ foldexpr=lsp#ui#vim#folding#foldexpr()
+              \ foldtext=lsp#ui#vim#folding#foldtext()
+imap <C-Space> <Plug>(asyncomplete_force_refresh)
+set complete&
+set completeopt=menuone,noinsert,preview,popup
+set infercase
+set pumheight=7
+set noshowfulltag
+set shortmess+=c
+
+let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_diagnostics_float_cursor=1
+let g_lsp_highlights_enabled=1
+let g:asyncompletet_auto_completeopt=0
+
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? asyncomplete#close_popup() : "\<TAB>"
+inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
+autocmd! CompleteDone ff if pumvisible() == 0 | pclose | endif
 " }}}
 
 set background=dark
