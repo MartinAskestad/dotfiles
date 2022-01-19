@@ -46,9 +46,6 @@
 [submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick-lsp.vim"]
 	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick-lsp.vim
 	url = https://github.com/prabirshrestha/quickpick-lsp.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick-files.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick-files.vim
-	url = https://github.com/clozed2u/quickpick-files.vim.git
 [submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick-buffers.vim"]
 	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick-buffers.vim
 	url = https://github.com/MartinAskestad/quickpick-buffers.vim.git
