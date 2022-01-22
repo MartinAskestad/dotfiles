@@ -319,6 +319,9 @@ nnoremap <Leader>lO :PLspWorkspaceSymbol<CR>
 nnoremap <Leader>o :PBuffers<CR>
 nnoremap <Leader>p :Pfd<CR>
 " }}}
+" ## RIPGREP ## {{{
+packadd vim-ripgrep
+  " }}}
 set background=light
 colorscheme morning
 
