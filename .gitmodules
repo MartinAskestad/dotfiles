@@ -22,30 +22,36 @@
 [submodule "vimfiles/pack/plugins/opt/vim-prettier"]
 	path = vimfiles/pack/plugins/opt/vim-prettier
 	url = https://github.com/prettier/vim-prettier.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\gina.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\gina.vim
+[submodule "vimfiles/pack/plugins/opt/gina.vim"]
+	path = vimfiles/pack/plugins/opt/gina.vim
 	url = https://github.com/lambdalisue/gina.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\vim-lsp"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\vim-lsp
+[submodule "vimfiles/pack/plugins/opt/vim-lsp"]
+	path = vimfiles/pack/plugins/opt/vim-lsp
 	url = https://github.com/prabirshrestha/vim-lsp.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\vim-lsp-settings"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\vim-lsp-settings
+[submodule "vimfiles/pack/plugins/opt/vim-lsp-settings"]
+	path = vimfiles/pack/plugins/opt/vim-lsp-settings
 	url = https://github.com/mattn/vim-lsp-settings.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\asyncomplete.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\asyncomplete.vim
+[submodule "vimfiles/pack/plugins/opt/asyncomplete.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete.vim
 	url = https://github.com/prabirshrestha/asyncomplete.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\asyncomplete-lsp.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\asyncomplete-lsp.vim
+[submodule "vimfiles/pack/plugins/opt/asyncomplete-lsp.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete-lsp.vim
 	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\asyncomplete-emmet.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\asyncomplete-emmet.vim
+[submodule "vimfiles/pack/plugins/opt/asyncomplete-emmet.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete-emmet.vim
 	url = https://github.com/prabirshrestha/asyncomplete-emmet.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick.vim
+[submodule "vimfiles/pack/plugins/opt/quickpick.vim"]
+	path = vimfiles/pack/plugins/opt/quickpick.vim
 	url = https://github.com/prabirshrestha/quickpick.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick-lsp.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick-lsp.vim
+[submodule "vimfiles/pack/plugins/opt/quickpick-lsp.vim"]
+	path = vimfiles/pack/plugins/opt/quickpick-lsp.vim
 	url = https://github.com/prabirshrestha/quickpick-lsp.vim.git
-[submodule ".\\vimfiles\\pack\\plugins\\opt\\quickpick-buffers.vim"]
-	path = .\\vimfiles\\pack\\plugins\\opt\\quickpick-buffers.vim
+[submodule "vimfiles/pack/plugins/opt/quickpick-buffers.vim"]
+	path = vimfiles/pack/plugins/opt/quickpick-buffers.vim
 	url = https://github.com/MartinAskestad/quickpick-buffers.vim.git
+[submodule "vimfiles/pack/plugins/opt/vim-ripgrep"]
+	path = vimfiles/pack/plugins/opt/vim-ripgrep
+	url = https://github.com/jremmen/vim-ripgrep.git
+[submodule "vimfiles/pack/plugins/opt/vim-rooter"]
+	path = vimfiles/pack/plugins/opt/vim-rooter
+	url = https://github.com/airblade/vim-rooter.git
