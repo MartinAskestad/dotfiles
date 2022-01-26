@@ -334,6 +334,51 @@ let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
 set background=light
 colorscheme morning
 
+" ## STATUSBAR ## {{{
+let g:mode_colors = {
+      \ 'n': 'StatusLineSection',
+      \ 'v': 'StatusLineSectionV',
+      \ '^V': 'StatusLineSectionV',
+      \ 'i': 'StatusLineSectionI',
+      \ 'c': 'StatusLineSectionC',
+      \ 'r': 'StatusLineSectionR',
+      \ }
+
+fun! StatusLineRenderer()
+  let hl = '%#' . get(g:mode_colors, tolower(mode()), g:mode_colors.n) . '#'
+  return hl . '%{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
+  return '%M'
+endfun
+
+fun! StatusLineFilename()
+  if (&ft ==? 'netrw') | return '*' | endif
+  return substitute(expand('%'), '^' . getcwd() . '/\?', '', 'i')
+endfun
+
+fun! <SID>StatusLineHighlights()
+  hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
+  hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
+  hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF
+  hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#000000
+  hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#000000
+  hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#000000
+  hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#000000
+endfun
+
+call <SID>StatusLineHighlights()
+
+if has('vim_starting')
+  let &statusline = ' %{StatusLineFilename())%= %l:%c'
+endif
+
+augroup vimrc
+  au!
+  au FocusGained,VimEnter,WinEnter,BufWinEnter * setlocal statusline=%!StatusLineRenderer()
+  au FocusLost,VimLeave,WinLeave,BufWinLeave * setlocal statusline&
+  au Colorscheme * call <SID>StatusLineHighlights()
+augroup END
+" }}}
+
 nnoremap <Leader>cd :cd %:p:h<CR>
 set langmenu=en_US
 let $LANG = 'en_US'
