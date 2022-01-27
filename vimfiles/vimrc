@@ -396,10 +396,27 @@ let g:mode_colors = {
       \ 'r': 'StatusLineSectionR',
       \ }
 
+let g:mode_labels= {
+      \ 'n': 'normal',
+      \ 'v': 'visual',
+      \ '^V': 'visual block',
+      \ 'i': 'insert',
+      \ 'c': 'cmd',
+      \ 'r': 'replace',
+      \ }
+
 fun! StatusLineRenderer()
+  let mode_label = get(g:mode_labels, tolower(mode()), g:mode_labels.n)
+  let git_branch_name = GitBranchName()
   let hl = '%#' . get(g:mode_colors, tolower(mode()), g:mode_colors.n) . '#'
-  return hl . GitBranchName() . ' %{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
-  return '%M'
+  return hl
+        \ . mode_label
+        \ . '%#StatusLine#% '
+        \ . ' ' . (len(git_branch_name) > 1 ? git_branch_name .'|' : '')
+        \ . '%f%m'
+        \ . '%#StatusLine#%='
+        \ . '%y %l:%c(%p%%)'
+  "return hl . GitBranchName() . ' %{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
 endfun
 
 fun! StatusLineFilename()
