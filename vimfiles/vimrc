@@ -332,7 +332,7 @@ let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
 
 " }}}
 set background=light
-colorscheme morning
+colorscheme base16-windows-95-light
 
 " ## GIT-BRANCH ## {{{
 function! GitBranchName() abort
