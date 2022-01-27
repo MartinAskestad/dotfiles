@@ -33,8 +33,8 @@ let s:gui07        = "000000"
 let g:base16_gui07 = "000000"
 let s:gui08        = "a80000"
 let g:base16_gui08 = "a80000"
-let s:gui09        = "fcfc54"
-let g:base16_gui09 = "fcfc54"
+let s:gui09        = "fc7e54"
+let g:base16_gui09 = "fc7e54"
 let s:gui0A        = "a85400"
 let g:base16_gui0A = "a85400"
 let s:gui0B        = "00a800"
@@ -247,7 +247,7 @@ call <sid>hi("Boolean",      s:gui09, "", s:cterm09, "", "", "")
 call <sid>hi("Character",    s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("Comment",      s:gui03, "", s:cterm03, "", "", "")
 call <sid>hi("Conditional",  s:gui0E, "", s:cterm0E, "", "", "")
-call <sid>hi("Constant",     s:gui09, "", s:cterm09, "", "", "")
+call <sid>hi("Constant",     s:gui09, "", s:cterm09, "", "bold", "")
 call <sid>hi("Define",       s:gui0E, "", s:cterm0E, "", "none", "")
 call <sid>hi("Delimiter",    s:gui05, "", s:cterm05, "", "", "")
 call <sid>hi("Float",        s:gui09, "", s:cterm09, "", "", "")
