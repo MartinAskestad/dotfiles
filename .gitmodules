@@ -55,3 +55,6 @@
 [submodule "vimfiles/pack/plugins/opt/vim-rooter"]
 	path = vimfiles/pack/plugins/opt/vim-rooter
 	url = https://github.com/airblade/vim-rooter.git
+[submodule "vimfiles/pack/plugins/opt/vim-test"]
+	path = vimfiles/pack/plugins/opt/vim-test
+	url = https://github.com/vim-test/vim-test.git

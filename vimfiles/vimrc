@@ -60,15 +60,6 @@ imap jj <ESC>
 inoremap <C-BS> <C-w>
 " }}}
 
-" ## Shell ## {{{
-set shell=pwsh.exe
-set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
-set shellpipe=|
-set shellredir=>
-set shellquote=\"
-set shellxquote=
-" }}}
-
 " ## Behavior ## {{{
 " Encoding
 if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
@@ -203,7 +194,7 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,scss EmmetInstall
 packadd emmet-vim
 " }}}
-" VIM-SURROUND {{{
+" ## VIM-SURROUND {{{
 packadd vim-surround
 " }}}
 " ## CAMELCASEMOTION ## {{{
@@ -331,6 +322,11 @@ packadd vim-rooter
 let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
 
 " }}}
+" ## VIM-TEST ## {{{
+  packadd vim-test
+  nmap <silent> <Leader>t :TestNearest
+  " }}}
+
 set background=light
 colorscheme base16-windows-95-light
 
