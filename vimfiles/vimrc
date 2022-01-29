@@ -230,34 +230,6 @@ augroup prettier_auto_save
 	autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
 augroup END
 " }}}
-" ## GINA ## {{{
-packadd gina.vim
-nnoremap <silent> <Leader>gs :Gina status<CR>
-nnoremap <Leader>gL :Gina log<CR>
-nnoremap <Leader>gls :Gina ls<CR>
-nnoremap <Leader>gT :<C-u>Gina tag<CR>
-nnoremap <Leader>gc :<C-u>Gina commit<CR>
-nnoremap <Leader>gx :<C-u>Gina stash save ""<Left>
-nnoremap <Leader>gz :<C-u>Gina stash show<CR>
-
-nnoremap <expr> <Leader>gp ':<C-u>Gina! push origin ' . gina#component#repo#branch()
-nnoremap <expr> <Leader>gP ':<C-u>Gina! pull origin ' . gina#component#repo#branch()
-nnoremap <expr> <Leader>gF ':<C-u>Gina! fetch origin --prune'
-nnoremap <Leader>gm :<C-u>Gina! merge --no-ff<Space>
-
-function! s:get_current_relpath() abort
-  let git = gina#core#get_or_fail()
-  let abspath = gina#core#repo#abspath(git, '')
-  let curpath = substitute(expand('%:p'), '\', '/', 'g')
-  let relpath = substitute(curpath, abspath, '', '')
-  return relpath
-endfunction
-
-nnoremap <Leader>gb :<C-u>execute 'Gina blame :' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gl :<C-u>execute 'Gina log :' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gd :<C-u>execute 'Gina diff : ' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gc :<C-u>execute 'Gina compare : ' . <SID>get_current_relpath()<CR>
-" }}}
 " ## VIM-LSP/ASYNCOMPLETE ## {{{
 packadd vim-lsp
 packadd asyncomplete.vim

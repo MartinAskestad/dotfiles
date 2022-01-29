@@ -22,9 +22,6 @@
 [submodule "vimfiles/pack/plugins/opt/vim-prettier"]
 	path = vimfiles/pack/plugins/opt/vim-prettier
 	url = https://github.com/prettier/vim-prettier.git
-[submodule "vimfiles/pack/plugins/opt/gina.vim"]
-	path = vimfiles/pack/plugins/opt/gina.vim
-	url = https://github.com/lambdalisue/gina.vim.git
 [submodule "vimfiles/pack/plugins/opt/vim-lsp"]
 	path = vimfiles/pack/plugins/opt/vim-lsp
 	url = https://github.com/prabirshrestha/vim-lsp.git
