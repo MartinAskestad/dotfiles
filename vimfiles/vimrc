@@ -13,6 +13,8 @@ vnoremap : .
 vnoremap ; ,
 vnoremap , ;
 
+vnoremap p pgvy " paste without overriding current register
+
 nnoremap <Leader>N :nohlsearch<CR>
 
 nnoremap <Leader>T :term<CR>
