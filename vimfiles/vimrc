@@ -13,6 +13,8 @@ vnoremap : .
 vnoremap ; ,
 vnoremap , ;
 
+vnoremap p pgvy " paste without overriding current register
+
 nnoremap <Leader>N :nohlsearch<CR>
 
 nnoremap <Leader>T :term<CR>
@@ -298,6 +300,12 @@ let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
   packadd vim-test
   nmap <silent> <Leader>t :TestNearest
   " }}}
+" ## VIM-TEXTOBJ ## {{{
+packadd vim-textobj-user
+packadd vim-textobj-css
+packadd vim-textobj-function
+packadd vim-textobj-function-javascript
+" }}}
 
 set background=light
 colorscheme base16-windows-95-light
@@ -413,6 +421,10 @@ augroup END
 " }}}
 
 nnoremap <Leader>cd :cd %:p:h<CR>
+
+set spell
+set spelllang=en_us,sv,cjk
+
 set langmenu=en_US
 let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
