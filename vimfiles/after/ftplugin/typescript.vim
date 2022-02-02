@@ -4,8 +4,6 @@ setlocal foldmethod=syntax foldlevel=10
 let test#javascript#ava#executable = 'node_modules\.bin\ava'
 let test#javascript#ava#file_pattern = '\.test\.ts'
 
-functio s:try_switch_file(extension)
-=======
 let s:save_cpo = &cpo
 set cpo&vim
 
