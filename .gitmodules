@@ -40,15 +40,6 @@
 [submodule "vimfiles/pack/plugins/opt/asyncomplete-emmet.vim"]
 	path = vimfiles/pack/plugins/opt/asyncomplete-emmet.vim
 	url = https://github.com/prabirshrestha/asyncomplete-emmet.vim.git
-[submodule "vimfiles/pack/plugins/opt/quickpick.vim"]
-	path = vimfiles/pack/plugins/opt/quickpick.vim
-	url = https://github.com/prabirshrestha/quickpick.vim.git
-[submodule "vimfiles/pack/plugins/opt/quickpick-lsp.vim"]
-	path = vimfiles/pack/plugins/opt/quickpick-lsp.vim
-	url = https://github.com/prabirshrestha/quickpick-lsp.vim.git
-[submodule "vimfiles/pack/plugins/opt/quickpick-buffers.vim"]
-	path = vimfiles/pack/plugins/opt/quickpick-buffers.vim
-	url = https://github.com/MartinAskestad/quickpick-buffers.vim.git
 [submodule "vimfiles/pack/plugins/opt/vim-ripgrep"]
 	path = vimfiles/pack/plugins/opt/vim-ripgrep
 	url = https://github.com/jremmen/vim-ripgrep.git
@@ -67,3 +58,6 @@
 [submodule ".\\vimfiles\\pack\\plugins\\opt\\vim-textobj-function-javascript"]
 	path = .\\vimfiles\\pack\\plugins\\opt\\vim-textobj-function-javascript
 	url = https://github.com/thinca/vim-textobj-function-javascript.git
+[submodule ".\\vimfiles\\pack\\plugins\\opt\\vim-clap"]
+	path = .\\vimfiles\\pack\\plugins\\opt\\vim-clap
+	url = https://github.com/liuchengxu/vim-clap.git
