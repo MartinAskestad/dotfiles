@@ -21,6 +21,8 @@ nnoremap <Leader>T :term<CR>
 
 tnoremap <ESC> <C-w>N
 
+nnoremap <F5> :so $MYVIMRC
+
 " TABS
 nnoremap <Leader>th :tabprevious<CR>
 nnoremap <Leader>tj :tabmove -1<CR>
@@ -105,7 +107,10 @@ set wildchar=9
 set wildmode=list:full
 set wildoptions=
 set wildignorecase
-set wildignore=**/node_modules/**,**/dist/**,**/.git/**
+set wildignore+=*/node_modules/*
+set wildignore+=*/.git/*
+set wildignore+=*/dist/*
+set path=.,**
 " Appearance
 set signcolumn=number
 set foldcolumn=1
@@ -310,7 +315,9 @@ packadd vim-textobj-function-javascript
 set background=light
 colorscheme base16-windows-95-light
 
-" ## GIT-BRANCH ## {{{
+" ## CUSTOM-SCRIPTS ## {{{
+
+" ## GIT-BRANCH ##
 function! GitBranchName() abort
   if get(b:, 'gitbranch_pwd', '') !=# expand('%:p:h') || !has_key(b:, 'gitbranch_path')
     call GitBranchDetect(expand('%:p:h'))
@@ -361,8 +368,7 @@ function! GitBranchDetect(path) abort
   endif
 endfunction
  
-" }}}
-" ## STATUSBAR ## {{{
+" ## STATUSBAR ## 
 let g:mode_colors = {
       \ 'n': 'StatusLineSection',
       \ 'v': 'StatusLineSectionV',

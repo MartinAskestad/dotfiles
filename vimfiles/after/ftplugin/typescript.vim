@@ -4,6 +4,8 @@ setlocal foldmethod=syntax foldlevel=10
 let test#javascript#ava#executable = 'node_modules\.bin\ava'
 let test#javascript#ava#file_pattern = '\.test\.ts'
 
+setlocal include=\\%(\\<require\\s*(\\s*\\\|\\<import\\>[^;\"']*\\)[\"']\\zs[^\"']*
+
 let s:save_cpo = &cpo
 set cpo&vim
 
