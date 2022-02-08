@@ -62,6 +62,8 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 " Useful insert mode bindings
 imap jj <ESC>
 inoremap <C-BS> <C-w>
+" Command mode bindings
+cnoremap <C-BS> <C-w>
 " }}}
 
 " ## Behavior ## {{{
@@ -70,11 +72,11 @@ if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
 set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
 set fileencodings=utf-8,iso-8859-1
 " Opening windows and buffer switching
-set splitbelow	" New windows appear below
-set splitright	" New windows appear to the right
-set hidden	" Allow to switch buffers when not saved
+set splitbelow  " New windows appear below
+set splitright  " New windows appear to the right
+set hidden  " Allow to switch buffers when not saved
 set switchbuf=useopen,usetab,newtab
-set winminwidth=6	" Set minimum window sizes
+set winminwidth=6 " Set minimum window sizes
 set winheight=6
 set winminheight=6
 set noequalalways
@@ -154,9 +156,9 @@ set undodir=$HOME/vimfiles/undodir
 set noswapfile
 
 augroup toggle_line_numbers
-	au!
-	autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
-	autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.* if &nu | setlocal rnu | endif
+  au!
+  autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
+  autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.* if &nu | setlocal rnu | endif
 augroup END
 
 " }}}
@@ -164,38 +166,38 @@ augroup END
 " ## Plugins ##
 " Load matchit.vim but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-	runtime! macros/matchit.vim
+  runtime! macros/matchit.vim
 endif
 " ## VIM-POLYGLOT ## {{{
 "packadd vim-polyglot
 " }}}
 " ## EMMET ## {{{
 augroup emmet_keyboard_bindings
-	au!
-	" go to the next opening tag below current line
-	nnoremap  <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>:nohlsearch<CR>
-	" go  to the next end of closing tag or empty elenent below current line
-	nnoremap  <leader>hJ 0/$/;/\%([^>]*$\)\@=<CR>:nohlsearch<CR>
-	" go to the previous closing tag above the current line
-	nnoremap  <leader>hk $?^?;?>\%([^>]*$\)\@=<CR>:nohlsearch<CR>
-	" go to the previous opening tag above the current line
-	nnoremap  <leader>hK $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>:nohlsearch<CR>
-	" go to the next tag element closing
-	nnoremap  <leader>hl /><CR>:nohlsearch<CR>
-	" go to the previous tag element opening
-	nnoremap  <leader>hh ?<<CR>:nohlsearch<CR>
-	" Map emmet to leader keys
-	nnoremap <leader>he :call emmet#expandAbbr(3, "")<CR>
-	nnoremap <leader>hE :call emmet#expandAbbr(1, "")<CR>
-	vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
-	nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
-	nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
-	nnoremap <leader>hr :call emmet#removeTag()<CR>
-	nnoremap <leader>hu :call emmet#updateTag()<CR>
-	" Semantics
-	setlocal iskeyword=@,48-57,_,-,\"
-	" Navigation
-	setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
+  au!
+  " go to the next opening tag below current line
+  nnoremap  <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>:nohlsearch<CR>
+  " go  to the next end of closing tag or empty elenent below current line
+  nnoremap  <leader>hJ 0/$/;/\%([^>]*$\)\@=<CR>:nohlsearch<CR>
+  " go to the previous closing tag above the current line
+  nnoremap  <leader>hk $?^?;?>\%([^>]*$\)\@=<CR>:nohlsearch<CR>
+  " go to the previous opening tag above the current line
+  nnoremap  <leader>hK $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>:nohlsearch<CR>
+  " go to the next tag element closing
+  nnoremap  <leader>hl /><CR>:nohlsearch<CR>
+  " go to the previous tag element opening
+  nnoremap  <leader>hh ?<<CR>:nohlsearch<CR>
+  " Map emmet to leader keys
+  nnoremap <leader>he :call emmet#expandAbbr(3, "")<CR>
+  nnoremap <leader>hE :call emmet#expandAbbr(1, "")<CR>
+  vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
+  nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
+  nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
+  nnoremap <leader>hr :call emmet#removeTag()<CR>
+  nnoremap <leader>hu :call emmet#updateTag()<CR>
+  " Semantics
+  setlocal iskeyword=@,48-57,_,-,\"
+  " Navigation
+  setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
 augroup END
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,scss EmmetInstall
@@ -233,8 +235,8 @@ packadd vim-prettier
 nmap <Leader>py <Plug>(Prettier)
 vmap <Leader>py <Plug>(PrettierPartial)
 augroup prettier_auto_save
-	au!
-	autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
+  au!
+  autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
 augroup END
 " }}}
 " ## VIM-LSP/ASYNCOMPLETE ## {{{
@@ -306,113 +308,77 @@ set background=light
 colorscheme mild
 
 " ## CUSTOM-SCRIPTS ## {{{
+packadd wildmenu-plus
+nnoremap <Leader>p :WildmenuFiles<CR>
+nnoremap <Leader>o :WildmenuBuffers<CR>
 
-" ## GIT-BRANCH ##
-function! GitBranchName() abort
-  if get(b:, 'gitbranch_pwd', '') !=# expand('%:p:h') || !has_key(b:, 'gitbranch_path')
-    call GitBranchDetect(expand('%:p:h'))
-  endif
-  if has_key(b:, 'gitbranch_path') && filereadable(b:gitbranch_path)
-    let branch = get(readfile(b:gitbranch_path), 0, '')
-    if branch =~# '^ref: '
-      return substitute(branch, '^ref: \%(refs/\%(heads/\|remotes/\|tags/\)\=\)\=', '', '')
-    elseif branch =~# '^\x\{20}'
-      return branch[:6]
-    endif
-  endif
-  return ''
+function! UpdateGitBranch() abort
+  let l:is_git_dir = trim(system('git rev-parse --is-inside-work-tree'))
+  let g:git_branch = get(
+        \ { 'true': trim(system('git rev-parse --abbrev-ref HEAD')) },
+        \ l:is_git_dir, '')
 endfunction
 
-function! GitBranchDir(path) abort
-  let path = a:path
-  let prev = ''
-  let git_modules = path =~# '/\.git/modules/'
-  while path !=# prev
-    let dir = path . '/.git'
-    let type = getftype(dir)
-    if type ==# 'dir' && isdirectory(dir . '/objects') && isdirectory(dir . '/refs') && getfsize(dir . '/HEAD') > 10
-      return dir
-    elseif type ==# 'file'
-      let reldir = get(readfile(dir), 0, '')
-      if reldir =~# '^gitdir: '
-        return simplify(path, '/', reldir[8:])
-      endif
-    elseif git_modules && isdirectory(dir . '/objects') && isdirectory(dir . '/refs') && getfsize(dir . '/HEAD') > 10
-      return path
-    endif
-    let prev = path
-    let path = fnamemodify(path, ':h')
-  endwhile
-  return ''
-endfunction
-
-function! GitBranchDetect(path) abort
-  unlet! b:gitbranch_path
-  let b:gitbranch_pwd = expand('%:p:h')
-  let dir = GitBranchDir(a:path)
-  if dir !=# ''
-    let path = dir . '/HEAD'
-    if filereadable(path)
-      let b:gitbranch_path = path
-    endif
-  endif
-endfunction
- 
+augroup vimrc_git
+  au!
+  "au VimEnter,DirChanged,ShellCmdPost * call UpdateGitBranch()
+augroup END
 " ## STATUSBAR ## 
 let g:mode_colors = {
       \ 'n': 'StatusLineSection',
       \ 'v': 'StatusLineSectionV',
-      \ '': 'StatusLineSectionV',
+      \ "\<C-v>": 'StatusLineSectionV',
       \ 'i': 'StatusLineSectionI',
       \ 'c': 'StatusLineSectionC',
       \ 'r': 'StatusLineSectionR',
       \ }
 
 let g:mode_labels= {
-      \'n': 'NORMAL', 'i': 'INSERT', 'R': 'REPLACE', 'v': 'VISUAL', 'V': 'V-LINE', "\<C-v>": 'V-BLOCK',
-      \     'c': 'COMMAND', 's': 'SELECT', 'S': 'S-LINE', "\<C-s>": 'S-BLOCK', 't': 'TERMINAL'
+      \ 'n': 'NORMAL',
+      \ 'i': 'INSERT',
+      \ 'R': 'REPLACE',
+      \ 'v': 'VISUAL',
+      \ 'V': 'V-LINE',
+      \ "\<C-v>": 'V-BLOCK',
+      \ 'c': 'COMMAND',
+      \ 's': 'SELECT',
+      \ 'S': 'S-LINE',
+      \ "\<C-s>": 'S-BLOCK',
+      \ 't': 'TERMINAL'
       \ }
 
 fun! StatusLineRenderer()
   let mode_label = get(g:mode_labels, tolower(mode()), g:mode_labels.n)
-  let git_branch_name = GitBranchName()
+  let git_branch_name = get(g:, 'git_branch', '')
   let hl = '%#' . get(g:mode_colors, tolower(mode()), g:mode_colors.n) . '#'
   return hl
         \ . ' ' . mode_label . ' '
         \ . '%#StatusLine#% '
-        \ . ' ' . (len(git_branch_name) > 1 ? git_branch_name .'|' : '')
+        \ . ' ' . (len(git_branch_name) > 1 ? git_branch_name .' |' : '')
         \ . '%t%m'
         \ . '%#StatusLine#%='
         \ . '%y %l:%c(%p%%)'
   "return hl . GitBranchName() . ' %{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
 endfun
 
-fun! StatusLineFilename()
-  if (&ft ==? 'netrw') | return '*' | endif
-  return substitute(expand('%'), '^' . getcwd() . '/\?', '', 'i')
-endfun
+  " hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
+  " hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
+  " hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF gui=bold
+  " hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#FFFFFF gui=bold
+  " hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#FFFFFF gui=bold
+  " hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#FFFFFF gui=bold
+  " hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#FFFFFF gui=bold
 
-fun! <SID>StatusLineHighlights()
-  hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
-  hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
-  hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF gui=bold
-  hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#FFFFFF gui=bold
-  hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#FFFFFF gui=bold
-  hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#FFFFFF gui=bold
-  hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#FFFFFF gui=bold
-endfun
-
-call <SID>StatusLineHighlights()
-
-if has('vim_starting')
-  let &statusline = ' %{StatusLineFilename())%= %l:%c'
-endif
-
-augroup vimrc
+augroup vimrc_statusline
   au!
   au FocusGained,VimEnter,WinEnter,BufWinEnter * setlocal statusline=%!StatusLineRenderer()
   au FocusLost,VimLeave,WinLeave,BufWinLeave * setlocal statusline&
-  au Colorscheme * call <SID>StatusLineHighlights()
+augroup END
+
+" TITLE
+augroup vimrc_titlestring
+  au!
+  "au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
 augroup END
 " }}}
 
@@ -428,4 +394,3 @@ source $VIMRUNTIME/menu.vim
 
 set noeb vb t_vb=
 au GUIEnter * set vb t_vb=
-" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker:
