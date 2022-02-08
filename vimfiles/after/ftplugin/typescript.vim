@@ -1,5 +1,5 @@
 setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab autoindent smartindent
-setlocal foldmethod=syntax foldlevel=10
+setlocal foldmethod=syntax foldlevel=3
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -43,8 +43,12 @@ command! SwitchToCSS  call s:try_switch_file('.css,.scss')
 nnoremap <buffer> <Leader>ah :SwitchToHTML<CR>
 nnoremap <buffer> <Leader>as :SwitchToCSS<CR>
 
-inoremap <buffer> " ""<Left>
-inoremap <buffer> ' ''<Left>
+inoremap <buffer><expr> " strpart(getline('.'), col('.') - 1, 1) == '"'
+      \ ? "\<Right>" : "\"\"\<Left>"
+inoremap <buffer><expr> ' strpart(getline('.'), col('.') - 1, 1) == "'"
+      \ ? "\<Right>" : "''\<Left>"
+inoremap <buffer><expr> ` strpart(getline('.'), col('.') - 1, 1) == "`"
+      \ ? "\<Right>" : "``\<Left>"
 inoremap <buffer> ( ()<Left>
 inoremap <buffer> [ []<Left>
 inoremap <buffer> { {}<Left>
