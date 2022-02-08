@@ -301,15 +301,9 @@ packadd vim-textobj-css
 packadd vim-textobj-function
 packadd vim-textobj-function-javascript
 " }}}
-" ## VIM-CLAP ## {{{
-packadd vim-clap
-
-nnoremap <Leader>p :Clap files<CR>
-nnoremap <Leader>o :Clap buffers<CR>
-" }}}
 
 set background=light
-colorscheme base16-windows-95-light
+colorscheme mild
 
 " ## CUSTOM-SCRIPTS ## {{{
 
