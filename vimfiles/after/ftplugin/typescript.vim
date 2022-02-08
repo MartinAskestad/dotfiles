@@ -1,6 +1,9 @@
 setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab autoindent smartindent
 setlocal foldmethod=syntax foldlevel=3
 
+let test#javascript#ava#executable = 'node_modules\.bin\ava'
+let test#javascript#ava#file_pattern = '\.test\.ts'
+
 let s:save_cpo = &cpo
 set cpo&vim
 

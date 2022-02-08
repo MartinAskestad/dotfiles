@@ -62,15 +62,6 @@ imap jj <ESC>
 inoremap <C-BS> <C-w>
 " }}}
 
-" ## Shell ## {{{
-" set shell=pwsh.exe
-" set shellcmdflag=-NoProfile\ -NoLogo\ -NonInteractive\ -Command
-" set shellpipe=|
-" set shellredir=>
-" set shellquote=\"
-" set shellxquote=
-" }}}
-
 " ## Behavior ## {{{
 " Encoding
 if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
@@ -205,7 +196,7 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,scss EmmetInstall
 packadd emmet-vim
 " }}}
-" VIM-SURROUND {{{
+" ## VIM-SURROUND {{{
 packadd vim-surround
 " }}}
 " ## CAMELCASEMOTION ## {{{
@@ -240,34 +231,6 @@ augroup prettier_auto_save
 	au!
 	autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
 augroup END
-" }}}
-" ## GINA ## {{{
-packadd gina.vim
-nnoremap <silent> <Leader>gs :Gina status<CR>
-nnoremap <Leader>gL :Gina log<CR>
-nnoremap <Leader>gls :Gina ls<CR>
-nnoremap <Leader>gT :<C-u>Gina tag<CR>
-nnoremap <Leader>gc :<C-u>Gina commit<CR>
-nnoremap <Leader>gx :<C-u>Gina stash save ""<Left>
-nnoremap <Leader>gz :<C-u>Gina stash show<CR>
-
-nnoremap <expr> <Leader>gp ':<C-u>Gina! push origin ' . gina#component#repo#branch()
-nnoremap <expr> <Leader>gP ':<C-u>Gina! pull origin ' . gina#component#repo#branch()
-nnoremap <expr> <Leader>gF ':<C-u>Gina! fetch origin --prune'
-nnoremap <Leader>gm :<C-u>Gina! merge --no-ff<Space>
-
-function! s:get_current_relpath() abort
-  let git = gina#core#get_or_fail()
-  let abspath = gina#core#repo#abspath(git, '')
-  let curpath = substitute(expand('%:p'), '\', '/', 'g')
-  let relpath = substitute(curpath, abspath, '', '')
-  return relpath
-endfunction
-
-nnoremap <Leader>gb :<C-u>execute 'Gina blame :' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gl :<C-u>execute 'Gina log :' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gd :<C-u>execute 'Gina diff : ' . <SID>get_current_relpath()<CR>
-nnoremap <Leader>gc :<C-u>execute 'Gina compare : ' . <SID>get_current_relpath()<CR>
 " }}}
 " ## VIM-LSP/ASYNCOMPLETE ## {{{
 packadd vim-lsp
@@ -323,6 +286,10 @@ packadd vim-rooter
 let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
 
 " }}}
+" ## VIM-TEST ## {{{
+  packadd vim-test
+  nmap <silent> <Leader>t :TestNearest
+  " }}}
 " ## VIM-TEXTOBJ ## {{{
 packadd vim-textobj-user
 packadd vim-textobj-css
@@ -395,19 +362,15 @@ endfunction
 let g:mode_colors = {
       \ 'n': 'StatusLineSection',
       \ 'v': 'StatusLineSectionV',
-      \ '^V': 'StatusLineSectionV',
+      \ '': 'StatusLineSectionV',
       \ 'i': 'StatusLineSectionI',
       \ 'c': 'StatusLineSectionC',
       \ 'r': 'StatusLineSectionR',
       \ }
 
 let g:mode_labels= {
-      \ 'n': 'normal',
-      \ 'v': 'visual',
-      \ '^V': 'visual block',
-      \ 'i': 'insert',
-      \ 'c': 'cmd',
-      \ 'r': 'replace',
+      \'n': 'NORMAL', 'i': 'INSERT', 'R': 'REPLACE', 'v': 'VISUAL', 'V': 'V-LINE', "\<C-v>": 'V-BLOCK',
+      \     'c': 'COMMAND', 's': 'SELECT', 'S': 'S-LINE', "\<C-s>": 'S-BLOCK', 't': 'TERMINAL'
       \ }
 
 fun! StatusLineRenderer()
@@ -415,10 +378,10 @@ fun! StatusLineRenderer()
   let git_branch_name = GitBranchName()
   let hl = '%#' . get(g:mode_colors, tolower(mode()), g:mode_colors.n) . '#'
   return hl
-        \ . mode_label
+        \ . ' ' . mode_label . ' '
         \ . '%#StatusLine#% '
         \ . ' ' . (len(git_branch_name) > 1 ? git_branch_name .'|' : '')
-        \ . '%f%m'
+        \ . '%t%m'
         \ . '%#StatusLine#%='
         \ . '%y %l:%c(%p%%)'
   "return hl . GitBranchName() . ' %{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
@@ -432,11 +395,11 @@ endfun
 fun! <SID>StatusLineHighlights()
   hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
   hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
-  hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF
-  hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#000000
-  hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#000000
-  hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#000000
-  hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#000000
+  hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF gui=bold
+  hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#FFFFFF gui=bold
+  hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#FFFFFF gui=bold
+  hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#FFFFFF gui=bold
+  hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#FFFFFF gui=bold
 endfun
 
 call <SID>StatusLineHighlights()
