@@ -7,3 +7,4 @@ set guioptions-=	" Remove left hand scrollbar
 set guioptions-=L
 set guioptions+=c	" Use console dialogs instead of popup dialogs for simple choices
 set guioptions+=k	" Keep the gui window size when adding/removing widgets
+set renderoptions=type:directx,level:0.75,gamma:1.25,contrast:0.25,geom:1,renmode:5,taamode:1
