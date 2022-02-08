@@ -279,16 +279,6 @@ nnoremap <Leader>lk :LspPreviousDiagnostic<CR>
 nnoremap <Leader>ly :<C-u>LspDocumentFormat<CR>
 vnoremap <Leader>lY :LspDocumentRangeFormat<CR>
 " }}}
-" ## QUICKPICK ## {{{
-packadd quickpick.vim
-packadd quickpick-lsp.vim
-packadd quickpick-buffers.vim
-packadd quickpick-fd.vim
-nnoremap <Leader>lo :PLspDocumentSymbol<CR>
-nnoremap <Leader>lO :PLspWorkspaceSymbol<CR>
-nnoremap <Leader>o :PBuffers<CR>
-nnoremap <Leader>p :Pfd<CR>
-" }}}
 " ## RIPGREP ## {{{
 packadd vim-ripgrep
 let g:rg_derive_root=1
@@ -310,6 +300,12 @@ packadd vim-textobj-user
 packadd vim-textobj-css
 packadd vim-textobj-function
 packadd vim-textobj-function-javascript
+" }}}
+" ## VIM-CLAP ## {{{
+packadd vim-clap
+
+nnoremap <Leader>p :Clap files<CR>
+nnoremap <Leader>o :Clap buffers<CR>
 " }}}
 
 set background=light
