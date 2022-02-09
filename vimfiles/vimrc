@@ -371,14 +371,25 @@ endfun
 
 augroup vimrc_statusline
   au!
-  au FocusGained,VimEnter,WinEnter,BufWinEnter * setlocal statusline=%!StatusLineRenderer()
-  au FocusLost,VimLeave,WinLeave,BufWinLeave * setlocal statusline&
+  "au FocusGained,VimEnter,WinEnter,BufWinEnter * setlocal statusline=%!StatusLineRenderer()
+  "au FocusLost,VimLeave,WinLeave,BufWinLeave * setlocal statusline&
 augroup END
 
 " TITLE
 augroup vimrc_titlestring
   au!
   "au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
+augroup END
+
+function! MaybeSaveSession()
+  if v:this_session != ''
+    execute 'mksession! ' . v:this_session
+  endif
+endfunction
+
+augroup vimrc_session
+  au!
+  au BufEnter,VimLeavePre * call MaybeSaveSession()
 augroup END
 " }}}
 
