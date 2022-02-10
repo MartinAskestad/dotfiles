@@ -45,5 +45,23 @@ function! Complete_files(arg, cmd, cur) abort
   return l:files
 endfunction
 
+let g:wildmenu_session_dir = get(g:, 'wildmenu_session_dir', $HOME . '\vimfiles\sessions')
+command! WildmenuSessions call s:load_sessions()
+
+function! s:load_sessions() abort
+  let l:session = input('sessions: ', '', 'customlist,Complete_sessions')
+  if l:session != ''
+    let l:session = g:wildmenu_session_dir . '/' . l:session
+    execute "source " . l:session
+  endif
+endfunction
+
+function! Complete_sessions(arg, cmd, cur) abort
+  let l:arg = a:arg == '' ? '.' : a:arg
+  let l:fd_cmd = 'fd ' . l:arg . ' ' . g:wildmenu_session_dir
+  let l:session_files = map(systemlist(l:fd_cmd),
+        \ "fnamemodify(v:val, ':t')")
+ return l:session_files
+endfunction
 
 " vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker

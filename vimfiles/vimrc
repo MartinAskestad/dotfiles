@@ -14,6 +14,7 @@ vnoremap ; ,
 vnoremap , ;
 
 vnoremap p pgvy " paste without overriding current register
+nnoremap x "_x
 
 nnoremap <Leader>N :nohlsearch<CR>
 
@@ -274,6 +275,7 @@ nnoremap <Leader>l. :LspCodeAction<CR>
 nnoremap <Leader>l, :LspHover<CR>
 nnoremap <Leader>lr :LspRename<CR>
 nnoremap <Leader>ld :LspDefinition<CR>
+nnoremap <Leader>lo :LspDocumentSymbol<CR>
 nnoremap <Leader>ls :LspDocumentSymbolSearch<CR>
 nnoremap <Leader>lS :LspWorkspaceSymbolSearch<CR>
 nnoremap <Leader>lj :LspNextDiagnostic<CR>
@@ -308,9 +310,13 @@ set background=light
 colorscheme mild
 
 " ## CUSTOM-SCRIPTS ## {{{
+" find files and buffers
 packadd wildmenu-plus
 nnoremap <Leader>p :WildmenuFiles<CR>
 nnoremap <Leader>o :WildmenuBuffers<CR>
+nnoremap <Leader>- :WildmenuSessions<CR>
+
+" statusbar
 
 function! UpdateGitBranch() abort
   let l:is_git_dir = trim(system('git rev-parse --is-inside-work-tree'))
@@ -321,9 +327,9 @@ endfunction
 
 augroup vimrc_git
   au!
-  "au VimEnter,DirChanged,ShellCmdPost * call UpdateGitBranch()
+  au VimEnter,DirChanged,ShellCmdPost * call UpdateGitBranch()
 augroup END
-" ## STATUSBAR ## 
+
 let g:mode_colors = {
       \ 'n': 'StatusLineSection',
       \ 'v': 'StatusLineSectionV',
@@ -347,19 +353,31 @@ let g:mode_labels= {
       \ 't': 'TERMINAL'
       \ }
 
-fun! StatusLineRenderer()
-  let mode_label = get(g:mode_labels, tolower(mode()), g:mode_labels.n)
-  let git_branch_name = get(g:, 'git_branch', '')
-  let hl = '%#' . get(g:mode_colors, tolower(mode()), g:mode_colors.n) . '#'
-  return hl
-        \ . ' ' . mode_label . ' '
-        \ . '%#StatusLine#% '
-        \ . ' ' . (len(git_branch_name) > 1 ? git_branch_name .' |' : '')
-        \ . '%t%m'
-        \ . '%#StatusLine#%='
-        \ . '%y %l:%c(%p%%)'
-  "return hl . GitBranchName() . ' %{StatusLineFilename()}%m%y %#StatusLine#%=' . hl . ' %l:%c %p'
-endfun
+function! SetStatuslineColor() abort
+  if mode() =~# '\v(n|no)'
+    execute 'hi! StatusLine guibg=#503090 guifg=#FFFFFF'
+  elseif mode() =~# '\v(v|V)' || get(g:mode_labels, mode(), '') ==# 'V-BLOCK'
+    execute 'hi! StatusLine guibg=#E930B0 guifg=#FFFFFF'
+  elseif mode() =~# 'i'
+    execute 'hi! StatusLine guibg=#B0B0FF guifg=#FFFFFF'
+  else
+    execute 'hi! StatusLine guibg=#000000 guifg=#FFFFFF'
+  endif
+  return ''
+endfunction
+
+set laststatus=2
+set statusline=
+"set statusline+=%{SetStatuslineColor()}
+set statusline+=%0*\ %{get(g:mode_labels,mode(),'')}
+set statusline+=\ %{g:git_branch}
+set statusline+=\ %*%t
+set statusline+=%=
+set statusline+=%y
+set statusline+=\ %{(&fenc!=''?&fenc:&enc)}\[%{&ff}]
+set statusline+=\ %3p%%\ \ %l:\ %3c\
+
+hi User1 guibg=#503090 guifg=#FFFFFF
 
   " hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
   " hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
@@ -369,18 +387,13 @@ endfun
   " hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#FFFFFF gui=bold
   " hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#FFFFFF gui=bold
 
-augroup vimrc_statusline
-  au!
-  "au FocusGained,VimEnter,WinEnter,BufWinEnter * setlocal statusline=%!StatusLineRenderer()
-  "au FocusLost,VimLeave,WinLeave,BufWinLeave * setlocal statusline&
-augroup END
-
-" TITLE
+" title
 augroup vimrc_titlestring
   au!
-  "au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
+  au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
 augroup END
 
+" session
 function! MaybeSaveSession()
   if v:this_session != ''
     execute 'mksession! ' . v:this_session
