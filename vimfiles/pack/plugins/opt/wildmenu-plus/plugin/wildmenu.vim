@@ -11,7 +11,7 @@ command! WildmenuFiles call s:find_file()
 
 function! s:buffer_switch() abort
   let l:search = input('buffers: ', '', 'customlist,Complete_buffers')
-  if l:search == ''
+  if empty(l:search)
     return
   endif
   let l:bnr = bufwinnr(l:search)
@@ -34,7 +34,7 @@ endfunction
 
 function! s:find_file() abort
   let l:file = input('files: ', '', 'customlist,Complete_files')
-  if l:file != ''
+  if !empty(l:file)
     execute 'e ' . l:file
   endif
   endfunction
@@ -50,7 +50,7 @@ command! WildmenuSessions call s:load_sessions()
 
 function! s:load_sessions() abort
   let l:session = input('sessions: ', '', 'customlist,Complete_sessions')
-  if l:session != ''
+  if !empty(l:session)
     let l:session = g:wildmenu_session_dir . '/' . l:session
     execute "source " . l:session
   endif
