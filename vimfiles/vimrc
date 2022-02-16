@@ -317,6 +317,9 @@ nnoremap <Leader>p :WildmenuFiles<CR>
 nnoremap <Leader>o :WildmenuBuffers<CR>
 nnoremap <Leader>- :WildmenuSessions<CR>
 
+command! CurrentBufferOnly execute '%bdelete|edit#|bdelete#'
+nnoremap <leader>bo :CurrentBufferOnly<CR>
+
 " statusbar
 
 function! UpdateGitBranch() abort
@@ -405,6 +408,18 @@ augroup vimrc_session
   au!
   au BufEnter,VimLeavePre * call MaybeSaveSession()
 augroup END
+
+" font size
+nnoremap <Leader>xp :let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ 'g')<CR>
+nnoremap <Leader>xm :let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ 'g')<CR>
 " }}}
 
 nnoremap <Leader>cd :cd %:p:h<CR>
