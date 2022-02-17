@@ -1,9 +1,16 @@
 unlet! skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
+if has('vim_starting')
+  " Encoding, changing encoding at runtime is undefined behavior
+  if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
+  set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
+  set fileencodings=utf-8,iso-8859-1
+endif
+
 " ## Keyboard bindings ## {{{
-" Switch : and . as well as , and ; for easier use on swedish keyboard
 let mapleader = " "
+" Swtich : and . as well as , and ; for easier use on Swedish keyboard
 nnoremap . :
 nnoremap : .
 nnoremap , ;
@@ -15,80 +22,83 @@ vnoremap , ;
 
 vnoremap p pgvy " paste without overriding current register
 nnoremap x "_x
-
 nnoremap <Leader>N :nohlsearch<CR>
-
-nnoremap <Leader>T :term<CR>
-
 tnoremap <ESC> <C-w>N
-
-nnoremap <F5> :so $MYVIMRC
-
-" TABS
-nnoremap <Leader>th :tabprevious<CR>
-nnoremap <Leader>tj :tabmove -1<CR>
-nnoremap <Leader>tk :tabmove +1<CR>
-nnoremap <Leader>tl :tabnext<CR>
-nnoremap <Leader>tH :tabfirst<CR>
-nnoremap <Leader>tL :tablast<CR>
-nnoremap <Leader>tq :bdelete<CR>
-nnoremap <Leader>tQ :bdelete!<CR>
-nnoremap <Leader>to :tabnew<SPACE>
-nnoremap <Leader>tx :tabonly<CR>
+nnoremap <F5> :so $MYVIMRC<CR>
 
 " Views/Windows
-nnoremap <Leader>vw <C-w>w
-nnoremap <Leader>vq <C-w>c
-nnoremap <Leader>vs <C-w>s
-nnoremap <Leader>vv <C-w>v
-nnoremap <Leader>vh <C-w>h
-nnoremap <Leader>vj <C-w>j
-nnoremap <Leader>vk <C-w>k
-nnoremap <Leader>vl <C-w>l
-nnoremap <Leader>vH <C-w>5<
-nnoremap <Leader>vJ <C-w>:resize +5<CR>
-nnoremap <Leader>vK <C-w>:resize -5<CR>
-nnoremap <Leader>vL <C-w>5>
-nnoremap <Leader>vb <C-w>=
-nnoremap <Leader>vV <C-w>\|
-nnoremap <Leader>vB <C-w>_
-nnoremap <Leader>vm <C-w>\|<C-w>_
+nnoremap <Leader>vw <C-w>w    " Switch window
+nnoremap <Leader>vq <C-w>c    " Close window
+nnoremap <Leader>vs <C-w>s    " Split window
+nnoremap <Leader>vv <C-w>v    " Vertical split window
+nnoremap <Leader>vh <C-w>h    " Switch window left
+nnoremap <Leader>vj <C-w>j    " Switch window down
+nnoremap <Leader>vk <C-w>k    " Switch window up
+nnoremap <Leader>vl <C-w>l    " Switch window right
+nnoremap <Leader>vH <C-w>5<   " Change window size
+nnoremap <Leader>vJ <C-w>:resize +5<CR>   " Change window size
+nnoremap <Leader>vK <C-w>:resize -5<CR>   " Change window size
+nnoremap <Leader>vL <C-w>5>   " Change window size
+nnoremap <Leader>vb <C-w>=    " Balance windows
+nnoremap <Leader>vV <C-w>\|   " Make window width max
+nnoremap <Leader>vB <C-w>_    " Make window height max
+nnoremap <Leader>vm <C-w>\|<C-w>_ " Maximize windows both directions
 
 " Move lines
-vnoremap <Leader>mj :m '>+1<CR>gv=gv
-vnoremap <Leader>mk :m '<-2<CR>gv=gv
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+vnoremap <Leader>mj :m '>+1<CR>gv=gv  " Move marked lines down
+vnoremap <Leader>mk :m '<-2<CR>gv=gv  " Move marked lines up
+vnoremap <A-j> :m '>+1<CR>gv=gv       " Move marked lines down
+vnoremap <A-k> :m '<-2<CR>gv=gv       " Move marked lines up
 
-" Useful insert mode bindings
+" Misc insert mode bindings
 imap jj <ESC>
 inoremap <C-BS> <C-w>
+
 " Command mode bindings
 cnoremap <C-BS> <C-w>
-" }}}
+" font size
+nnoremap <Leader>xp :let &guifont = substitute(
+      \ &guifont,
+      \ ':h\zs\d\+',
+      \ '\=eval(submatch(0)+1)',
+      \ 'g')<CR>
+nnoremap <Leader>xm :let &guifont = substitute(
+      \ &guifont,
+      \ ':h\zs\d\+',
+      \ '\=eval(submatch(0)-1)',
+      \ 'g')<CR>
+nnoremap <Leader>cd :cd %:p:h<CR>
+nnoremap <leader>bo :CurrentBufferOnly<CR>
 
+inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? asyncomplete#close_popup() : "\<TAB>"
+autocmd! CompleteDone ff if pumvisible() == 0 | pclose | endif
+
+nnoremap <Leader>l. :LspCodeAction<CR>
+nnoremap <Leader>l, :LspHover<CR>
+nnoremap <Leader>lr :LspRename<CR>
+nnoremap <Leader>ld :LspDefinition<CR>
+nnoremap <Leader>lo :LspDocumentSymbol<CR>
+nnoremap <Leader>ls :LspDocumentSymbolSearch<CR>
+nnoremap <Leader>lS :LspWorkspaceSymbolSearch<CR>
+nnoremap <Leader>lj :LspNextDiagnostic<CR>
+nnoremap <Leader>lk :LspPreviousDiagnostic<CR>
+nnoremap <Leader>ly :<C-u>LspDocumentFormat<CR>
+vnoremap <Leader>lY :LspDocumentRangeFormat<CR>
+" }}}
 " ## Behavior ## {{{
-" Encoding
-if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
-set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
-set fileencodings=utf-8,iso-8859-1
 " Opening windows and buffer switching
-set splitbelow  " New windows appear below
-set splitright  " New windows appear to the right
-set hidden  " Allow to switch buffers when not saved
-set switchbuf=useopen,usetab,newtab
-set winminwidth=6 " Set minimum window sizes
-set winheight=6
-set winminheight=6
+set splitbelow splitright " New windows appear below and to the right
+set switchbuf=useopen,usetab,vsplit,split
+set winminwidth=6 winheight=6 winminheight=6
 set noequalalways
-set nowinfixwidth
-set nowinfixheight
+set nowinfixwidth nowinfixheight
 " Editing
 set textwidth=80
 set formatoptions=tc    " Wrap text using textwidth
-set formatoptions+=r    " Continue comments when enter in insert
-set formatoptions+=q    " Enable formating of comments
-set formatoptions+=n    " Detect lists for formating
+set formatoptions+=r    " Continue comments when enter in insertmode
+set formatoptions+=q    " Enable format of comments
+set formatoptions+=n    " Detect lists for formatting
 set formatoptions+=b    " Auto wrap in insert mode and no wrapping of old lines
 set nojoinspaces
 set autoread
@@ -115,12 +125,10 @@ set wildignore+=*/.git/*
 set wildignore+=*/dist/*
 set path=.,**
 " Appearance
-set signcolumn=number
+set signcolumn=yes
 set foldcolumn=1
-set nu
-set rnu
+set nu rnu
 set termguicolors
-set background=dark
 set display=lastline,uhex
 set wrap
 set wrapmargin=0
@@ -133,296 +141,37 @@ set cmdwinheight=10
 set noshowcmd
 set rulerformat=
 set laststatus=2
-set title
-set titlelen=100
-set titleold=
-set titlestring=%f
 set noicon
 set showtabline=1
-set cursorline
-set nocursorcolumn
-set cursorlineopt=line
+set cursorline nocursorcolumn cursorlineopt=line
 set colorcolumn=80
 set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
 " Performance
-set updatetime=300
-set lazyredraw
+set updatetime=300 lazyredraw
 " Diff
+set diffopt=
 set diffopt+=algorithm:patience
 set diffopt+=indent-heuristic
 
-set undofile
-set undolevels=1000
-set undodir=$HOME/vimfiles/undodir
+set undofile undolevels=1000 undodir=$HOME\vimfiles\undodir
 set noswapfile
-
-augroup toggle_line_numbers
-  au!
-  autocmd BufLeave,FocusLost,InsertEnter,WinLeave *.* if &nu | setlocal nornu | endif
-  autocmd BufEnter,FocusGained,InsertLeave,WinEnter *.* if &nu | setlocal rnu | endif
-augroup END
-
 " }}}
-
-" ## Plugins ##
-" Load matchit.vim but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
-" ## VIM-POLYGLOT ## {{{
-"packadd vim-polyglot
-" }}}
-" ## EMMET ## {{{
-augroup emmet_keyboard_bindings
-  au!
-  " go to the next opening tag below current line
-  nnoremap  <leader>hj 0/$/;/<[a-zA-Z][a-zA-Z0-9]*\%(\_[^>]*>\)\@=<CR>:nohlsearch<CR>
-  " go  to the next end of closing tag or empty elenent below current line
-  nnoremap  <leader>hJ 0/$/;/\%([^>]*$\)\@=<CR>:nohlsearch<CR>
-  " go to the previous closing tag above the current line
-  nnoremap  <leader>hk $?^?;?>\%([^>]*$\)\@=<CR>:nohlsearch<CR>
-  " go to the previous opening tag above the current line
-  nnoremap  <leader>hK $?^?;?^[^z]*\zs<\%([a-zA-Z][a-zA-Z0-9]*\_[^>]*>\)\@=<CR>:nohlsearch<CR>
-  " go to the next tag element closing
-  nnoremap  <leader>hl /><CR>:nohlsearch<CR>
-  " go to the previous tag element opening
-  nnoremap  <leader>hh ?<<CR>:nohlsearch<CR>
-  " Map emmet to leader keys
-  nnoremap <leader>he :call emmet#expandAbbr(3, "")<CR>
-  nnoremap <leader>hE :call emmet#expandAbbr(1, "")<CR>
-  vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
-  nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
-  nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
-  nnoremap <leader>hr :call emmet#removeTag()<CR>
-  nnoremap <leader>hu :call emmet#updateTag()<CR>
-  " Semantics
-  setlocal iskeyword=@,48-57,_,-,\"
-  " Navigation
-  setlocal suffixesadd+=.html,.css,.txt,.js,.ts,.json
-augroup END
-let g:user_emmet_install_global = 0
-autocmd FileType html,css,scss EmmetInstall
-packadd emmet-vim
-" }}}
-" ## VIM-SURROUND {{{
-packadd vim-surround
-" }}}
-" ## CAMELCASEMOTION ## {{{
-packadd CamelCaseMotion
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> e <Plug>CamelCaseMotion_e
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> ge <Plug>CamelCaseMotion_ge
-sunmap w
-sunmap e
-sunmap b
-sunmap ge
-omap <silent> iw <Plug>CamelCaseMotion_iw
-xmap <silent> iw <Plug>CamelCaseMotion_iw
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
-omap <silent> ib <Plug>CamelCaseMotion_ib
-xmap <silent> ib <Plug>CamelCaseMotion_ib
-" }}}
-" ## CONTEXT.VIM {{{
-packadd context.vim
-" }}}
-" ## CSS3 COLORESQUE ## {{{
-packadd vim-css3-syntax
-packadd vim-coloresque
-" }}}
-" ## PRETTIER ## {{{
-packadd vim-prettier
-nmap <Leader>py <Plug>(Prettier)
-vmap <Leader>py <Plug>(PrettierPartial)
-augroup prettier_auto_save
-  au!
-  autocmd! BufWritePre *.html,*.htm,*.ts,*.css,*.scss Prettier
-augroup END
-" }}}
-" ## VIM-LSP/ASYNCOMPLETE ## {{{
-packadd vim-lsp
-packadd asyncomplete.vim
-packadd asyncomplete-lsp.vim
-packadd asyncomplete-emmet.vim
-packadd vim-lsp-settings
-set foldmethod=expr
-              \ foldexpr=lsp#ui#vim#folding#foldexpr()
-              \ foldtext=lsp#ui#vim#folding#foldtext()
-set foldlevel=5
-imap <C-Space> <Plug>(asyncomplete_force_refresh)
-set complete&
-set completeopt=menuone,noinsert,preview
-set infercase
-set pumheight=7
-set noshowfulltag
-" set shortmess+=c
-
-let g:lsp_diagnostics_echo_cursor=1
-let g:lsp_diagnostics_float_cursor=1
-let g_lsp_highlights_enabled=1
-let g:asyncompletet_auto_completeopt=0
-let g:lsp_preview_float=1
-let g:lsp_documentation_float_docked=1
-
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
-inoremap <expr> <TAB> pumvisible() ? asyncomplete#close_popup() : "\<TAB>"
-inoremap <expr> <Left> pumvisible() ? asyncomplete#cancel_popup() : "\<Left>"
-autocmd! CompleteDone ff if pumvisible() == 0 | pclose | endif
-
-nnoremap <Leader>l. :LspCodeAction<CR>
-nnoremap <Leader>l, :LspHover<CR>
-nnoremap <Leader>lr :LspRename<CR>
-nnoremap <Leader>ld :LspDefinition<CR>
-nnoremap <Leader>lo :LspDocumentSymbol<CR>
-nnoremap <Leader>ls :LspDocumentSymbolSearch<CR>
-nnoremap <Leader>lS :LspWorkspaceSymbolSearch<CR>
-nnoremap <Leader>lj :LspNextDiagnostic<CR>
-nnoremap <Leader>lk :LspPreviousDiagnostic<CR>
-nnoremap <Leader>ly :<C-u>LspDocumentFormat<CR>
-vnoremap <Leader>lY :LspDocumentRangeFormat<CR>
-" }}}
-" ## RIPGREP ## {{{
-packadd vim-ripgrep
-let g:rg_derive_root=1
-let g:rg_root_types=['.git', 'node_modules','Cargo.toml','package.json']
-let g:rg_highlight=1
-nnoremap <Leader>f :Rg<Space>
-  " }}}
-" ## VIM-ROOTER ## {{{
-packadd vim-rooter
-let g:rooter_patterns=['package.json','Cargo.toml','node_modules','.git']
-
-" }}}
-" ## VIM-TEST ## {{{
-  packadd vim-test
-  nmap <silent> <Leader>t :TestNearest
-  " }}}
-" ## VIM-TEXTOBJ ## {{{
-packadd vim-textobj-user
-packadd vim-textobj-css
-packadd vim-textobj-function
-packadd vim-textobj-function-javascript
-" }}}
-
-set background=light
-colorscheme mild
-
-" ## CUSTOM-SCRIPTS ## {{{
-" find files and buffers
-packadd wildmenu-plus
-nnoremap <Leader>p :WildmenuFiles<CR>
-nnoremap <Leader>o :WildmenuBuffers<CR>
-nnoremap <Leader>- :WildmenuSessions<CR>
-
-command! CurrentBufferOnly execute '%bdelete|edit#|bdelete#'
-nnoremap <leader>bo :CurrentBufferOnly<CR>
-
-" statusbar
-
-function! UpdateGitBranch() abort
-  let l:is_git_dir = trim(system('git rev-parse --is-inside-work-tree'))
-  let g:git_branch = get(
-        \ { 'true': trim(system('git rev-parse --abbrev-ref HEAD')) },
-        \ l:is_git_dir, '')
-endfunction
-
-augroup vimrc_git
-  au!
-  au VimEnter,DirChanged,ShellCmdPost * call UpdateGitBranch()
-augroup END
-
-let g:mode_colors = {
-      \ 'n': 'StatusLineSection',
-      \ 'v': 'StatusLineSectionV',
-      \ "\<C-v>": 'StatusLineSectionV',
-      \ 'i': 'StatusLineSectionI',
-      \ 'c': 'StatusLineSectionC',
-      \ 'r': 'StatusLineSectionR',
-      \ }
-
-let g:mode_labels= {
-      \ 'n': 'NORMAL',
-      \ 'i': 'INSERT',
-      \ 'R': 'REPLACE',
-      \ 'v': 'VISUAL',
-      \ 'V': 'V-LINE',
-      \ "\<C-v>": 'V-BLOCK',
-      \ 'c': 'COMMAND',
-      \ 's': 'SELECT',
-      \ 'S': 'S-LINE',
-      \ "\<C-s>": 'S-BLOCK',
-      \ 't': 'TERMINAL'
-      \ }
-
-function! SetStatuslineColor() abort
-  if mode() =~# '\v(n|no)'
-    execute 'hi! StatusLine guibg=#503090 guifg=#FFFFFF'
-  elseif mode() =~# '\v(v|V)' || get(g:mode_labels, mode(), '') ==# 'V-BLOCK'
-    execute 'hi! StatusLine guibg=#E930B0 guifg=#FFFFFF'
-  elseif mode() =~# 'i'
-    execute 'hi! StatusLine guibg=#B0B0FF guifg=#FFFFFF'
-  else
-    execute 'hi! StatusLine guibg=#000000 guifg=#FFFFFF'
-  endif
-  return ''
-endfunction
-
-set laststatus=2
-set statusline=
-"set statusline+=%{SetStatuslineColor()}
-set statusline+=%0*\ %{get(g:mode_labels,mode(),'')}
-set statusline+=\ %{g:git_branch}
-set statusline+=\ %*%t
-set statusline+=%=
-set statusline+=%y
-set statusline+=\ %{(&fenc!=''?&fenc:&enc)}\[%{&ff}]
-set statusline+=\ %3p%%\ \ %l:\ %3c\
-
-hi User1 guibg=#503090 guifg=#FFFFFF
-
-  " hi StatusLine         ctermbg=8  guibg=#313131 ctermfg=15 guifg=#cccccc
-  " hi StatusLineNC       ctermbg=0  guibg=#313131 ctermfg=8  guifg=#999999
-  " hi StatusLineSection  ctermbg=8  guibg=#55b5db ctermfg=0  guifg=#FFFFFF gui=bold
-  " hi StatusLineSectionV ctermbg=11 guibg=#a074c4 ctermfg=0  guifg=#FFFFFF gui=bold
-  " hi StatusLineSectionI ctermbg=10 guibg=#9fca56 ctermfg=0  guifg=#FFFFFF gui=bold
-  " hi StatusLineSectionC ctermbg=12 guibg=#db7b55 ctermfg=0  guifg=#FFFFFF gui=bold
-  " hi StatusLineSectionR ctermbg=12 guibg=#ed3f45 ctermfg=0  guifg=#FFFFFF gui=bold
-
-" title
-augroup vimrc_titlestring
-  au!
-  au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
-augroup END
-
-" session
-function! MaybeSaveSession()
+" ## SESSIONS ## {{{
+function! s:maybe_save_session() abort
   if v:this_session != ''
     execute 'mksession! ' . v:this_session
   endif
 endfunction
-
-augroup vimrc_session
-  au!
-  au BufEnter,VimLeavePre * call MaybeSaveSession()
-augroup END
-
-" font size
-nnoremap <Leader>xp :let &guifont = substitute(
- \ &guifont,
- \ ':h\zs\d\+',
- \ '\=eval(submatch(0)+1)',
- \ 'g')<CR>
-nnoremap <Leader>xm :let &guifont = substitute(
- \ &guifont,
- \ ':h\zs\d\+',
- \ '\=eval(submatch(0)+1)',
- \ 'g')<CR>
 " }}}
 
-nnoremap <Leader>cd :cd %:p:h<CR>
+command! CurrentBufferOnly execute '%bdelete|edit#bdelete#' " Delete all buffers except current one
+augroup my_vimrc
+  au!
+  au! VimEnter,DirChanged * setlocal titlestring=%{getcwd()}
+  au! BufEnter,VimLeavePre * call <SID>maybe_save_session()
+  au! BufLeave,FocusLost,InsertEnter,WinLeave * if &nu | setlocal nornu | endif
+  au! BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | setlocal rnu |endif
+augroup END
 
 set spell
 set spelllang=en_us,sv,cjk
@@ -431,6 +180,64 @@ set langmenu=en_US
 let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
+
+if has('gui')
+  set background=light
+  colorscheme mild
+endif
+
+" ## Plugins ## {{{
+" Turn off default plugins
+let g:loaded_2html_plugin=1
+let g:loaded_gzip=1
+let g:loaded_rrhelper=1
+let g:loaded_tar=1
+let g:loaded_tarPlugin=1
+let g:loaded_vimballPlugin=1
+let g:loaded_zip=1
+let g:loaded_zipPlugin=1
+" Load matchit.vim but only if the user hasn't installed a newer version
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+" }}}
+" ## VIM-ROOTER ## {{{
+let g:rooter_patterns = ['.git', 'Cargo.toml', 'node_modules', 'tsconfig.json']
+packadd vim-rooter
+" }}}
+" ## VIM-TEXTOBJ ## {{{
+packadd vim-textobj-user
+" }}}
+" ## VIM-LSP/ASYNCOMPLETE {{{
+let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_diagnostics_float_cursor=1
+let g:lsp_highlights_enabled=1
+let g:asyncomplete_auto_completeopt=0
+let g:lsp_preview_float=1
+let g:lsp_documentation_float_docked=1
+packadd vim-lsp
+packadd asyncomplete.vim
+packadd asyncomplete-lsp.vim
+set foldmethod=expr
+      \ foldexpr=lsp#ui#vim#folding#foldexpr()
+      \ foldtext=lsp#ui#vim#folding#foldtext()
+set complete&
+set completeopt=
+set completeopt+=menuone
+set completeopt+=noinsert
+set completeopt+=preview
+set infercase
+set pumheight=7
+set noshowfulltag
+if executable('typescript-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
+        \ })
+endif
+" }}}
 
 set noeb vb t_vb=
 au GUIEnter * set vb t_vb=

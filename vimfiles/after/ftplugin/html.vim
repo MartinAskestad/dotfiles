@@ -44,5 +44,18 @@ onoremap <buffer> [[ ?^[^<]*\zs<\%([a-za-z][a-za-z0-9]*\_[^>]*>\)\@=<CR>
 onoremap <buffer> [] \%([^>]*$\)\@=<CR>
 onoremap <buffer> ]} /><CR>
 onoremap <buffer> [{ ?<<CR>
+" Map emmet to leader keys
+nnoremap <leader>he :call emmet#expandAbbr(3, "")<CR>
+nnoremap <leader>hE :call emmet#expandAbbr(1, "")<CR>
+vnoremap <leader>he :call emmet#expandAbbr(2, "")<CR>
+nnoremap <leader>hn :call emmet#nextPrev(0)<CR>
+nnoremap <leader>hN :call emmet#nextPrev(1)<CR>
+nnoremap <leader>hr :call emmet#removeTag()<CR>
+nnoremap <leader>hu :call emmet#updateTag()<CR>
 
+let g:user_emmet_install_global = 0
+if !exists('g:loaded_emmet_vim')
+  packadd emmet-vim
+  EmmetInstall
+endif
 " vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker:
