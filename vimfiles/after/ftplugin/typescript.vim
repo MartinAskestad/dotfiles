@@ -75,4 +75,13 @@ if executable('typescript-language-server')
         \ 'whitelist': ['typescript', 'typescript.tsx', 'typescriptreact'],
         \ })
 endif
+
+if !exists('g:loaded_prettier')
+  packadd vim-prettier
+endif
+
+augroup typescript
+  au!
+  au TextChanged,InsertLeave *.ts Prettier
+augroup END
 " vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker:
