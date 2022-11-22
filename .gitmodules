@@ -1,0 +1,69 @@
+[submodule "vimfiles/pack/plugins/opt/emmet-vim"]
+	path = vimfiles/pack/plugins/opt/emmet-vim
+	url = https://github.com/mattn/emmet-vim.git
+[submodule "vimfiles/pack/plugins/opt/vim-surround"]
+	path = vimfiles/pack/plugins/opt/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vimfiles/pack/plugins/opt/CamelCaseMotion"]
+	path = vimfiles/pack/plugins/opt/CamelCaseMotion
+	url = https://github.com/bkad/CamelCaseMotion.git
+[submodule "vimfiles/pack/colors/opt/4colors"]
+	path = vimfiles/pack/colors/opt/4colors
+	url = https://github.com/mihaifm/4colors.git
+[submodule "vimfiles/pack/plugins/opt/context.vim"]
+	path = vimfiles/pack/plugins/opt/context.vim
+	url = https://github.com/wellle/context.vim.git
+[submodule "vimfiles/pack/plugins/opt/vim-css3-syntax"]
+	path = vimfiles/pack/plugins/opt/vim-css3-syntax
+	url = https://github.com/hail2u/vim-css3-syntax.git
+[submodule "vimfiles/pack/plugins/opt/vim-coloresque"]
+	path = vimfiles/pack/plugins/opt/vim-coloresque
+	url = https://github.com/gko/vim-coloresque.git
+[submodule "vimfiles/pack/plugins/opt/vim-prettier"]
+	path = vimfiles/pack/plugins/opt/vim-prettier
+	url = https://github.com/prettier/vim-prettier.git
+[submodule "vimfiles/pack/plugins/opt/vim-lsp"]
+	path = vimfiles/pack/plugins/opt/vim-lsp
+	url = https://github.com/prabirshrestha/vim-lsp.git
+[submodule "vimfiles/pack/plugins/opt/vim-lsp-settings"]
+	path = vimfiles/pack/plugins/opt/vim-lsp-settings
+	url = https://github.com/mattn/vim-lsp-settings.git
+[submodule "vimfiles/pack/plugins/opt/asyncomplete.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete.vim
+	url = https://github.com/prabirshrestha/asyncomplete.vim.git
+[submodule "vimfiles/pack/plugins/opt/asyncomplete-lsp.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete-lsp.vim
+	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim.git
+[submodule "vimfiles/pack/plugins/opt/asyncomplete-emmet.vim"]
+	path = vimfiles/pack/plugins/opt/asyncomplete-emmet.vim
+	url = https://github.com/prabirshrestha/asyncomplete-emmet.vim.git
+[submodule "vimfiles/pack/plugins/opt/vim-ripgrep"]
+	path = vimfiles/pack/plugins/opt/vim-ripgrep
+	url = https://github.com/jremmen/vim-ripgrep.git
+[submodule "vimfiles/pack/plugins/opt/vim-rooter"]
+	path = vimfiles/pack/plugins/opt/vim-rooter
+	url = https://github.com/airblade/vim-rooter.git
+[submodule "vimfiles/pack/plugins/opt/vim-test"]
+	path = vimfiles/pack/plugins/opt/vim-test
+	url = https://github.com/vim-test/vim-test.git
+[submodule "vimfiles/pack/plugins/opt/vim-textobj-user"]
+	path = vimfiles/pack/plugins/opt/vim-textobj-user
+	url = https://github.com/kana/vim-textobj-user.git
+[submodule "vimfiles/pack/plugins/opt/vim-textobj-css"]
+	path = vimfiles/pack/plugins/opt/vim-textobj-css
+	url = https://github.com/jasonlong/vim-textobj-css.git
+[submodule "vim-textobj-function"]
+	path = vimfiles/pack/plugins/opt/vim-textobj-function
+	url = https://github.com/kana/vim-textobj-function.git
+[submodule "vimfiles/pack/plugins/opt/vim-textobj-function-javascript"]
+	path = vimfiles/pack/plugins/opt/vim-textobj-function-javascript
+	url = https://github.com/thinca/vim-textobj-function-javascript.git
+[submodule "vimfiles/pack/plugins/opt/vim-vsnip"]
+	path = vimfiles/pack/plugins/opt/vim-vsnip
+	url = https://github.com/hrsh7th/vim-vsnip.git
+[submodule "vimfiles/pack/plugins/opt/vim-vsnip-integ"]
+	path = vimfiles/pack/plugins/opt/vim-vsnip-integ
+	url = https://github.com/hrsh7th/vim-vsnip-integ.git
+[submodule "vimfiles/pack/plugins/opt/gina.vim"]
+	path = vimfiles/pack/plugins/opt/gina.vim
+	url = https://github.com/lambdalisue/gina.vim.git

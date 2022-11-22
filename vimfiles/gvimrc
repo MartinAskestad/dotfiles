@@ -1,0 +1,11 @@
+set guifont=FiraCode_NF:h14:W300
+set linespace=5
+set guioptions-=m " Remove menu bar
+set guioptions-=T " Remove toolbar
+set guioptions-=e " Use "text mode" style tabs
+set guioptions-=L " Remove left hand scroll bar
+set guioptions+=c " Use console dialogs instead of pop up dialogs for simple choices
+set guioptions+=k " Keep the GUI window size when adding/removing widgets
+set guioptions-=r " Remove the right hand scroll bar
+
+set renderoptions=type:directx,level:0.75,gamma:1.25,contrast:0.25,geom:1,renmode:5,taamode:1
