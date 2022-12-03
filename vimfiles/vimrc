@@ -8,176 +8,6 @@ if has('vim_starting')
   set fileencodings=utf-8,iso-8859-1
 endif
 
-" ## Keyboard bindings ## {{{
-let mapleader = " "
-" Swtich : and . as well as , and ; for easier use on Swedish keyboard
-nnoremap . :
-nnoremap : .
-nnoremap , ;
-nnoremap ; ,
-vnoremap . :
-vnoremap : .
-vnoremap ; ,
-vnoremap , ;
-
-vnoremap p pgvy " paste without overriding current register
-nnoremap gV `[v`]
-nnoremap x "_x
-nnoremap <Leader>N :nohlsearch<CR>
-tnoremap <ESC> <C-w>N
-nnoremap <F5> :so $MYVIMRC<CR>
-
-" Views/Windows
-nnoremap <Leader>vw <C-w>w    " Switch window
-nnoremap <Leader>vq <C-w>c    " Close window
-nnoremap <Leader>vs <C-w>s    " Split window
-nnoremap <Leader>vv <C-w>v    " Vertical split window
-nnoremap <Leader>vh <C-w>h    " Switch window left
-nnoremap <Leader>vj <C-w>j    " Switch window down
-nnoremap <Leader>vk <C-w>k    " Switch window up
-nnoremap <Leader>vl <C-w>l    " Switch window right
-nnoremap <Leader>vH <C-w>5<   " Change window size
-nnoremap <Leader>vJ <C-w>:resize +5<CR>   " Change window size
-nnoremap <Leader>vK <C-w>:resize -5<CR>   " Change window size
-nnoremap <Leader>vL <C-w>5>   " Change window size
-nnoremap <Leader>vb <C-w>=    " Balance windows
-nnoremap <Leader>vV <C-w>\|   " Make window width max
-nnoremap <Leader>vB <C-w>_    " Make window height max
-nnoremap <Leader>vm <C-w>\|<C-w>_ " Maximize windows both directions
-
-" Move lines
-vnoremap <Leader>mj :m '>+1<CR>gv=gv  " Move marked lines down
-vnoremap <Leader>mk :m '<-2<CR>gv=gv  " Move marked lines up
-vnoremap <A-j> :m '>+1<CR>gv=gv       " Move marked lines down
-vnoremap <A-k> :m '<-2<CR>gv=gv       " Move marked lines up
-
-" Misc insert mode bindings
-imap jj <ESC>
-inoremap <C-BS> <C-w>
-
-" Command mode bindings
-cnoremap <C-BS> <C-w>
-" font size
-nnoremap <Leader>xp :let &guifont = substitute(
-      \ &guifont, ':h\zs\d\+', '\=eval(submatch(0)+1)', 'g')<CR>
-nnoremap <Leader>xm :let &guifont = substitute(
-      \ &guifont, ':h\zs\d\+', '\=eval(submatch(0)-1)', 'g')<CR>
-
-nnoremap <Leader>cd :cd %:p:h<CR>
-nnoremap <leader>bo :CurrentBufferOnly<CR>
-
-nnoremap <Leader>p :WildmenuFiles<CR>
-nnoremap <Leader>o :WildmenuBuffers<CR>
-nnoremap <Leader>_ :WildmenuSessions<CR>
-
-inoremap <expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
-inoremap <expr> <TAB> pumvisible() ? asyncomplete#close_popup() : "\<TAB>"
-autocmd! CompleteDone ff if pumvisible() == 0 | pclose | endif
-
-nnoremap <Leader>l. :LspCodeAction<CR>
-nnoremap <Leader>l, :LspHover<CR>
-nnoremap <Leader>lr :LspRename<CR>
-nnoremap <Leader>ld :LspDefinition<CR>
-nnoremap <Leader>lD :LspPeekDefinition<CR>
-nnoremap <Leader>lo :LspDocumentSymbol<CR>
-nnoremap <Leader>ls :LspDocumentSymbolSearch<CR>
-nnoremap <Leader>lS :LspWorkspaceSymbolSearch<CR>
-nnoremap <Leader>lj :LspNextDiagnostic<CR>
-nnoremap <Leader>lk :LspPreviousDiagnostic<CR>
-nnoremap <Leader>ly :<C-u>LspDocumentFormat<CR>
-vnoremap <Leader>lY :LspDocumentRangeFormat<CR>
-" Snippets
-" Expand
-imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-
-" Expand or jump
-imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-
-" Jump forward or backward
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" See https://github.com/hrsh7th/vim-vsnip/pull/50
-nmap        s   <Plug>(vsnip-select-text)
-xmap        s   <Plug>(vsnip-select-text)
-nmap        S   <Plug>(vsnip-cut-text)
-xmap        S   <Plug>(vsnip-cut-text)
-" }}}
-" ## Behavior ## {{{
-" Opening windows and buffer switching
-set splitbelow splitright " New windows appear below and to the right
-set switchbuf=useopen,usetab,vsplit,split
-set winminwidth=6 winheight=6 winminheight=6
-set noequalalways
-set nowinfixwidth nowinfixheight
-" Editing
-set textwidth=80
-set formatoptions=tc    " Wrap text using textwidth
-set formatoptions+=r    " Continue comments when enter in insertmode
-set formatoptions+=q    " Enable format of comments
-set formatoptions+=n    " Detect lists for formatting
-set formatoptions+=b    " Auto wrap in insert mode and no wrapping of old lines
-set nojoinspaces
-set autoread
-set noautowrite
-set noautowriteall
-set linebreak
-set mouse=
-set noautochdir
-" Searching
-set wrapscan
-set ignorecase
-set smartcase
-set incsearch
-set hlsearch
-set magic
-" command line
-set wildmenu
-set wildchar=9
-set wildmode=full,longest:list
-set wildoptions=
-set wildignorecase
-set wildignore+=*/node_modules/*
-set wildignore+=*/.git/*
-set wildignore+=*/dist/*
-set path=.,**
-" Appearance
-set signcolumn=yes
-set foldcolumn=1
-set nu rnu
-set termguicolors
-set display=lastline,uhex
-set wrap
-set wrapmargin=0
-set showmatch
-set matchtime=3
-set noshowmode
-set cmdheight=1
-set cmdwinheight=10
-set noshowcmd
-set rulerformat=
-set laststatus=2
-set noicon
-set showtabline=1
-set cursorline nocursorcolumn cursorlineopt=line
-set colorcolumn=80
-set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
-set scrolloff=21
-" Performance
-set updatetime=300 lazyredraw
-" Diff
-set diffopt=
-set diffopt+=algorithm:patience
-set diffopt+=indent-heuristic
-
-set undofile undolevels=1000 undodir=$HOME\vimfiles\undodir
-set noswapfile
-" }}}
 " ## SESSIONS ## {{{
 function! s:maybe_save_session() abort
   if v:this_session != ''
@@ -411,17 +241,11 @@ let $LANG = 'en_US'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
-if has('gui')
-  set background=light
-  colorscheme mild
-  hi StatusLine guifg=#503090 guibg=#FFFFFF
-  hi StatusLineNC guifg=#503090 guibg=#FFCC00 gui=reverse
-  hi User1 guibg=#503090 guifg=#FFFFFF cterm=bold gui=bold,reverse
-else
-  set background=dark
-  colorscheme 4colors
-hi StatusLine ctermfg=235 guifg=#C0C0C0 ctermbg=59 guibg=#2F4F4F
-endif
+set background=light
+colorscheme mild
+hi StatusLine guifg=#503090 guibg=#FFFFFF
+hi StatusLineNC guifg=#503090 guibg=#FFCC00 gui=reverse
+hi User1 guibg=#503090 guifg=#FFFFFF cterm=bold gui=bold,reverse
 hi VertSplit guifg=bg guibg=NONE gui=NONE
 
 " ## Plugins ## {{{
@@ -438,49 +262,6 @@ let g:loaded_zipPlugin=1
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
-" }}}
-" ## VIM-ROOTER ## {{{
-let g:rooter_patterns = ['.git', 'Cargo.toml', 'node_modules', 'tsconfig.json']
-packadd vim-rooter
-" }}}
-" ## VIM-TEXTOBJ ## {{{
-packadd vim-textobj-user
-" }}}
-" ## VIM-SURROUND ## {{{
-packadd vim-surround
-" }}}
-" ## CAMELCASEMOTION ## {{{
-packadd CamelCaseMotion
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> e <Plug>CamelCaseMotion_e
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> ge <Plug>CamelCaseMotion_ge
-sunmap w
-sunmap e
-sunmap b
-sunmap ge
-omap <silent> iw <Plug>CamelCaseMotion_iw
-xmap <silent> iw <Plug>CamelCaseMotion_iw
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
-omap <silent> ib <Plug>CamelCaseMotion_ib
-xmap <silent> ib <Plug>CamelCaseMotion_ib
-" }}}
-" ## CSS3 COLORESQUE ## {{{
-packadd vim-css3-syntax
-packadd vim-coloresque
-" }}}
-" ## RIPGREP ## {{{
-let g:rg_derive_root = 0
-let g:rg_highlight=1
-packadd vim-ripgrep
-" }}}
-" ## VIM-TEST ## {{{
-packadd vim-test
-" }}}
-" ## CONTEXT.VIM ## {{{
-let g:context_max_height=7
-packadd context.vim
 " }}}
 " ## VIM-LSP/ASYNCOMPLETE ## {{{
 let g:lsp_diagnostics_echo_cursor=1
@@ -516,16 +297,6 @@ packad vim-vsnip
 packadd vim-vsnip-integ
 
 let g:vsnip_snippet_dir = expand('$HOME/.local/vim-vsnip')
-" }}}
-" ## GINA.VIM {{{
-packadd gina.vim
-let g:gina#command#blame#formatter#format="%in %au %=on %ti"
-let s:gina_cmd_opt = {'noremap': 1, 'silent': 1}
-" }}}
-" ## EMMET-VIM {{{
-packadd emmet-vim
-let g:user_emmet_install_global=0
-autocmd FileType html,css,scss EmmetInstall
 " }}}
 
 set noeb vb t_vb=
