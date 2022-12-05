@@ -340,7 +340,7 @@ packadd vim-textobj-user
 packadd vim-textobj-css
 packadd vim-textobj-entire
 packadd vim-textobj-function
-packadd vim-textobj-function-javascript
+packadd vim-textobj-function-typescript
 packadd vim-textobj-indent
 packadd vim-textobj-keyvalue
 packadd vim-textobj-matchit

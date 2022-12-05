@@ -25,9 +25,6 @@
 [submodule "vimfiles/pack/plugins/opt/vim-textobj-function"]
 	path = vimfiles/pack/plugins/opt/vim-textobj-function
 	url = https://github.com/kana/vim-textobj-function.git
-[submodule "vimfiles/pack/plugins/opt/vim-textobj-function-javascript"]
-	path = vimfiles/pack/plugins/opt/vim-textobj-function-javascript
-	url = https://github.com/thinca/vim-textobj-function-javascript.git
 [submodule "vimfiles/pack/plugins/opt/vim-textobj-indent"]
 	path = vimfiles/pack/plugins/opt/vim-textobj-indent
 	url = https://github.com/kana/vim-textobj-indent.git
@@ -73,3 +70,6 @@
 [submodule "vimfiles/pack/plugins/opt/matchit"]
 	path = vimfiles/pack/plugins/opt/matchit
 	url = https://github.com/chrisbra/matchit.git
+[submodule "vimfiles/pack/plugins/opt/vim-textobj-function-typescript"]
+	path = vimfiles/pack/plugins/opt/vim-textobj-function-typescript
+	url = https://github.com/MartinAskestad/vim-textobj-function-typescript.git
