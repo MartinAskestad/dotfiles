@@ -73,6 +73,9 @@
 [submodule "vimfiles/pack/plugins/opt/vim-textobj-function-typescript"]
 	path = vimfiles/pack/plugins/opt/vim-textobj-function-typescript
 	url = https://github.com/MartinAskestad/vim-textobj-function-typescript.git
-[submodule "vimfiles/pack/plugins/opt/inline_edit.vim"]
-	path = vimfiles/pack/plugins/opt/inline_edit.vim
-	url = https://github.com/MartinAskestad/inline_edit.vim.git
+[submodule "vimfiles/pack/colors/opt/vim-github-colorscheme"]
+	path = vimfiles/pack/colors/opt/vim-github-colorscheme
+	url = https://github.com/endel/vim-github-colorscheme.git
+[submodule "vimfiles/pack/colors/opt/tempus-themes-vim"]
+	path = vimfiles/pack/colors/opt/tempus-themes-vim
+	url = https://gitlab.com/protesilaos/tempus-themes-vim.git
