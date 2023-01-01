@@ -111,8 +111,8 @@ augroup vimrc_colorscheme
 	au VimEnter,ColorScheme * highlight User3 guibg=#B6970C											 " Visual mode
 	au VimEnter,ColorScheme * highlight User2 guibg=#92374D											 " Insert/replace mode
 	au VimEnter,ColorScheme * highlight User1 gui=reverse											   " Normal statusline
-	au VimEnter,ColorScheme * highlight StatusLine gui=reverse									   " Normal statusline
-	au VimEnter,ColorScheme * highlight StatusLineNC gui=italic
+	" au VimEnter,ColorScheme * highlight StatusLine gui=reverse									   " Normal statusline
+	" au VimEnter,ColorScheme * highlight StatusLineNC gui=italic
 augroup END
 
 let g:mode_colors = {
@@ -132,7 +132,7 @@ let g:mode_colors = {
 function! Stl_Filename() abort
   let l:filename = (&modified ? '%#User5#' : '%#User1#') . '%t '
   let l:filename = l:filename . (exists('b:nerd_icon') ? b:nerd_icon : '%y')
-  return l:filename . '%#User1#'
+  return l:filename . '%#StatusLine#'
 endfunction
 
 function! s:git_branch_detect(path) abort
@@ -186,7 +186,7 @@ function! Stl_GitBranchName() abort
  if len(l:branch_name) > 0 && (l:branch_name ==? 'master' || l:branch_name ==? 'main')
    return l:branch_name
  else
-   return '%#User6#' . l:branch_name . '%#User1#'
+   return '%#User6#' . l:branch_name . '%#StatusLine#'
  endif
  return ''
 endfunction
@@ -216,7 +216,7 @@ function! CompleteBuffers(arg, cmd, cur) abort
         \ map(
         \   filter(
         \     range(1, bufnr('$')),
-        \     { i, nr -> bufexists(nr) }
+        \     { i, nr -> bufexists(nr) && buflisted(nr) }
         \   ),
         \   { i, nr -> bufname(nr) }
         \ )
@@ -354,6 +354,18 @@ packadd vim-commentary
 packadd vim-signify
 packadd inline_edit.vim
 packadd deleft.vim
+packadd undotree
+packadd vim-test
+
+function! JestTransform(cmd) abort
+  let correct_path = substitute(a:cmd, '\\', '\\\\', 'g')
+  let correct_call = substitute(correct_path, '\/', '\\', 'g')
+  return correct_call
+endfunction
+
+let g:test#custom_transformations = {'jest': function('JestTransform')}
+let g:test#transformation = 'jest'
+
 " ## VIM-LSP/ASYNCOMPLETE ## {{{
 let g:lsp_diagnostics_echo_cursor=1
 let g:lsp_diagnostics_float_cursor=1
@@ -448,6 +460,17 @@ map <silent> gE <Plug>CamelCaseMotion_ge
 " xmap <silent> ib <Plug>CamelCaseMotion_ib
 " }}}
 " ## FLOATERM ## {{{
+let g:floaterm_autoclose = 1
+
+nnoremap <C-t> <Cmd>FloatermToggle<CR>
+
+augroup vimrc_floaterm
+  autocmd!
+  autocmd User FloatermOpen tnoremap <buffer> <silent> <C-t>q <C-\><C-n>:FloatermToggle<CR>
+  autocmd User FloatermOpen tnoremap <buffer> <silent> <C-t>t <C-\><C-n>:FloatermNew<CR>
+  autocmd User FloatermOpen tnoremap <buffer> <silent> <C-t>p <C-\><C-n>:FloatermPrev<CR>
+  autocmd User FloatermOpen tnoremap <buffer> <silent> <C-t>n <C-\><C-n>:FloatermNext<CR>
+augroup END
 packadd vim-floaterm
 " }}}
 " }}}
@@ -530,7 +553,7 @@ if executable('rg')
 endif
 
 set background=light
-colorscheme sonoma
+colorscheme tempus_day
 hi VertSplit guifg=bg guibg=NONE gui=NONE
 hi SpelunkerSpellBad cterm=underline gui=underline,italic
 hi SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
