@@ -1,11 +1,12 @@
 #r "C:\Users\m\scoop\apps\workspacer\current\workspacer.Shared.dll"
-#r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.Bar\workspacer.Bar.dll"
 #r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
+#r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.Bar\workspacer.Bar.dll"
 #r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
 #r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.Gap\workspacer.Gap.dll"
 #r "C:\Users\m\scoop\apps\workspacer\current\plugins\workspacer.TitleBar\workspacer.TitleBar.dll"
 
 using System;
+using System.Collections.Generic;
 using workspacer;
 using workspacer.ActionMenu;
 using workspacer.Bar;
@@ -16,11 +17,9 @@ using workspacer.TitleBar;
 
 Action<IConfigContext> doConfig = (context) =>
 {
-    var fontSize = 9;
-    var barHeight = 19;
     var fontName = "FiraCode NF";
 
-    var gap = 4;
+    var gap = 6;
     var gapPlugin = context.AddGap(new GapPluginConfig() { InnerGap = gap, OuterGap = gap / 2, Delta = gap / 2 });
 
     context.AddBar(new BarPluginConfig()
@@ -28,7 +27,7 @@ Action<IConfigContext> doConfig = (context) =>
         FontName = fontName,
         LeftWidgets = () => new IBarWidget[] {
             new WorkspaceWidget(), new TextWidget(""), new TitleWidget() {
-                IsShortTitle = true
+                IsShortTitle = false
             }, new TextWidget("")
         },
         RightWidgets = () => new IBarWidget[] {
@@ -38,9 +37,9 @@ Action<IConfigContext> doConfig = (context) =>
     });
 
     Func<ILayoutEngine[]> defaultLayouts = () => new ILayoutEngine[] {
-        new FocusLayoutEngine(),
-        new DwindleLayoutEngine(),
-        new VertLayoutEngine()
+            new DwindleLayoutEngine(),
+                new FocusLayoutEngine(),
+                new VertLayoutEngine()
     };
     context.DefaultLayouts = defaultLayouts;
 
@@ -60,8 +59,40 @@ Action<IConfigContext> doConfig = (context) =>
     context.WindowRouter.RouteProcessName("Discord", "メール");
     context.WindowRouter.RouteProcessName("OUTLOOK", "メール");
     context.WindowRouter.RouteProcessName("Teams", "メール");
+    context.WindowRouter.RouteTitle("post", "メール");
+    context.WindowRouter.RouteProcessName("mail", "メール");
+    context.WindowRouter.RouteWindowClass("HxOutlook", "メール");
+    context.WindowRouter.AddRoute((window) => window.Title.Contains("post") ? context.WorkspaceContainer["メール"] : null);
+    context.WindowRouter.IgnoreTitleMatch("^.+\\(DEBUG\\)$");
+    context.WindowRouter.IgnoreWindowClass("ApplicationFrameWindow");
+    context.WindowRouter.AddRoute((window) => (window.Class.Equals("ApplicationFrameWindow") && (window.Title.Contains("Inkorgen") || window.Title.Contains("post")) ? context.WorkspaceContainer["メール"] : null));
+    context.WindowRouter.IgnoreTitleMatch("winrun");
 
-    context.WindowRouter.AddFilter((win) => !win.Title.Contains("(DEBUG)"));
+    var actionMenu = context.AddActionMenu();
+    Func<ActionMenuItemBuilder> createActionMenuBuilder = () =>
+    {
+        var menuBuilder = actionMenu.Create();
+        // Move window to workspace
+        /* menuBuilder.AddMenu("move", () => */
+        /* { */
+        /*     var moveMenu = actionMenu.Create(); */
+        /*     var focusedWorkspace = context.Workspaces.FocusedWorkspace; */
+        /*     var workspaces = context.WorkspaceContainer.GetWorkspaces(focusedWorkspace).ToArray(); */
+        /*     Func<int, Action> createChildMenu = (index) => () => { context.Workspaces.MoveFocusedWindowToWorkspace(index); }; */
+        /*     for (int i = 0; i < workspaces.Length; i++) */
+        /*     { */
+        /*         moveMenu.Add(workspaces[i].Name, createChildMenu(i)); */
+        /*     } */
+        /*     return moveMenu; */
+        /* }); */
+        menuBuilder.Add("toggle keybind helper", () => context.Keybinds.ShowKeybindDialog());
+        menuBuilder.Add("toggle enabled", () => context.Enabled = !context.Enabled);
+        menuBuilder.Add("toggle console", () => context.ToggleConsoleWindow());
+        menuBuilder.Add("restart", () => context.Restart());
+        menuBuilder.Add("quit", () => context.Quit());
+        return menuBuilder;
+    };
+    var actionMenuBuilder = createActionMenuBuilder();
 
     // keybindings
     Action setKeybindings = () =>
@@ -82,6 +113,9 @@ Action<IConfigContext> doConfig = (context) =>
         manager.Subscribe(winCtrlAlt, Keys.P, () => workspaces.FocusedWorkspace.SwapFocusAndPrimaryWindow(), "Swap focus and primary window");
         manager.Subscribe(winCtrlAlt, Keys.A, () => workspaces.FocusedWorkspace.ExpandPrimaryArea(), "Expand primary area");
         manager.Subscribe(winCtrlAlt, Keys.S, () => workspaces.FocusedWorkspace.ShrinkPrimaryArea(), "Shrink primary area");
+        manager.Subscribe(winCtrlAlt, Keys.I, () => actionMenu.ShowMenu(actionMenuBuilder), "Toggle console window");
+        manager.Subscribe(winCtrlAlt, Keys.Y, () => workspaces.FocusedWorkspace.IncrementNumberOfPrimaryWindows(), "Increment number of primary windows");
+        manager.Subscribe(winCtrlAlt, Keys.U, () => workspaces.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "Decrement number of primary windows");
     };
     setKeybindings();
 
@@ -90,9 +124,15 @@ Action<IConfigContext> doConfig = (context) =>
     var titleBarPluginConfig = new TitleBarPluginConfig();
     titleBarPluginConfig.SetWindowProcessName("gvim", new TitleBarStyle(showTitleBar: false, showSizingBorder: false));
     titleBarPluginConfig.SetWindowProcessName("WindowsTerminal", new TitleBarStyle(showTitleBar: false, showSizingBorder: false));
+    titleBarPluginConfig.SetWindowProcessName("neovide", new TitleBarStyle(showTitleBar: false, showSizingBorder: false));
     context.AddTitleBar(titleBarPluginConfig);
+
+    context.AddFocusIndicator();
 
     // Uncomment to switch update branch (or to disable updates)
     context.Branch = Branch.None;
+
+    context.ConsoleLogLevel = LogLevel.Trace;
+    // context.FileLogLevel = LogLevel.Trace;
 };
 return doConfig;
