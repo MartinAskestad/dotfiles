@@ -4,6 +4,11 @@
     "body": ["console.log(${1:$TM_SELECTED_TEXT});$0"],
     "description": "console.log."
   },
+  "console.log 2": {
+    "prefix": ["logg", "cll"],
+    "body": ["console.log('${1:$TM_SELECTED_TEXT}', ${2:$TM_SELECTED_TEXT});$0"],
+    "description": "console.log."
+  }
   "Class method": {
     "prefix": ["met"],
     "body": ["${1:methodName}(${2:arg}) {", "\t$0", "}"],
