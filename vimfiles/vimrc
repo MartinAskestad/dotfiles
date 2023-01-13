@@ -533,11 +533,24 @@ function! s:setup_auto_closing() abort
   let g:empty_pairs = ["()", "[]", "{}", "''", "``", '""']
   inoremap <buffer><expr> <BS> index(g:empty_pairs, strpart(getline('.'), col('.') - 2, 2)) > -1 ? "\<Right><BS><BS>" : "\<BS>"
 endfunction
+
+function! s:prettier(parser) abort
+  if executable('prettier')
+    let l:formatprg='prettier\ --parser=' . a:parser . '\ --stdin-filepath\ ' . fnameescape(expand('%:p')) . '\ '
+    execute 'setlocal formatprg=' . l:formatprg
+  endif
+endfunction
+
 augroup vimrc_typescript
   au!
   au! FileType typescript,css,scss,html call s:setup_angular_bindings()
   au! FileType typescript,javascript,json,html,rust,bash call s:setup_auto_closing()
   au! BufReadPost * call s:is_in_git_dir()
+  au! BufReadPost,InsertEnter *.ts :setlocal formatexpr=
+  au! BufWritePre *.ts :normal! gggqG
+  au! BufReadPost *.ts :call s:prettier('typescript')
+  au! BufReadPost *.css,*.scss :call s:prettier('css')
+  au! BufReadPost *.html :call s:prettier('html')
 augroup END
 " }}}
 
