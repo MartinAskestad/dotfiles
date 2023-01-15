@@ -66,7 +66,8 @@ Action<IConfigContext> doConfig = (context) =>
     context.WindowRouter.IgnoreTitleMatch("^.+\\(DEBUG\\)$");
     context.WindowRouter.IgnoreWindowClass("ApplicationFrameWindow");
     context.WindowRouter.AddRoute((window) => (window.Class.Equals("ApplicationFrameWindow") && (window.Title.Contains("Inkorgen") || window.Title.Contains("post")) ? context.WorkspaceContainer["メール"] : null));
-    context.WindowRouter.IgnoreTitleMatch("winrun");
+    context.WindowRouter.IgnoreTitleMatch("vimrun");
+    context.WindowRouter.IgnoreWindowClass("ConsoleWindowClass");
 
     var actionMenu = context.AddActionMenu();
     Func<ActionMenuItemBuilder> createActionMenuBuilder = () =>
@@ -133,6 +134,6 @@ Action<IConfigContext> doConfig = (context) =>
     context.Branch = Branch.None;
 
     context.ConsoleLogLevel = LogLevel.Trace;
-    // context.FileLogLevel = LogLevel.Trace;
+    /* context.FileLogLevel = LogLevel.Trace; */
 };
 return doConfig;
