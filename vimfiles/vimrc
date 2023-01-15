@@ -503,9 +503,9 @@ command! SwitchToTypescript call s:try_switch_file('.ts')
 function! s:setup_angular_bindings() abort
   let b:angular_json = findfile('angular.json', '.;')
   if len(b:angular_json)
-    nnoremap <buffer> <Leader>ah :SwitchToHTML<CR>
-    nnoremap <buffer> <Leader>as :SwitchToCSS<CR>
-    nnoremap <buffer> <Leader>at :SwitchToTypescript<CR>
+    nnoremap <buffer><Leader>ah :SwitchToHTML<CR>
+    nnoremap <buffer><Leader>as :SwitchToCSS<CR>
+    nnoremap <buffer><Leader>at :SwitchToTypescript<CR>
   endif
 endfunction
 
@@ -513,7 +513,7 @@ function!s:is_in_git_dir() abort
   let l:git_dir = finddir('.git', '.;')
   if len(l:git_dir) > 0
     setlocal signcolumn=yes
-    nnoremap <buffer> <Leader>b :WildmenuBranches<CR>
+    nnoremap <buffer><Leader>b :WildmenuBranches<CR>
   endif
 endfunction
 
@@ -534,11 +534,20 @@ function! s:setup_auto_closing() abort
   inoremap <buffer><expr> <BS> index(g:empty_pairs, strpart(getline('.'), col('.') - 2, 2)) > -1 ? "\<Right><BS><BS>" : "\<BS>"
 endfunction
 
-function! s:prettier(parser) abort
+function! s:setup_prettier(parser) abort
+  echom "prettier"
   if executable('prettier')
-    let l:formatprg='prettier\ --parser=' . a:parser . '\ --stdin-filepath\ ' . fnameescape(expand('%:p')) . '\ '
-    execute 'setlocal formatprg=' . l:formatprg
+    echom "prettier found"
+    let l:formatprg='setlocal formatprg=prettier\ --parser=' . a:parser . '\ --stdin-filepath\ ' . fnameescape(expand('%:p')) . '\ '
+    echom l:formatprg
+    execute l:formatprg
   endif
+endfunction
+
+function! s:format_on_save() abort
+  normal! mz
+  normal! gggqG
+  normal! `z
 endfunction
 
 augroup vimrc_typescript
@@ -547,10 +556,10 @@ augroup vimrc_typescript
   au! FileType typescript,javascript,json,html,rust,bash call s:setup_auto_closing()
   au! BufReadPost * call s:is_in_git_dir()
   au! BufReadPost,InsertEnter *.ts :setlocal formatexpr=
-  au! BufWritePre *.ts :normal! gggqG
-  au! BufReadPost *.ts :call s:prettier('typescript')
-  au! BufReadPost *.css,*.scss :call s:prettier('css')
-  au! BufReadPost *.html :call s:prettier('html')
+  au! BufReadPost *.ts :call s:setup_prettier('typescript')
+  au! BufReadPost *.css,*.scss :call s:setup_prettier('css')
+  au! BufReadPost *.html :call s:setup_prettier('html')
+  au! BufWritePre *.ts,*.html,*.css,*.scss call s:format_on_save()
 augroup END
 " }}}
 
