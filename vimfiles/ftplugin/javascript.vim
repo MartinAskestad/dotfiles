@@ -1,0 +1,11 @@
+packadd deleft.vim
+packadd inline_edit.vim
+packadd vim-rooter
+packadd vim-textobj-quotes
+packadd CamelCaseMotion
+packadd vim-textobj-function
+packadd vim-textobj-function-javascript
+packadd vim-textobj-indent
+packadd vim-prettier
+packadd vim-textobj-parameter
+packadd vim-commentary

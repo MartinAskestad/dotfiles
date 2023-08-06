@@ -1,0 +1,442 @@
+unlet! g:skip_defaults_vim
+source $VIMRUNTIME\defaults.vim
+
+if has('vim_starting')
+  " encoding, changing encoding at runtime is undefined behavior
+  if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
+  set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
+  set fileencodings=utf-8,iso-8859-1
+
+  set langmenu=en_US
+  let $LANG = 'en_US'
+  source $VIMRUNTIME\delmenu.vim
+  source $VIMRUNTIME\menu.vim
+endif
+
+" ### BEHAVIOR ### {{{
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_keepdir = 0
+let g:netrw_browse_split = 4
+set matchpairs+=<:>
+set nowrapscan ignorecase smartcase hlsearch magic
+set noautochdir
+set noautowrite noautowriteall autoread
+set winminwidth=8 winheight=8 winminheight=8 noequalalways nowinfixwidth nowinfixheight
+set mouse=
+set wildmenu wildchar=9 wildmode=full,longest:list wildoptions=pum wildignorecase
+set wildignore=*/node_modules/*,*/.git/*,*/dist/*,*/target/*
+set directory-=. undodir=$HOME\vimfiles\undo undolevels=1000 backupdir=$HOME\vimfiles\backup
+set undofile backup
+set viewdir=$HOME\vimfiles\view history=1000 sessionoptions-=options viewoptions+=options
+set laststatus=2
+set display+=lastline
+set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
+set formatoptions+=j
+if !empty($viminfo)
+  set viminfo^=!
+endif
+set t_Co=256
+set termguicolors
+
+autocmd DirChanged * let g:netrw_list_hide = netrw_gitignore#Hide() .. ',\(^\|\s\s\)\zs\.\S\+'
+
+augroup vimrc
+  au!
+  au! BufLeave,FocusLost,InsertEnter,WinLeave * if &nu | setlocal nornu | endif
+  au! BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | setlocal rnu | endif
+  au! FileType typescript,javascript,json,rust,bash,cs,vim call s:setup_auto_closing()
+  au! BufWinLeave *.* mkview
+  au! BufWinEnter *.* silent loadview
+augroup END
+
+au VimResized * tabdo wincmd =
+au FocusGained * silent! checktime
+
+augroup FileMarks
+  au!
+  au BufLeave *.html normal! mH
+  au BufLeave *.rs   normal! mR
+  au BufLeave *.ts   normal! mT
+  au BufLeave *.css  normal! mC
+augroup END
+
+function! s:setup_auto_closing() abort
+  inoremap <buffer><expr> " strpart(getline('.'), col('.') - 1, 1) == '"'  ? "\<Right>" : "\"\"\<Left>"
+  inoremap <buffer><expr> ' strpart(getline('.'), col('.') - 1, 1) == "'"  ? "\<Right>" : "''\<Left>"
+  inoremap <buffer><expr> ` strpart(getline('.'), col('.') - 1, 1) == "`"  ? "\<Right>" : "``\<Left>"
+  inoremap <buffer> ( ()<Left>
+  inoremap <buffer> [ []<Left>
+  inoremap <buffer> { {}<Left>
+  inoremap <buffer> {<CR> {<CR>}<ESC>O
+  inoremap <buffer> {;<CR> {<CR>};<ESC>O
+  inoremap <buffer><expr> ) strpart(getline('.'), col('.') - 1, 1) == ")" ? "\<Right>" : ")"
+  inoremap <buffer><expr> ] strpart(getline('.'), col('.') - 1, 1) == "]" ? "\<Right>" : "]"
+  inoremap <buffer><expr> } strpart(getline('.'), col('.') - 1, 1) == "}" ? "\<Right>" : "}"
+  inoremap <buffer><expr> > strpart(getline('.'), col('.') - 1, 1) == ">" ? "\<Right>" : ">"
+  let g:empty_pairs = ["()", "[]", "{}", "''", "``", '""']
+  inoremap <buffer><expr> <BS> index(g:empty_pairs, strpart(getline('.'), col('.') - 2, 2)) > -1 ? "\<Right><BS><BS>" : "\<BS>"
+endfunction
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif
+
+colorscheme slate
+set background=dark
+" Note: This should be set after `set termguicolors` or `set t_Co=256`.
+if &term =~ 'xterm' || &term == 'win32'
+  " Use DECSCUSR escape sequences
+  let &t_SI = "\e[5 q"    " blink bar
+  let &t_SR = "\e[3 q"    " blink underline
+  let &t_EI = "\e[1 q"    " blink block
+  let &t_ti ..= "\e[1 q"   " blink block
+  let &t_te ..= "\e[0 q"   " default (depends on terminal, normally blink block)
+endif
+
+hi SpelunkerSpellBad cterm=underline gui=underline,italic
+hi SpelunkerComplexOrCompundWord cterm=underline gui=underline guifg=NONE
+" }}}
+" ### KEYBOARD SHORTCUTS ### {{{
+let g:mapleader = "\<Space>"
+nnoremap <Up> <nop>
+nnoremap <Right> <nop>
+nnoremap <Down> <nop>
+nnoremap <Left> <nop>
+nnoremap , ;
+nnoremap ; ,
+vnoremap , ;
+vnoremap ; ,
+vnoremap p pgvy
+vnoremap <Leader>p "*pgvy
+vnoremap <Leader>y "*y
+nnoremap gV `[v`]
+nnoremap x "_x
+tnoremap <Esc> <C-w>N
+nnoremap <silent><C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+" Views/Windows
+nnoremap <Leader>vw <C-w>w    " Switch window
+nnoremap <Leader>vq <C-w>c    " Close window
+nnoremap <Leader>vs <C-w>s    " Split window
+nnoremap <Leader>vv <C-w>v    " Vertical split window
+" Switch active window
+nnoremap <Leader>vh <C-w>h
+nnoremap <Leader>vj <C-w>j
+nnoremap <Leader>vk <C-w>k
+nnoremap <Leader>vl <C-w>l
+" Resize window
+nnoremap <Leader>vH <C-w>5<
+nnoremap <Leader>vJ <C-w>:resize +5<CR>
+nnoremap <Leader>vK <C-w>:resize -5<CR>
+nnoremap <Leader>vL <C-w>5>
+nnoremap <Leader>vr <C-w>r   " Rotate window positions
+nnoremap <Leader>vm <C-w>\|<C-w>_
+nnoremap <Leader>vB <C-w>_
+nnoremap <Leader>vV <C-w>\|
+nnoremap <Leader>vb <C-w>=
+nnoremap <Leader>vx <C-c>:call vimrc#swap_win_buf()<CR>  " Exachange window positions
+" Create undo points when typing these keys
+inoremap , ,<C-g>u
+inoremap . .<C-g>u
+inoremap ( (<C-g>u
+inoremap [ [<C-g>u
+inoremap = =<C-g>u
+inoremap \" \"<C-g>u
+inoremap <C-BS> <C-w>
+cnoremap <C-BS> <C-w>
+nmap å ]
+nmap Å [
+nnoremap <C-å> <C-]>
+
+nnoremap <Leader>o :PickBuffer<CR>
+nnoremap <Leader>p :PickFile<CR>
+nnoremap <Leader>vp :vertical PickFile<CR>
+nnoremap <Leader>sp :horizontal PickFile<CR>
+" }}}
+" ### PLUGINS ### {{{
+" Don't load plugins we don't want
+let g:loaded_2html_plugin = 1
+let g:loaded_gzip = 1
+let g:loaded_manpager_plugin = 1
+let g:loaded_rrhelper = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_vimballPlugin =1
+let g:loaded_zipPlugin = 1
+let g_loaded_zip = 1
+
+" Load the plugins we actually want
+packadd cfilter
+packadd editexisting
+
+function! PackAdd() abort
+packadd minpac
+
+call minpac#init()
+call minpac#add('k-takata/minpac', { 'type': 'opt' })
+
+call minpac#add('MartinAskestad/popupmenufilter')
+call minpac#add('MartinAskestad/pickbuffer')
+call minpac#add('MartinAskestad/pickfile')
+call minpac#add('MartinAskestad/picknpmscript')
+call minpac#add('MartinAskestad/angular-file-switch', { 'type': 'opt' })
+
+call minpac#add('chrisbra/matchit')
+call minpac#add('kamykn/spelunker.vim')
+call minpac#add('kana/vim-textobj-entire')
+call minpac#add('kana/vim-textobj-user')
+call minpac#add('machakann/vim-sandwich')
+call minpac#add('mbbill/undotree')
+call minpac#add('sheerun/vim-polyglot')
+call minpac#add('vim-test/vim-test')
+call minpac#add('hrsh7th/vim-vsnip')
+call minpac#add('AndrewRadev/deleft.vim', { 'type': 'opt' })
+call minpac#add('AndrewRadev/inline_edit.vim', { 'type': 'opt' })
+call minpac#add('adriaanzon/vim-textobj-matchit', { 'type': 'opt' })
+" "call minpac#add('airblade/vim-rooter', { 'type': 'opt' })
+call minpac#add('beloglazov/vim-textobj-quotes', { 'type': 'opt' })
+call minpac#add('bkad/CamelCaseMotion', { 'type': 'opt' })
+call minpac#add('jasonlong/vim-textobj-css', { 'type': 'opt' })
+call minpac#add('kana/vim-textobj-function', { 'type': 'opt' })
+call minpac#add('kana/vim-textobj-indent', { 'type': 'opt' })
+call minpac#add('mattn/emmet-vim', { 'type': 'opt' })
+call minpac#add('prettier/vim-prettier', { 'type': 'opt' })
+call minpac#add('sgur/vim-textobj-parameter', { 'type': 'opt' })
+call minpac#add('thinca/vim-textobj-function-javascript', { 'type': 'opt' })
+call minpac#add('tpope/vim-commentary', { 'type': 'opt' })
+call minpac#add('yegappan/lsp', { 'type': 'opt' })
+
+call minpac#add('endel/vim-github-colorscheme', { 'type': 'opt' })
+call minpac#add('kamykn/dark-theme.vim', { 'type': 'opt' })
+call minpac#add('protesilaos/tempus-themes-vim', { 'type': 'opt' })
+call minpac#add('vim-scripts/sonoma.vim', { 'type': 'opt' })
+endfunction
+
+command! PackAdd call PackAdd() | call minpac#update()
+command! PackRemove call PackAdd() | call minpac#clean()
+command! PackStatus packadd minpac | call minpack#status()
+
+set spelllang=en_us,sv,cjk nospell
+
+augroup spelunker
+  au!
+  au! BufWinEnter,BufWritePost *.ts,*.html,*.rs,*.json,*.md,*.css,*.scss,*.cs,*.vim call spelunker#check()
+  au! CursorHold *.ts,*.html,*.rs,*.json,*.md,*.css,*.scss,*.cs,*.vim call spelunker#check_displayed_words()
+augroup END
+
+packadd lsp
+call LspAddServer([
+      \ #{ name: 'vim', filetype: 'vim', path: 'vim-language-server.cmd', args: ['--stdio'], },
+      \ #{ name: 'vscode-css', filetype: 'css', path: 'vscode-css-language-server.cmd', args: ['--stdio'],
+      \   features: #{ completion: v:false, showInlayHints: v:true, },
+      \   initializationOptions: #{ provideFormatter: v:true, },
+      \   debug: v:true, },
+      \ #{ name: 'emmet', filetype: ['css', 'scss', 'html'], path: 'emmet-language-server.cmd', args: ['--stdio'],
+      \   features: #{ completion: v:true, }, debug: v:true, },
+      \ #{ name: 'vscode-html', filetype: 'html', path: 'vscode-html-language-server.cmd',
+      \   args: ['--stdio'],
+      \   features: #{ completion: v:false, snippetSupport: v:true, vsnipSupport: v:true, definition: v:false, hover: v:true },
+      \   initializationOptions: #{
+      \     provideFormatter: v:true,
+      \     embeddedLanguages: #{ css: v:true, javascript: v:true },
+      \     configurationSection: ['html', 'css', 'javascript']
+      \   },
+      \ },
+      \ #{ name: 'typescript',
+      \   filetype: ['typescript', 'javascript', 'typescriptreact'],
+      \   path: 'typescript-language-server.cmd',
+      \   args: ['--stdio'],
+      \   rootSearch: ['tsconfig.json', '.git/', 'node_modules/'],
+      \   features: #{ definition: v:true, hover: v:true },
+      \ },
+      \ #{ name: 'angular-ls',
+      \   filetype: ['html', 'typescript'],
+      \   path: 'ngserver.cmd',
+      \   args: [
+      \     '--ngProbeLocations', expand('$HOME/scoop/apps/nodejs-lts/current/bin/@angular/language-service'),
+      \     '--tsProbeLocations', expand('$HOME/scoop/apps/nodejs-lts/current/bin/typescript'), '--stdio'],
+      \   runIfSearch: ['angular.json'], rootSearch: ['angular.json'],
+      \   features: #{ definition: v:true, hover: v:true, documentHighlight: v:false, completion: v:false, },
+      \ },
+      \ #{ name: 'react',
+      \   filetype: 'rust',
+      \   path: expand('$HOME\rust-analyzer\rust-analyzer.exe'),
+      \   args: [], syncInit: v:true, rootSearch: ['Cargo.toml'],
+      \   initializationOptions: #{ completion: #{ autoimport: #{ enable: v:true } } }
+      \ },
+      \ #{ name: 'C#',
+      \   filetype: 'cs',
+      \   path: expand('$HOME\omnisharp\omnisharp.exe'),
+      \   args: ['-z', '--languageserver', '--encoding', 'utf-8'],
+      \   syncInit: v:true
+      \ },
+      \ #{ name: 'json',
+      \   filetype: 'json',
+      \   path: 'vscode-json-language-server.cmd',
+      \   args: ['--stdio'],
+      \   initializationOptions: #{ provideFormatter: v:true },
+      \ },
+      \ #{ name: 'eslint',
+      \   filetype: ['typescript'],
+      \   path: 'vscode-eslint-language-server.cmd',
+      \   args: ['--stdio'],
+      \   runIfSearch: ['.eslintrc', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json', 'eslint.config.js'],
+      \   initializationOptions: #{ diagnostics: v:true },
+      \   features: #{ diagnostics: v:true },
+      \ }
+      \ ])
+
+let lsp_options = #{
+      \ autoPopulateDiags: v:true,
+      \ diagVirtualTextAlign: 'after',
+      \ hideDisabledCodeActions: v:true,
+      \ ignoreMissingServer: v:true,
+      \ noNewlineInCompletion: v:false,
+      \ showDiagWithVirtualText: v:true,
+      \ usePopupInCodeAction: v:true,
+      \}
+call LspOptionsSet(lsp_options)
+
+function! s:on_lsp_buffer_enabled() abort
+  if exists('+tagfunc') | setlocal tagfunc=lsp#lsp#TagFunc | endif
+  set omnifunc=g:LspOmniFun
+  set keywordprg=:LspHover
+  autocmd! CursorHold,CursorHoldI * silent LspHighlight
+  autocmd! CursorMoved,CursorHoldI * LspHighlightClear
+  nnoremap <buffer><Leader>, :LspHover<CR>
+  nnoremap <buffer><Leader>. :LspCodeAction<CR>
+  nnoremap <buffer>]d :LspDiagNext<CR>
+  nnoremap <buffer>[d :LspDiagPrev<CR>
+  nnoremap <buffer><Leader>lj :LspDiagNext<CR>
+  nnoremap <buffer><Leader>lk :LspDiagPrev<CR>
+  nnoremap <buffer><Leader>lr :LspRename<CR>
+  nnoremap <buffer><Leader>lR :LspPeekReferences<CR>
+  nnoremap <buffer><Leader>ld :LspPeekDefinition<CR>
+  nnoremap <buffer><Leader>lD :LspGotoDefinition<CR>
+  nnoremap <buffer><Leader>lh :LspHighlight<CR>
+  nnoremap <buffer><Leader>ls :LspSymbolSearch<CR>
+  nnoremap <buffer><Leader>lo :LspDocumentSymbol<CR>
+  nnoremap <buffer><Leader>lO :LspOutline<CR>
+  nnoremap <buffer>gi :LspGotoImpl<CR>
+  nnoremap <buffer>gd :LspGotoDefinition<CR>
+  nnoremap <buffer>gD :LspGotoDeclaration<CR>
+endfunction
+
+augroup lsp_install
+  au!
+  au User LspAttached call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:vsnip_snippet_dir = expand('$HOME\.local\vim-vsnip')
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+" Jump forward or backward
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
+" See https://github.com/hrsh7th/vim-vsnip/pull/50
+nmap        s   <Plug>(vsnip-select-text)
+xmap        s   <Plug>(vsnip-select-text)
+nmap        S   <Plug>(vsnip-cut-text)
+xmap        S   <Plug>(vsnip-cut-text)
+" }}}
+" ### STATUS LINE ### {{{
+augroup vimrc_colorscheme
+  au!
+  au VimEnter,ColorScheme * highlight User6 term=bold gui=bold 
+  au VimEnter,ColorScheme * highlight User5 term=reverse,bold gui=reverse,bold
+  au! VimEnter,ColorScheme * highlight User4 guibg=#279AF1
+  au! VimEnter,ColorScheme * highlight User3 guibg=#B6970C
+  au! VimEnter,ColorScheme * highlight User2 guibg=#92374D
+  au! VimEnter,ColorScheme * highlight User1 gui=reverse
+augroup END
+
+let g:mode_colors = {
+      \ 'n': '%#User1#',
+      \ 'i': '%#User2#',
+      \ 'R': '%#User2#',
+      \ 'v': '%#User3#',
+      \ 'V': '%#User3#',
+      \ "\<C-v>": '%#User3#',
+      \ 'c': '%#User4#',
+      \ 's': '%#User1#',
+      \ 'S': '%#User1#',
+      \ "\<C-s>": '%#User1#',
+      \ 't': '%#User4#'
+      \ }
+
+function! Stl_Filename() abort
+  let l:filename = (&modified ? '%#User5#' : '%#User1#') . '%t '
+  let l:filename = l:filename . (exists('b:nerd_icon') ? b:nerd_icon . ' ' : '%y')
+  return l:filename . '%#StatusLine#'
+endfunction
+
+function! s:git_branch_detect(path) abort
+  unlet! b:gitbranch_path
+  let b:gitbranch_pwd = expand('%:p:h')
+  let dir = s:git_branch_dir(a:path)
+  if dir !=# ''
+    let path = dir . '/HEAD'
+    if filereadable(path)
+      setlocal signcolumn=yes
+      let b:gitbranch_path = path
+    endif
+  endif
+endfunction
+
+function! s:git_branch_dir(path) abort
+  let l:path = a:path
+  let l:prev = ''
+  let l:git_modules = path =~# '/\.git+modules/'
+  while path !=# l:prev
+    let l:dir = l:path . '/.git'
+    let l:type = getftype(dir)
+    if l:type ==# 'dir' && isdirectory(l:dir . '/objects') && isdirectory(dir . '/refs') && getfsize(dir . '/HEAD') > 10
+      return l:dir
+     elseif type ==# 'file'
+       let l:reldir = get(readfile(l:dir), 0, '')
+       if l:reldir =~# '^gitdir:'
+         return simplify(l:path, '/', l:reldir[8:])
+       endif
+     elseif l:type ==# 'dir' && isdirectory(l:dir . '/objects') && isdirectory(dir . '/refs') && getfsize(dir . '/HEAD') > 10
+       return l:path
+     endif
+     let l:prev = l:path
+     let l:path = fnamemodify(l:path, ':h')
+  endwhile
+  return ''
+endfunction
+
+function! Stl_GitBranchName() abort
+  let l:branch_name = ''
+  if get(b:, 'gitbranch_pwd', '') !=# expand('%:p:h') || !has_key(b:, 'gitbranch_path')
+    call s:git_branch_detect(expand('%:p:h'))
+  endif
+  if has_key(b:, 'gitbranch_path') && filereadable(b:gitbranch_path)
+    let l:branch = get(readfile(b:gitbranch_path), 0, '')
+    if l:branch =~# '^ref: '
+     let l:branch_name = substitute(branch, '^ref: \%(refs/\%(heads/\|remotes/\|tags/\)\=\)\=', '', '')
+   elseif l:branch =~# '^\x\{20}'
+     let l:branch_name = branch[:6]
+   endif
+ endif
+ if len(l:branch_name) > 0 && (l:branch_name ==? 'master' || l:branch_name ==? 'main')
+   return l:branch_name
+ else
+   return '%#User6#' . l:branch_name . '%#StatusLine#'
+ endif
+ return ''
+endfunction
+
+set statusline=%#StatusLine#%{%get(g:mode_colors,mode(),'')%}\ 
+set statusline+=%{%Stl_Filename()%}\ 
+set statusline+=%{%Stl_GitBranchName()%}
+set statusline+=%=%{(&fenc!=''?toupper(&fenc):&enc)}\[%{&ff}]\ %3l%2c\
+" }}}
+
