@@ -1,0 +1,48 @@
+{
+  "console.log": {
+    "prefix": ["log", "cl"],
+    "body": ["console.log(${1:$TM_SELECTED_TEXT});$0"],
+    "description": "console.log."
+  },
+  "console.log 2": {
+    "prefix": ["logg", "cll"],
+    "body": ["console.log('${1:$TM_SELECTED_TEXT}', ${2:$TM_SELECTED_TEXT});$0"],
+    "description": "console.log."
+  },
+  "Class method": {
+    "prefix": ["met"],
+    "body": ["${1:methodName}(${2:arg}) {", "\t$0", "}"],
+    "description": "A method for a class."
+  },
+  "Arrow function (lambda)": {
+    "prefix": ["lambda", "af"],
+    "body": ["(${1:args}) => $0;"],
+    "description": "An arrow function."
+  },
+  "Arrow function in braces": {
+    "prefix": ["Lambda", "Af"],
+    "body": ["(${1:args}) => {", "\t$0", "}"],
+    "description": "An arrow function."
+  },
+  "Function": {
+    "prefix": ["fun"],
+    "body": ["function ${1:name}(${2:args}):${3:returnType} {", "\t$0", "}"],
+    "description": "A function."
+  },
+  "Input": {
+    "prefix": ["inp"],
+    "body": ["@Input()\n${propertyName}: ${propertyType};"],
+    "description": "Angular @Input property."
+  },
+  "Output": {
+    "prefix": ["oup"],
+    "body": ["@Output()\n${eventName} = new EventEmitter<${eventType}>();"],
+    "description": "Angular @Output property."
+  },
+  "Observable pipe": {
+    "prefix": ["pip"],
+    "body": ["${1:observable}.pipe($0);"],
+    "description": "Pipe from an observable."
+  }
+}
+

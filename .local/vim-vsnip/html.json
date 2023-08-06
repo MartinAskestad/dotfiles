@@ -1,0 +1,32 @@
+{
+  "ngFor": {
+    "prefix": "ngF",
+    "body": ["*ngFor=\"let ${item} of ${list}\""],
+    "description": "Angular for directive."
+  },
+  "ngIf": {
+    "prefix": "ngI",
+    "body": ["*ngIf=\"${expression}\""],
+    "description": "Angular if directive."
+  },
+  "pre": {
+    "prefix": "pre",
+    "body": ["<pre>{{ ${1:obj} | json }}</pre>$0"],
+    "description": "pre-tag with json."
+  },
+  "ng-container": {
+    "prefix": "ngc",
+    "body": ["<ng-container $1>$0</ng-container>"],
+    "description": "An ng-container."
+  },
+  "bootstrap input": {
+    "prefix": "inp",
+    "body": ["<input type=\"${1:input-type}\" class=\"form-control\" $0>"],
+    "description": "A bootstrap themed input tag."
+  },
+  "bootstrap select": {
+    "prefix": "sel",
+    "body": ["<select class=\"custom-select\">$0</select>"],
+    "description": "A bootstrap themed select tag."
+  }
+}
