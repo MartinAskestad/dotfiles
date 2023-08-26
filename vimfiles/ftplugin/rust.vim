@@ -4,6 +4,6 @@ packadd vim-textobj-quotes
 packadd CamelCaseMotion
 packadd vim-textobj-function
 packadd vim-textobj-indent
-packadd vim-textobj-paramter
+packadd vim-textobj-parameter
 packadd vim-commentary
 

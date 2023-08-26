@@ -1,0 +1,8 @@
+{
+  "println": {
+    "prefix": ["log", "cl"],
+    "body": ["println!(${1:$TM_SELECTED_TEXT});$0"],
+    "description": "println!"
+  }
+}
+

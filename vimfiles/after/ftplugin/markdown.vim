@@ -1,1 +1,1 @@
-let b:nerd_icon = ''
+let b:nerd_icon = ''

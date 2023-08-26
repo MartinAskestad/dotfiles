@@ -9,4 +9,4 @@ nmap <buffer> b <Plug>CamelCaseMotion_b
 nmap <buffer> e <Plug>CamelCaseMotion_e
 nmap <buffer> ge <Plug>CamelCaseMotion_ge
 
-let b:nerd_icon = 'ﯤ'
+let b:nerd_icon = '󰛦'
