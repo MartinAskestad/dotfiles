@@ -175,12 +175,8 @@ function! PackAdd() abort
   call minpac#add('kana/vim-textobj-entire')
   call minpac#add('kana/vim-textobj-user')
   call minpac#add('machakann/vim-sandwich')
-  call minpac#add('mbbill/undotree')
   call minpac#add('sheerun/vim-polyglot')
-  call minpac#add('vim-test/vim-test')
   call minpac#add('hrsh7th/vim-vsnip')
-  call minpac#add('AndrewRadev/deleft.vim', { 'type': 'opt' })
-  call minpac#add('AndrewRadev/inline_edit.vim', { 'type': 'opt' })
   call minpac#add('adriaanzon/vim-textobj-matchit', { 'type': 'opt' })
   call minpac#add('beloglazov/vim-textobj-quotes', { 'type': 'opt' })
   call minpac#add('bkad/CamelCaseMotion', { 'type': 'opt' })
@@ -192,11 +188,13 @@ function! PackAdd() abort
   call minpac#add('sgur/vim-textobj-parameter', { 'type': 'opt' })
   call minpac#add('thinca/vim-textobj-function-javascript', { 'type': 'opt' })
   call minpac#add('tpope/vim-commentary', { 'type': 'opt' })
-  call minpac#add('yegappan/lsp', { 'type': 'opt' })
   call minpac#add('endel/vim-github-colorscheme', { 'type': 'opt' })
   call minpac#add('kamykn/dark-theme.vim', { 'type': 'opt' })
   call minpac#add('protesilaos/tempus-themes-vim', { 'type': 'opt' })
   call minpac#add('vim-scripts/sonoma.vim', { 'type': 'opt' })
+
+  call minpac#add('prabirshrestha/vim-lsp')
+  call minpac#add('mattn/vim-lsp-settings')
 endfunction
 
 command! PackAdd call PackAdd() | call minpac#update()
@@ -211,88 +209,37 @@ augroup spelunker
   au! CursorHold *.ts,*.html,*.rs,*.json,*.md,*.css,*.scss,*.cs,*.vim call spelunker#check_displayed_words()
 augroup END
 
-packadd lsp
-call LspAddServer([
-      \ #{ name: 'vim', filetype: 'vim', path: 'vim-language-server.cmd', args: ['--stdio'], },
-      \ #{ name: 'vscode-css', filetype: 'css', path: 'vscode-css-language-server.cmd', args: ['--stdio'],
-      \   features: #{ completion: v:false, showInlayHints: v:true, },
-      \   initializationOptions: #{ provideFormatter: v:true, }, debug: v:true, },
-      \ #{ name: 'emmet', filetype: ['css', 'scss', 'html'], path: 'emmet-language-server.cmd', args: ['--stdio'],
-      \   features: #{ completion: v:true, }, debug: v:true, },
-      \ #{ name: 'vscode-html', filetype: 'html', path: 'vscode-html-language-server.cmd',
-      \   args: ['--stdio'], features: #{ completion: v:false, snippetSupport: v:true, vsnipSupport: v:true, definition: v:false, hover: v:true },
-      \   initializationOptions: #{ provideFormatter: v:true, embeddedLanguages: 
-      \   #{ css: v:true, javascript: v:true }, configurationSection: ['html', 'css', 'javascript'] }, },
-      \ #{ name: 'typescript', filetype: ['typescript', 'javascript', 'typescriptreact'],
-      \   path: 'typescript-language-server.cmd', args: ['--stdio'],
-      \   rootSearch: ['tsconfig.json', '.git/', 'node_modules/'],
-      \   features: #{definition: v:true, hover: v:true }, },
-      \ #{ name: 'angular-ls', filetype: ['html', 'typescript'], path: 'ngserver.cmd', args: [
-      \     '--ngProbeLocations', expand('$home/scoop/apps/nodejs-lts/current/bin/@angular/language-service'),
-      \     '--tsProbeLocations', expand('$home/scoop/apps/nodejs-lts/current/bin/typescript'), '--stdio'],
-      \   runIfSearch: ['angular.json'], rootSearch: ['angular.json'],
-      \   features: #{ definition: v:true, hover: v:true, documentHighlight: v:false, completion: v:false, },
-      \ },
-      \ #{ name: 'rust', filetype: 'rust', path: expand('$HOME\rust-analyzer\rust-analyzer.exe'),
-      \   args: [], syncInit: v:true, rootSearch: ['Cargo.toml'],
-      \   initializationOptions: #{ completion: #{ autoimport: #{ enable: v:true } } } },
-      \ #{ name: 'C#', filetype: 'cs', path: expand('$HOME\omnisharp\omnisharp.exe'),
-      \   args: ['-z', '--languageserver', '--encoding', 'utf-8'], syncInit: v:true },
-      \ #{ name: 'json', filetype: 'json', path: 'vscode-json-language-server.cmd',
-      \   args: ['--stdio'], initializationOptions: #{ provideFormatter: v:true }, },
-      \ #{ name: 'eslint', filetype: ['typescript'],
-      \   path: 'vscode-eslint-language-server.cmd', args: ['--stdio'],
-      \   runIfSearch: ['.eslintrc', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json', 'eslint.config.js'],
-      \   initializationOptions: #{ diagnostics: v:true },
-      \   features: #{ diagnostics: v:true }, } ])
-
-let lsp_options = #{
-      \ autoHighlight: v:true,
-      \ autoHighlightDiags: v:true,
-      \ autoPopulateDiags: v:true,
-      \ diagVirtualTextAlign: 'after',
-      \ hideDisabledCodeActions: v:true,
-      \ ignoreMissingServer: v:true,
-      \ noNewlineInCompletion: v:true,
-      \ showDiagWithVirtualText: v:true,
-      \ showSignature: v:false,
-      \ usePopupInCodeAction: v:true,
-      \ snippetSupport: v:true,
-      \ vsnipSupport: v:true,
-      \}
-call LspOptionsSet(lsp_options)
-
 function! s:on_lsp_buffer_enabled() abort
-  if exists('+tagfunc') | setlocal tagfunc=lsp#lsp#TagFunc | endif
-  set omnifunc=g:LspOmniFun
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  set omnifunc=lsp#complete
   set keywordprg=:LspHover
-  nnoremap <buffer><Leader>, :LspHover<CR>
-  nnoremap <buffer><Leader>. :LspCodeAction<CR>
-  nnoremap <buffer>]d :LspDiagNext<CR>
-  nnoremap <buffer>[d :LspDiagPrev<CR>
-  nnoremap <buffer><Leader>lj :LspDiagNext<CR>
-  nnoremap <buffer><Leader>lk :LspDiagPrev<CR>
-  nnoremap <buffer><Leader>lr :LspRename<CR>
-  nnoremap <buffer><Leader>lR :LspPeekReferences<CR>
-  nnoremap <buffer><Leader>ld :LspPeekDefinition<CR>
-  nnoremap <buffer><Leader>lD :LspGotoDefinition<CR>
-  nnoremap <buffer><Leader>lh :LspHighlight<CR>
-  nnoremap <buffer><Leader>ls :LspSymbolSearch<CR>
-  nnoremap <buffer><Leader>lo :LspDocumentSymbol<CR>
-  nnoremap <buffer><Leader>lO :LspOutline<CR>
-  nnoremap <buffer>gi :LspGotoImpl<CR>
-  nnoremap <buffer>gd :LspGotoDefinition<CR>
-  nnoremap <buffer>gD :LspGotoDeclaration<CR>
-  xnoremap <silent> <M-e> <Cmd>LspSelectionExpand<CR>
-  xnoremap <silent> <M-c> <Cmd>LspSelectionShrink<CR>
-  inoremap <buffer><C-i> <C-o>:LspShowSignature<CR>
-  nnoremap <buffer><Leader>D :LspDiagShow<CR>
+  nnoremap <buffer><Leader>, <plug>(lsp-hover)
+  nnoremap <buffer><Leader>. <plug>(lsp-code-action)
+  nnoremap <buffer>]d <plug>(lsp-next-diagnostic)
+  nnoremap <buffer>[d <plug>(lsp-previous-diagnostic)
+  nnoremap <buffer><Leader>lj <plug>(lsp-next-diagnostic)
+  nnoremap <buffer><Leader>lk <plug>(lsp-previous-diagnostic)
+  nnoremap <buffer><Leader>lr <plug>(lsp-rename)
+  nnoremap <buffer><Leader>lR <plug>(lsp-references)
+  nnoremap <buffer><Leader>ld <plug>(lsp-peek-definition)
+  nnoremap <buffer><Leader>lD <plug>(lsp-definition)
+  " nnoremap <buffer><Leader>lh :LspHighlight<CR>
+  nnoremap <buffer><Leader>ls <plug>(lsp-document-symbol-search)
+  nnoremap <buffer><Leader>lS <plug>(lsp-workspace-symbol-search)
+  " nnoremap <buffer><Leader>lO :LspOutline<CR>
+  nnoremap <buffer>gi <plug>(lsp-implementation)
+  nnoremap <buffer>gd <plug>(lsp-definition)
+  nnoremap <buffer>gD <plug>(lsp-declaration)
+  " xnoremap <silent> <M-e> <Cmd>LspSelectionExpand<CR>
+  " xnoremap <silent> <M-c> <Cmd>LspSelectionShrink<CR>
+  " inoremap <buffer><C-i> <C-o>:LspShowSignature<CR>
+  " nnoremap <buffer><Leader>D :LspDiagShow<CR>
   let b:lsp_active = v:true
 endfunction
 
 augroup lsp_install
   au!
-  au User LspAttached call s:on_lsp_buffer_enabled()
+  au User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
 let g:vsnip_snippet_dir = expand('$HOME\.local\vim-vsnip')
