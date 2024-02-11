@@ -1,0 +1,7 @@
+class_names:
+  - TaskManagerWindow
+  - MsoSplash
+process_names:
+  - vimrun.exe
+  - powershell.exe
+layout: Dwindle
