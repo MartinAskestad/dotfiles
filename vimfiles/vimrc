@@ -1,0 +1,201 @@
+unlet! g:skip_defaults_vim
+source $VIMRUNTIME\defaults.vim
+
+if has('vim_starting')
+  " encoding, changing encoding at runtime is undefined behavior
+  if &encoding !=? 'utf-8' | let &termencoding=&encoding | endif
+  set encoding=utf-8 fileencoding=utf-8 fileformats=dos,unix
+  set fileencodings=utf-8,iso-8859-1
+
+  set langmenu=en_US
+  let $LANG='en_US'
+  source $VIMRUNTIME\delmenu.vim
+  source $VIMRUNTIME\menu.vim
+endif
+
+" ### BEHAVIOR ### {{{
+let g:netrw_liststyle=3
+let g:netrw_banner=0
+let g:netrw_keepdir=0
+let g:netrw_browse_split=4
+set matchpairs+=<:>
+set nowrapscan ignorecase smartcase hlsearch magic
+set noautochdir noautowrite noautowriteall autoread
+set winminwidth=8 winheight=8 winminheight=8 noequalalways nowinfixwidth nowinfixheight
+set mouse= wildmenu wildchar=9 wildmode=full,longest:list wildoptions=pum wildignorecase
+set wildignore=*/node_modules/*,*/.git/*,*/dist/*,*/target/*
+set directory-=. undodir=$HOME\vimfiles\undo undolevels=1000 backupdir=$HOME\vimfiles\backup undofile backup
+set viewdir=$HOME\vimfiles\view history=1000 sessionoptions=options viewoptions+=options
+set laststatus=2 display+=lastline formatoptions+=j
+set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
+if !empty($viminfo)
+  set viminfo^=!
+endif
+set t_Co=256 termguicolors
+
+augroup vimrc
+  au!
+  au! DirChanged * let g:netrw_list_hide = netrw_gitignore#Hide() .. '\(^\|\s\s\)\zs\.\$\+'
+  au! BufLeave,InsertEnter,WinLeave * if &nu | setlocal nornu | endif
+  au! BufEnter,InsertLeave,WinEnter * if &nu | setlocal rnu | endif
+  au! BufWinLeave *.* mkview
+  au! BufWinEnter *.* silent loadview
+  au! VimResized * tabdo wincmd =
+  au! FocusGained * silent! checktime
+  " Filemarks
+  au BufLeave *.html        normal! mH
+  au BufLeave *.rs          normal! mR
+  au BufLeave *.ts          normal! mT
+  au BufLeave *.js          normal! mJ
+  au BufLeave *.css,*.scss  normal! mC
+  au BufLeave *.vim         normal! mV
+augroup END
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif
+" Note: This should be set after `set termguicolors` or `set t_Co=256`.
+if &term =~ 'xterm' || &term == 'win32'
+  " Use DECSCUSR escape sequences
+  let &t_SI = "\e[5 q"    " blink bar
+  let &t_SR = "\e[3 q"    " blink underline
+  let &t_EI = "\e[1 q"    " blink block
+  let &t_ti ..= "\e[1 q"   " blink block
+  let &t_te ..= "\e[0 q"   " default (depends on terminal, normally blink block)
+endif
+
+hi SpelunkerSpellBad cterm=underline gui=underline,italic
+hi SpelunderComplexOrCompoundWord cterm=underline gui=underline guifg=NONE
+
+set background=light
+colorscheme zellner
+" }}}
+" ### KEYBOARD SHORTCUTS ### {{{
+let g:mapleader = "\<Space>"
+nnoremap , ;
+nnoremap ; ,
+vnoremap , ;
+vnoremap ; ,
+vnoremap p pgvy
+vnoremap <Leader>p "*pgvy
+vnoremap <Leader>y "*y
+nnoremap gV `[v`]
+nnoremap x "_x
+tnoremap <Esc> <C-w>N
+nnoremap <silent><C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+nnoremap <Leader>vs      <C-w>s
+nnoremap <Leader>vv      <C-w>v
+nnoremap <Left>          <C-w>h
+nnoremap <Down>          <C-w>j
+nnoremap <Up>            <C-w>k
+nnoremap <Right>         <C-w>l
+nnoremap <C-Left>  <C-w>5<
+nnoremap <PageDown>  <C-w>:resize +5<CR>
+nnoremap <PageUp>  <C-w>:resize -5<CR>
+nnoremap <C-Right>   <C-w>5>
+nnoremap <Leader>vr  <C-w>r
+nnoremap <Leader>vm  <C-w>\|<C-w>_
+nnoremap <Leader>vB  <C-w>_
+nnoremap <Leader>vV  <C-w>\|
+nnoremap <Leader>vb  <C-w>=
+nnoremap <Leader>vx  <C-c>:call vimrc#swap_win_buf()<CR>
+nnoremap <C-j>     mz:m+<CR>`z==
+nnoremap <C-k>     mz:m-2<CR>`z==
+inoremap <C-j>     <Esc>:m+<CR>==gi
+inoremap <C-k>     <Esc>:m-2<CR>==gi
+vnoremap <C-j>     :m'>+<CR>gv=`<my`>mzgv`yo`z
+vnoremap <C-k>     :m'<-2<CR>gv=`>my`<mzgv`yo`z
+inoremap <C-BS>    <C-w>
+cnoremap <C-BS>    <C-w>
+nmap å ]
+nmap Å [
+omap å ]
+omap Å [
+xmap å ]
+xmap Å [
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap <expr>) strpart(getline('.'), col('.') - 1, 1) == ")" ? "\<Right>" : ")"
+inoremap <expr>} strpart(getline('.'), col('.') - 1, 1) == "}" ? "\<Right>" : "}"
+inoremap <expr>] strpart(getline('.'), col('.') - 1, 1) == "]" ? "\<Right>" : "]"
+inoremap <expr>' strpart(getline('.'), col('.') - 1, 1) == "'" ? "\<Right>" : "''<Left>"
+inoremap <expr>" strpart(getline('.'), col('.') - 1, 1) == "\"" ? "\<Right>" : "\"\"<Left>"
+inoremap <expr>` strpart(getline('.'), col('.') - 1, 1) == "`" ? "\<Right>" : "`<Left>"
+let g:empty_pairs = ["()", "[]", "{}", "''", "``", '""']
+inoremap <expr><BS> index(g:empty_pairs, strpart(getline('.'), col('.') - 2, 2)) > -1 ? "\<Right><BS><BS>" : "\<BS>"
+nnoremap <silent><Leader>bd :bprevious <bar> bdelete #<CR>
+nnoremap <Leader>W :set wrap!<CR>
+nnoremap <Leader>o  :PickBuffer<CR>
+nnoremap <Leader>ov :horizontal PickBuffer<CR>
+nnoremap <Leader>os :vertical PickBuffer<CR>
+nnoremap <Leader>p  :PickFile<CR>
+nnoremap <Leader>pv :horizontal PickFile<CR>
+nnoremap <Leader>ps :vertical PickFile<CR>
+" }}}
+" ### PLUGINS ### {{{
+" Don't load plugins we don't want
+let g:loaded_2html_plugin = 1
+let g:loaded_gzip = 1
+let g:loaded_manpager_plugin =1
+let g:loaded_rrhelper = 1
+let g:loaded_tar = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_zip = 1
+" Load the plugins we actually want
+packadd cfilter
+packadd editexisting
+
+let g:camelcasemotion_key = '<Leader>'
+
+set spelllang=en_us,sv,cjk nospell
+augroup spelunker
+  au!
+  au! BufWinEnter,BufWritePost *.ts,*.html,*.rs,*.json,*.md,*.css,*.scss,*.cs,*.vim call spelunker#check()
+  au! CursorHold *.ts,*.html,*.rs,*.json,*.md,*.css,*.scss,*.cs,*.vim call spelunker#check_displayed_words()
+augroup END
+
+let b:lsp_server_enabled = ' '
+function s:on_lsp_buffer_enabled() abort
+  setlocal omnifun=lsp#complete
+  setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  set keywordprg = :LspHover
+  nnoremap <buffer><Leader>, <plug>(lsp-hover)
+  nnoremap <buffer><Leader>. <plug>(lsp-code-action)
+  nnoremap <buffer><Leader>ld <plug>(lsp-peek-definition)
+  nnoremap <buffer><Leader>lD <plug>(lsp-definition)
+  nnoremap <buffer><Leader>lr <plug>(lsp-rename)
+  nnoremap <buffer><Leader>lR <plug>(lsp-references)
+  nnoremap <buffer><Leader>ls <plug>(lsp-document-symbol-search)
+  nnoremap <buffer><Leader>lS <plug>(lsp-workspace-symbol-search)
+  nnoremap <buffer><Leader>li <plug>(lsp-implementation)
+  nnoremap <buffer><Leader>lt <plug>(lsp-type-definition)
+  nnoremap <buffer><Leader>lj <plug>(lsp-next-diagnostic)
+  nnoremap <buffer><Leader>lk <plug>(lsp-previous-diagnostic)
+  inoremap <buffer><expr><Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+  inoremap <buffer><expr><CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+  inoremap <buffer><expr><C-n> pumvisible() ? "\<C-n>" : "\<C-x>\<C-o>"
+  inoremap <buffer><expr><C-p> pumvisible() ? "\<C-p>" : "\<C-x>\<C-o>"
+
+  let g:lsp_format_sync_timeout = 1000
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:lsp_diagnostics_float_cursor = 1
+  let g:lsp_documentation_float_docked = 1
+  let g:lsp_semantic_enabled = 1
+  let g:lsp_untitled_buffer_enabled = 0
+  let g:lsp_document_code_action_signs_hint = { 'text': '' }
+  let g:lsp_diagnostics_signs_error = { 'text': '' }
+  let g:lsp_diagnostics_signs_warning = { 'text': '' }
+  autocmd! BufWritePre *.rc call execute('LspDocumentFormatSync')
+  let b:lsp_server_enabled = ''
+endfunction
+
+augroup lsp_install
+  au!
+  au User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+" }}}
