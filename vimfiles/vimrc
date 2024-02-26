@@ -25,7 +25,7 @@ set winminwidth=8 winheight=8 winminheight=8 noequalalways nowinfixwidth nowinfi
 set mouse= wildmenu wildchar=9 wildmode=full,longest:list wildoptions=pum wildignorecase
 set wildignore=*/node_modules/*,*/.git/*,*/dist/*,*/target/*
 set directory-=. undodir=$HOME\vimfiles\undo undolevels=1000 backupdir=$HOME\vimfiles\backup undofile backup
-set viewdir=$HOME\vimfiles\view history=1000 sessionoptions=options viewoptions+=options
+set viewdir=$HOME\vimfiles\view history=1000 sessionoptions=options viewoptions-=options
 set laststatus=2 display+=lastline formatoptions+=j
 set list listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨ showbreak=↩\
 if !empty($viminfo)
